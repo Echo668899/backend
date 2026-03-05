@@ -1,0 +1,93 @@
+{
+    "table_name": "job",
+    "connect": "default",
+    "sub_num": 0,
+    "description": "队列任务",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "queue",
+            "type": "string",
+            "description": "队列名称"
+        },
+        {
+            "name": "server_name",
+            "type": "string",
+            "description": "机器名称"
+        },
+        {
+            "name": "job",
+            "type": "string",
+            "description": "任务"
+        },
+        {
+            "name": "exception",
+            "type": "string",
+            "description": "异常"
+        },
+        {
+            "name": "failed_at",
+            "type": "int",
+            "description": "异常时间"
+        },
+        {
+            "name": "plan_at",
+            "type": "int",
+            "description": "计划执行时间"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 0等待 1执行中 2执行成功 -1执行失败"
+        },
+        {
+            "name": "success_at",
+            "type": "int",
+            "description": "成功时间"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "status",
+            "fields": {
+                "status": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "queue",
+            "fields": {
+                "queue": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "server_name",
+            "fields": {
+                "server_name": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "plan_at",
+            "fields": {
+                "plan_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,289 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">活动详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">名称:</label>
+                            <div class="layui-input-block">
+                                <input name="name" placeholder="请输入活动名称" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">介绍:</label>
+                            <div class="layui-input-block">
+                                <textarea name="description" rows="3" class="layui-textarea" placeholder="请输入活动简介"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" >
+                            <label class="layui-form-label ">封面图:</label>
+                            <div class="layui-input-block">
+                                <div id="imgX" class="user-tag upload-select-picture-card">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                </div>
+                                <input name="img_x" id="imgXInput" value="" type="hidden" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">开始时间:</label>
+                            <div class="layui-input-block">
+                                <input name="start_time" id="start_time" placeholder="请输入开始时间" value="" type="text" autocomplete="off" class="layui-input icon-date" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">结束时间:</label>
+                            <div class="layui-input-block">
+                                <input name="end_time" id="end_time" placeholder="请输入结束" value="" type="text" class="layui-input icon-date" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">活动模板:</label>
+                            <div class="layui-input-block">
+                                <input name="tpl_id" placeholder="活动模板" value="<?php echo $tpl['code'];?>" disabled  class="layui-input layui-disabled" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-input-row">
+                            <?php foreach ($tpl['schema'] as $key=>$item):?>
+                                <?php if($item['type']=='number'):?>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
+                                        <div class="layui-input-block">
+                                            <input name="tpl_config[<?php echo $key;?>]" value="<?php echo $item['default']?>" placeholder="<?php echo $item['label'];?>" type="number" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                                            <div class="layui-word-aux"><?php echo $item['description'];?></div>
+                                        </div>
+                                    </div>
+                                <?php elseif($item['type']=='text'):?>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
+                                        <div class="layui-input-block">
+                                            <input name="tpl_config[<?php echo $key;?>]" value="<?php echo $item['default']?>" placeholder="<?php echo $item['label'];?>" type="text" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                                            <div class="layui-word-aux"><?php echo $item['description'];?></div>
+                                        </div>
+                                    </div>
+                                <?php elseif($item['type']=='radio'):?>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
+                                        <div class="layui-input-block">
+                                            <?php foreach ($item['options'] as $opt): ?>
+                                                <input name="tpl_config[<?php echo $key;?>]" lay-filter="select-<?php echo $key;?>" value="<?php echo $opt['code']; ?>" title="<?php echo $opt['code'].' | '.$opt['name']; ?>" <?php if($opt['code']==$item['default'])echo 'checked';?> type="radio" class="layui-input"/>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                            <?php endforeach;?>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">权限:</label>
+                            <div class="layui-input-block">
+                                <?php foreach($rightArr as $key=>$item):?>
+                                    <input name="right" lay-filter="radio-right" value="<?php echo $key;?>" title="<?php echo $key.' | '.$item;?>"  type="radio" class="layui-input"/>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item select-right-normal" style="display: none">
+                            <label class="layui-form-label">等待时长/小时:</label>
+                            <div class="layui-input-block">
+                                <input name="tpl_config[wait_time]" placeholder="请输入等待时长/小时" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item select-right-normal" style="display: none">
+                            <label class="layui-form-label">展示时长/小时:</label>
+                            <div class="layui-input-block">
+                                <input name="tpl_config[show_time]" placeholder="请输入展示时长/小时" type="text" class="layui-input"/>
+                                <div class="layui-form-mid layui-word-aux">
+                                    前端从 <span style='color:red'>注册时间 + 等待时长</span> 起开始显示该条广告<br/>
+                                    前端显示的倒计时时长 = 注册时间 + 等待时长 + 展示时长 - 当前时间<br/>
+                                    倒计时时长为0后前端隐藏该条广告
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item select-right-vip" style="display: none">
+                            <label class="layui-form-label">会员剩余时长:</label>
+                            <div class="layui-input-block">
+                                <input name="tpl_config[end_type]" lay-filter="radio-end_type"  type="radio" value="gt" title="大于" class="layui-input"/>
+                                <input name="tpl_config[end_type]" lay-filter="radio-end_type"   type="radio" value="lt" title="小于" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item select-right-vip" style="display: none">
+                            <label class="layui-form-label">时长/小时:</label>
+                            <div class="layui-input-block">
+                                <input name="tpl_config[time]" placeholder="请输入时长/小时" type="text" class="layui-input" />
+                                <div class="layui-form-mid layui-word-aux vip_remaining_time_type_gt" style="display:none">
+                                    前端在 <span style='color:red'>会员剩余时长 >  输入时长 </span> 时显示该条广告<br/>
+                                    前端显示的倒计时时长 = 会员结束时间 - 输入时长 - 当前时间<br/>
+                                    倒计时时长为0后前端隐藏该条广告<br/>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux vip_remaining_time_type_lt"  style="display:none">
+                                    前端在<span style='color:red'> 会员剩余时长 <  输入时长</span>  时显示该条广告<br/>
+                                    前端显示的倒计时时长 = 会员结束时间 - 当前时间<br/>
+                                    倒计时时长为0后前端隐藏该条广告<br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序:</label>
+                            <div class="layui-input-block">
+                                <input name="sort" placeholder="请输入排序" value="0" type="number" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">禁用</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($disArr as $key => $item): ?>
+                                    <input type="radio" name="is_disabled" value="<?php echo $key; ?>" title="<?php echo $item; ?>" <?php if ($key == 0): ?>checked<?php endif ?> >
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'laydate', 'upload'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , laydate = layui.laydate
+            , upload = layui.upload
+            , form = layui.form
+            , row = <?php echo json_encode($row);?>;
+
+        form.val('info-form', row);
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+
+        //回显部分数据
+        if (row) {
+            if (row.img_x) {
+                $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + row.img_x + "'>");
+            }
+            if (row.right) {
+                selectRight(row.tpl_config.right);
+            }
+            if (row.tpl_config && row.tpl_config.show_time) {
+                $("[name='tpl_config[show_time]']").val(row.tpl_config.show_time);
+            }
+            if (row.tpl_config && row.tpl_config.wait_time) {
+                $("[name='tpl_config[wait_time]']").val(row.tpl_config.wait_time);
+            }
+            if (row.tpl_config && row.tpl_config.end_type) {
+                $("[name='tpl_config[end_type]'][value='" + row.tpl_config.end_type + "']").prop("checked", true);
+            }
+            if (row.tpl_config && row.tpl_config.time) {
+                $("[name='tpl_config[time]']").val(row.tpl_config.time);
+            }
+            if (row.tpl_config && row.tpl_config.link) {
+                $("[name='tpl_config[link]']").val(row.tpl_config.link);
+            }
+            if (row.tpl_config && row.tpl_config.is_show_time) {
+                $("[name='tpl_config[is_show_time]'][value='" + row.tpl_config.is_show_time + "']").prop("checked", true);
+            }
+            if (row.right) {
+                selectRight(row.right)
+            }
+            if (row.tpl_config && row.tpl_config.end_type) {
+                selectEndType(row.tpl_config.end_type)
+            }
+        }
+        form.render('radio');
+        form.render('select');
+
+        //时间
+        laydate.render({
+            elem: '#end_time',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#start_time',
+            type: 'datetime'
+        });
+        //选择类型
+        form.on('radio(radio-right)', function (data) {
+            selectRight(data.value);
+        });
+        //选择
+        form.on('radio(radio-end_type)', function (data) {
+            selectEndType(data.value);
+        });
+
+        function selectRight(value){
+            if (value === 'all') {
+                $(".select-right-normal").hide();
+                $(".select-right-vip").hide();
+            } else if (value === 'normal') {
+                $(".select-right-normal").show();
+                $(".select-right-vip").hide();
+            } else if (value === 'vip') {
+                $(".select-right-normal").hide();
+                $(".select-right-vip").show();
+            }
+        }
+        function selectEndType(value){
+            if (value === 'gt') {
+                $('.vip_remaining_time_type_gt').show();
+                $('.vip_remaining_time_type_lt').hide();
+            } else if (value === 'lt') {
+                $('.vip_remaining_time_type_gt').hide();
+                $('.vip_remaining_time_type_lt').show();
+            }
+        }
+
+        //上传图片
+        upload.render({
+            elem: '#imgX' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>' //上传接口
+            , before: function (obj) {
+                layer.load(0, {time: 30 * 1000});
+            }
+            , done: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 'y') {
+                    $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>");
+                    $("#imgXInput").val(res.data);
+                } else {
+                    showErrorMsg(res.error)
+                }
+            }
+            , error: function () {
+                //请求异常回调
+                showErrorMsg('上传异常')
+            }
+        });
+
+        form.on('submit(info-form)', function (obj) {
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            doAjax("<?php echo url()->get('/activity/save')?>", obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+
+
+</script>

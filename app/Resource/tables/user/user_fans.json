@@ -1,0 +1,64 @@
+{
+    "table_name": "user_fans",
+    "connect": "default",
+    "description": "用户粉丝,关注",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "home_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "home_id",
+            "fields": {
+                "home_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id_updated_at",
+            "fields": {
+                "user_id": 1,
+                "updated_at": -1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "home_id_updated_at",
+            "fields": {
+                "home_id": 1,
+                "updated_at": -1
+            },
+            "type": "Normal"
+        }
+    ]
+}

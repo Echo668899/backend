@@ -1,0 +1,76 @@
+{
+    "table_name": "ai_block",
+    "connect": "default",
+    "description": "ai模块",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "sub_name",
+            "type": "string",
+            "description": "子名称"
+        },
+        {
+            "name": "nav_id",
+            "type": "int",
+            "description": "模块所属菜单id"
+        },
+        {
+            "name": "icon",
+            "type": "string",
+            "description": "图标"
+        },
+        {
+            "name": "style",
+            "type": "int",
+            "description": "风格 样式1:1x1 样式2:1xN(横向滚动) 样式3:2x2 样式4:3x3"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "filter",
+            "type": "string",
+            "description": "检索条件"
+        },
+        {
+            "name": "num",
+            "type": "int",
+            "description": "展示数量"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否显示"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "is_disabled",
+            "fields": {
+                "is_disabled": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

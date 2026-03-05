@@ -1,0 +1,63 @@
+{
+    "table_name": "channel",
+    "connect": "default",
+    "description": "渠道",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "code",
+            "type": "string",
+            "description": "渠道标识"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "渠道名"
+        },
+        {
+            "name": "remark",
+            "type": "string",
+            "index": "备注"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用"
+        },
+        {
+            "name": "last_bind",
+            "type": "int",
+            "index": "最近一次绑定时间"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "code",
+            "fields": {
+                "code": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "is_disabled",
+            "fields": {
+                "is_disabled": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

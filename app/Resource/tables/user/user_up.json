@@ -1,0 +1,143 @@
+{
+    "table_name": "user_up",
+    "connect": "default",
+    "description": "Up主",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "用户ID"
+        },
+        {
+            "name": "nickname",
+            "type": "string",
+            "description": "昵称"
+        },
+        {
+            "name": "headico",
+            "type": "string",
+            "description": "头像"
+        },
+        {
+            "name": "categories",
+            "type": "string",
+            "description": "类型 女优:jp_av 厂牌:brand"
+        },
+        {
+            "name": "is_hot",
+            "type": "int",
+            "description": "热门 0否 1是"
+        },
+        {
+            "name": "cup",
+            "type": "string",
+            "description": "胸围 ABCD"
+        },
+        {
+            "name": "birthday",
+            "type": "int",
+            "description": "出生日期"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "first_letter",
+            "type": "int",
+            "description": "首字母"
+        },
+        {
+            "name": "post_fee_rate",
+            "type": "int",
+            "description": "帖子分成"
+        },
+        {
+            "name": "post_upload_num",
+            "type": "int",
+            "description": "每日文章最大可发布数"
+        },
+        {
+            "name": "post_total",
+            "type": "int",
+            "description": "帖子数量"
+        },
+        {
+            "name": "post_click_total",
+            "type": "int",
+            "description": "帖子点击数量"
+        },
+        {
+            "name": "post_favorite_total",
+            "type": "int",
+            "description": "帖子收藏数量"
+        },
+        {
+            "name": "movie_fee_rate",
+            "type": "int",
+            "description": "视频分成"
+        },
+        {
+            "name": "movie_money_limit",
+            "type": "int",
+            "description": "视频价格限制"
+        },
+        {
+            "name": "movie_upload_num",
+            "type": "int",
+            "description": "每日视频最大可发布数"
+        },
+        {
+            "name": "movie_total",
+            "type": "int",
+            "description": "视频数量"
+        },
+        {
+            "name": "movie_click_total",
+            "type": "int",
+            "description": "视频点击数量"
+        },
+        {
+            "name": "movie_favorite_total",
+            "type": "int",
+            "description": "视频收藏数量"
+        },
+        {
+            "name": "movie_hot",
+            "type": "int",
+            "description": "单个视频最大热度"
+        },
+        {
+            "name": "fans_total",
+            "type": "int",
+            "description": "粉丝量"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "nickname",
+            "fields": {
+                "nickname": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "categories",
+            "fields": {
+                "categories": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

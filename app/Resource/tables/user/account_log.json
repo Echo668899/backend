@@ -1,0 +1,110 @@
+{
+    "table_name": "account_log",
+    "connect": "default",
+    "description": "账号日志日志",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "order_sn",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "description": "用户名"
+        },
+        {
+            "name": "balance_field",
+            "type": "string",
+            "description": "余额字段  balance balance_freeze"
+        },
+        {
+            "name": "object_id",
+            "type": "string",
+            "description": "对应的事件编号"
+        },
+        {
+            "name": "change_value",
+            "type": "double",
+            "description": "操作数量"
+        },
+        {
+            "name": "old_value",
+            "type": "double",
+            "description": "操作前数量"
+        },
+        {
+            "name": "new_value",
+            "type": "double",
+            "description": "操作后数量"
+        },
+        {
+            "name": "remark",
+            "type": "string",
+            "description": "备注"
+        },
+        {
+            "name": "ext",
+            "type": "string",
+            "description": "扩展"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "order_sn",
+            "fields": {
+                "order_sn": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "username",
+            "fields": {
+                "username": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "balance_field",
+            "fields": {
+                "balance_field": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id_updated_at",
+            "fields": {
+                "user_id": 1,
+                "updated_at": -1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,178 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">模块详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id"  placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">名称:</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="name" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">子名称:</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sub_name"  placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label layui-form-required">所属菜单:</label>
+                            <div class="layui-input-block">
+                                <select name="nav_id" lay-verType="tips" lay-verify="required" required >
+                                    <option value="">请选择..</option>
+                                    <?php foreach ($posArr as $key=>$item): ?>
+                                        <option value="<?php echo $item['id']; ?>" ><?php echo $item['id'].' | '.$item['name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label layui-form-required">样式:</label>
+                            <div class="layui-input-block">
+                                <select name="style" lay-verType="tips" lay-verify="required" required >
+                                    <option value="">请选择..</option>
+                                    <?php foreach ($styleArr as $key=>$item): ?>
+                                        <option value="<?php echo $key; ?>" <?php if($key<=0) echo "disabled";?>><?php echo $key.' | '.$item; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">搜索条件:</label>
+                            <div class="layui-input-block">
+                                <textarea name="filter"  rows="3"  class="layui-textarea" placeholder="请输入json格式搜索条件"></textarea>
+                                <div class="layui-word-aux">
+                                    <!--                                    关键词 {"keywords":"关键词"}</p>-->
+                                    <p>分类 {"cat_id":"1,2,3"}</p>
+                                    <p>标签 {"tag_id":"1,2,3"}</p>
+                                    <p>视频编号 {"ids":"1,2,3"}</p>
+                                    <p>创建时间从高到低 {"order":"new"}</p>
+                                    <p>真实点击从高到低 {"order":"click"}</p>
+                                    <p>真实点赞从高到低 {"order":"love"}</p>
+                                    <p>真实收藏从高到低 {"order":"favorite"}</p>
+                                    <p>收藏率从高到低 {"order":"favorite_rate"}</p>
+                                    <p>购买数从高到低 {"order":"buy"}</p>
+                                    <p>下载数从高到低 {"order":"download"}</p>
+                                    <p>排序值从高到低 {"order":"sort"}</p>
+                                    <p>随机 {"order":"rand"}</p>
+                                    <p>金币视频 {"pay_type":"money"} VIP视频 {"pay_type":"vip"} 免费视频 {"pay_type":"free"}</p>
+                                    <p>AI 类型 {"ai_type" :"novel"}
+                                        novel:小说;
+                                        change_face:换脸;
+                                        change_dress:换装;
+                                        change_dress_bare:去衣;
+                                        text_to_image:文生图片;
+                                        image_to_video:图生视频;
+                                        text_to_voice:文生语音;
+                                        image:图片类任务（换脸、换装、文生图等）
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">显示数量:</label>
+                            <div class="layui-input-block">
+                                <input type="number" name="num" lay-verify="required" placeholder="" value="<?php if(!isset($row)){ echo '6';}?>" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-md6">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">图标:</label>
+                                    <div class="layui-input-block">
+                                        <div id="imgX" class="adv-type-image upload-select-picture-card">
+                                            <span class="layui-icon layui-icon-addition"></span>
+                                        </div>
+                                        <input name="icon" id="imgXInput" value="" type="hidden" class="layui-input"/>
+                                        <div class="layui-word-aux">图文+标签模式时候必传</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">排序:</label>
+                            <div class="layui-input-block">
+                                <input type="number" name="sort" lay-verify="required" placeholder="" value="<?php if(!isset($row)){echo '0';}?>" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-word-aux">
+                                排序禁止重复
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">是否禁用:</label>
+                            <div class="layui-input-block">
+                                <input name="is_disabled" type="radio" value="0" title="启用" checked/>
+                                <input name="is_disabled" type="radio" value="1" title="禁用"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload'], function(){
+        var $ = layui.$
+            ,element = layui.element
+            ,upload = layui.upload
+            ,form = layui.form;
+        form.val('info-form',<?php echo json_encode($row);?>);
+        if(form.val("info-form").icon){
+            $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>"+form.val("info-form").icon+"'>");
+        }
+
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+        upload.render({
+            elem: '#imgX' //绑定元素
+            ,url: '<?php echo $uploadUrl; ?>' //上传接口
+            ,before: function(obj){
+                layer.load(0,{time: 30*1000});
+            }
+            ,done: function(res){
+                layer.closeAll('loading');
+                if(res.status=='y') {
+                    $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>"+res.data.value+"'>");
+                    $("#imgXInput").val(res.data.value);
+                }else {
+                    showErrorMsg(res.error)
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                showErrorMsg('上传异常')
+            }
+        });
+
+        form.on('submit(info-form)', function(obj){
+            var loadIndex=layer.load(0,{time: 30*1000});
+            doAjax("<?php echo url()->get('/aiBlock/save')?>",obj.field,function (res) {
+                layer.close(loadIndex);
+                if(res.status==='y'){
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

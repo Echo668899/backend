@@ -1,0 +1,138 @@
+{
+    "table_name": "comment",
+    "connect": "default",
+    "description": "评论表",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "评论编号"
+        },
+        {
+            "name": "object_id",
+            "type": "string",
+            "description": "资源编号"
+        },
+        {
+            "name": "parent_id",
+            "type": "string",
+            "description": "上级评论id"
+        },
+        {
+            "name": "comment_id",
+            "type": "string",
+            "description": "第一级评论id"
+        },
+        {
+            "name": "from_uid",
+            "type": "int",
+            "description": "发表评论的用户id"
+        },
+        {
+            "name": "to_uid",
+            "type": "int",
+            "description": "目标用户id，回复评论用"
+        },
+        {
+            "name": "object_type",
+            "type": "string",
+            "description": "评论的数据的类型 评论:comment 漫画:comics 小说:novel 有声:audio 视频:movie 帖子:post"
+        },
+        {
+            "name": "content",
+            "type": "string",
+            "description": "内容"
+        },
+        {
+            "name": "comment_type",
+            "type": "string",
+            "description": "评论类型 文字:text 图片:image"
+        },
+        {
+            "name": "ip",
+            "type": "string",
+            "description": "IP"
+        },
+        {
+            "name": "love",
+            "type": "int",
+            "description": "点赞个数"
+        },
+        {
+            "name": "child_num",
+            "type": "int",
+            "description": "第一级评论含有的回复数量，只统计第一级"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 正常1 待审核0"
+        },
+        {
+            "name": "time",
+            "type": "string",
+            "description": "时间 用于弹幕"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "object_id",
+            "fields": {
+                "object_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "parent_id",
+            "fields": {
+                "parent_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "comment_id",
+            "fields": {
+                "comment_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "from_uid",
+            "fields": {
+                "from_uid": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "to_uid",
+            "fields": {
+                "to_uid": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "object_type",
+            "fields": {
+                "object_type": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "comment_type",
+            "fields": {
+                "comment_type": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

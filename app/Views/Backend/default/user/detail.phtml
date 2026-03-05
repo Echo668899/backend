@@ -1,0 +1,356 @@
+<style>
+    .layui-upload-img-bg {
+        width: 187px;
+        height: 92px;
+        margin: 0 10px 10px 0;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">用户详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+                        <blockquote class="layui-elem-quote">
+                            <div class="layui-row">
+                                <div class="layui-col-md3" style="color:red">用户ID:<?php echo $row['_id']; ?></div>
+                                <div class="layui-col-md3">注册日期:<?php echo $row['register_date']; ?></div>
+                                <div class="layui-col-md3">国家:<?php echo $row['country']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">用户名:<?php echo $row['username']; ?></div>
+                                <div class="layui-col-md3">注册IP:<?php echo $row['register_ip']; ?></div>
+                                <div class="layui-col-md3">语言:<?php echo $row['lang']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">账户类型:<?php echo $row['account_type']; ?></div>
+                                <div class="layui-col-md3" style='color:#01AAED'>登录日期:<?php echo $row['login_date']; ?></div>
+                                <div class="layui-col-md3" style='color:#01AAED'>渠道码:<?php echo $row['channel_name'] ?: '-'; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">账号:<?php echo $row['account']; ?></div>
+                                <div class="layui-col-md3" style='color:#01AAED'>登录IP:<?php echo $row['login_ip']; ?></div>
+                                <div class="layui-col-md3">邀请人:<?php echo $row['parent_name'] ?: '-'; ?></div>
+                            </div>
+                        </blockquote>
+                        <blockquote class="layui-elem-quote">
+                            <div class="layui-row">
+                                <div class="layui-col-md3" style='color:#01AAED'>APP类型:<?php echo $row['device_type']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3" style='color:#01AAED'>APP版本:<?php echo $row['device_version']; ?></div>
+                            </div>
+                            <?php foreach ($row['device_info'] as $key => $value): ?>
+                                <div class="layui-row">
+                                    <div class="layui-col-md3" style='color:#01AAED'><?php echo $key; ?>:<?php echo $value; ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </blockquote>
+                        <blockquote class="layui-elem-quote">
+                            <div class="layui-row">
+                                <div class="layui-col-md3" style='color:#01AAED'>余额:<?php echo $row['balance']; ?></div>
+                                <div class="layui-col-md3">粉丝数:<?php echo $row['fans']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">首次充值时间:<?php echo $row['first_pay']; ?></div>
+                                <div class="layui-col-md3">关注数:<?php echo $row['follow']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">最后充值时间:<?php echo $row['last_pay']; ?></div>
+                                <div class="layui-col-md3">获赞数:<?php echo $row['love']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">最后充值时间:<?php echo $row['last_pay']; ?></div>
+                                <div class="layui-col-md3" style='color:#01AAED'>分享次数:<?php echo $row['share']; ?></div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md3">累计充值:<?php echo $row['pay_total']; ?></div>
+                            </div>
+                        </blockquote>
+
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">昵称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="nickname" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">个性签名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sign" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">头像</label>
+                            <div class="layui-input-inline">
+                                <div id="imgX" class="adv-type-image upload-select-picture-card">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                </div>
+                                <input name="headico" id="imgXInput" value="" type="hidden" class="layui-input"/>
+                            </div>
+                            <div class="layui-form-mid">背景图</div>
+                            <div class="layui-input-inline">
+                                <div id="imgY" class="adv-type-image upload-select-picture-card">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                </div>
+                                <input name="headbg" id="imgYInput" value="" type="hidden" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">普通会员</label>
+                            <div class="layui-input-inline">
+                                <select name="group_id">
+                                    <option value="0">请选择</option>
+                                    <?php foreach ($groupArr as $item): ?>
+                                        <option value="<?php echo $item['id']; ?>"><?php echo $item['id'] . ' | ' . $item['name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">开始时间</div>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input layui-disabled" name="group_start_time" readonly placeholder="yyyy-MM-dd HH:mm:ss">
+                            </div>
+                            <div class="layui-form-mid">结束时间</div>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" name="group_end_time" readonly id="laydate-end-at" placeholder="yyyy-MM-dd HH:mm:ss">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">暗网会员</label>
+                            <div class="layui-input-inline" >
+                                <select name="group_dark_id" >
+                                    <option value="0">请选择</option>
+                                    <?php foreach ($groupDarkArr as $item):?>
+                                        <option value="<?php echo $item['id'];?>"><?php echo $item['id'].' | '.$item['name'];?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                            <div class="layui-form-mid">开始时间</div>
+                            <div class="layui-input-inline" >
+                                <input type="text" class="layui-input layui-disabled" name="group_dark_start_time"  readonly placeholder="yyyy-MM-dd HH:mm:ss">
+                            </div>
+                            <div class="layui-form-mid">结束时间</div>
+                            <div class="layui-input-inline" >
+                                <input type="text" class="layui-input" name="group_dark_end_time"  readonly id="laydate-dark-end-at" placeholder="yyyy-MM-dd HH:mm:ss">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($sexArr as $key => $item): ?>
+                                    <input type="radio" name="sex" value="<?php echo $key; ?>" title="<?php echo $item; ?>">
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">Up主</label>
+
+                            <div class="layui-input-block">
+                                <select name="up_category" lay-filter="select-up">
+                                    <option value="">请选择..</option>
+                                    <?php foreach ($upCateArr as $key => $value): ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $key . ' | ' . $value; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field" id="up_info" style="display: none">
+                            <legend>up主资料</legend>
+                            <div class="layui-field-box">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">视频分成(%)</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="movie_fee_rate" placeholder="" value="0" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">帖子分成(%)</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="post_fee_rate" placeholder="" value="0" autocomplete="off" class="layui-input layui-disabled" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">视频价格限制：</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="movie_money_limit" placeholder="最大100" autocomplete="off" class="layui-input" value='100' mix="1" max="1000">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">每日视频最大可发布数:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="movie_upload_num" placeholder="" autocomplete="off" class="layui-input" value='10' mix="0" max="100">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">每日文章最大可发布数:</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="post_upload_num" placeholder="" autocomplete="off" class="layui-input" value='10' mix="0" max="100">
+                                    </div>
+                                </div>
+
+                                <!-- 此項目未使用到這字段
+                                <div class="layui-form-item" >
+                                    <label class="layui-form-label">up主排序</label>
+                                    <div class="layui-input-block">
+                                        <input readonly type="text" name="up_order" placeholder="" value="0" autocomplete="off" class="layui-input layui-disabled">
+                                        <div class="layui-word-aux">排序越高越靠前</div>
+                                    </div>
+                                </div>
+                                -->
+                            </div>
+                        </fieldset>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">提现费率</label>
+                            <div class="layui-input-block">
+                                <input type="number" name="withdraw_fee" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <!--                        <div class="layui-form-item">-->
+                        <!--                            <label class="layui-form-label">Up主徽章</label>-->
+                        <!--                            <div class="layui-input-block">-->
+                        <!--                                <input type="text" name="up_desc" placeholder="2022最佳 最受欢迎" autocomplete="off" class="layui-input">-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="layui-form-item">-->
+                        <!--                            <label class="layui-form-label">UP主色值</label>-->
+                        <!--                            <div class="layui-input-block">-->
+                        <!--                                <input type="color" name="color" placeholder="" value="#ffffff" autocomplete="off" >-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">特权</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="right" value="" title="无" checked>
+                                <input type="radio" name="right" value="money" title="金币免费">
+<!--                                <input type="radio" name="right" value="download" title="无限下载">-->
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户标签</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="tag" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">资金转移ID</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="transfer_id" placeholder="" autocomplete="off" class="layui-input">
+                                <div class="tips" style="color: red">注意!!! 一旦填写,所有收益将被转移到该ID</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否禁用</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="is_disabled" value="0" title="否" checked>
+                                <input type="radio" name="is_disabled" value="1" title="是">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">禁用原因</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="error_msg" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload', 'laydate'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , upload = layui.upload
+            , laydate = layui.laydate
+            , form = layui.form;
+        form.val('info-form',<?php echo json_encode($row);?>);
+        if (form.val("info-form").headico) {
+            $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + form.val("info-form").headico + "'>");
+        }
+        if (form.val("info-form").headbg) {
+            $("#imgY").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + form.val("info-form").headbg + "'>");
+        }
+        laydate.render({
+            elem: '#laydate-end-at'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#laydate-dark-end-at'
+            , type: 'datetime'
+        });
+
+        //选择up主
+        changeUpType(form.val("info-form").up_category);
+        form.on('select(select-up)', function (data) {
+            changeUpType(data.value);
+        });
+
+        function changeUpType(value) {
+            if (value == '') {
+                $("#up_info").hide();
+            } else {
+                $("#up_info").show();
+            }
+        }
+
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+        upload.render({
+            elem: '#imgX' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>' //上传接口
+            , done: function (res) {
+                $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>");
+                $("#imgXInput").val(res.data);
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+        upload.render({
+            elem: '#imgY' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>' //上传接口
+            , done: function (res) {
+                $("#imgY").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>");
+                $("#imgYInput").val(res.data);
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+
+        form.on('submit(info-form)', function (obj) {
+            if (obj.field.is_disabled == 1 && obj.field.error_msg.length == 0) {
+                showErrorMsg('请输入禁用原因');
+            }
+
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            doAjax("<?php echo url()->get('/user/save')?>", obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

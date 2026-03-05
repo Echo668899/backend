@@ -1,0 +1,159 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">提现详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id"  placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-row">
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">用户编号</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="user_id" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">用户名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="username" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">用户手机</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="phone" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">金额</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="num" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">手续费</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="fee" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">实际到账</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="actual_amount" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">收款方式</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="method" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">收款方姓名</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="account_name" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">收款方账号</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="account" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label ">收款方银行</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="bank_name" disabled  placeholder="" autocomplete="off" class="layui-input  layui-disabled">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="tips" style="color: red">注意汇率和金额单位转换!!!</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="tips" style="color: red">注意汇率和金额单位转换!!!</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">状态:</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($statusArr as $value => $label): ?>
+                                    <input name="status" lay-filter="status" type="radio" value="<?php echo $value; ?>" title="<?php echo $label; ?>"/>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">失败原因:</label>
+                            <div class="layui-input-block">
+                                <input name="error_msg" placeholder="失败必填" value="" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">谷歌验证码:</label>
+                            <div class="layui-input-block">
+                                <input name="google_code" placeholder="请输入谷歌验证码,5分钟有效" value="" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload'], function(){
+        var $ = layui.$
+            ,element = layui.element
+            ,upload = layui.upload
+            ,form = layui.form
+            ,row = <?php echo json_encode($row);?>;
+
+        form.val('info-form', row);
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(info-form)', function(obj){
+            var loadIndex=layer.load(0,{time: 30*1000});
+            doAjax("<?php echo url()->get('/userWithdraw/do')?>",obj.field,function (res) {
+                layer.close(loadIndex);
+                if(res.status==='y'){
+                    showSuccessMsg("操作成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

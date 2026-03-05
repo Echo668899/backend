@@ -1,0 +1,146 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">批量设置</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">ID</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly name="ids" value="<?php echo $ids; ?>" placeholder="" autocomplete="off" class="layui-input layui-disabled">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">分类</label>
+                            <div class="layui-input-block">
+                                <select name="cat_id">
+                                    <option value="">请选择..</option>
+                                    <?php foreach ($catArr as $key => $item): ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $item; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <?php foreach ($tagArr as $group => $tag): ?>
+                                <label class="layui-form-label"><?php echo $group; ?>:</label>
+                                <div class="layui-input-block">
+                                    <?php foreach ($tag as $item): ?>
+                                        <input type="checkbox" name="tags[]" value="<?php echo $item['id']; ?>" lay-skin="primary" title="<?php echo $item['id'] . ' | ' . $item['name']; ?>">
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">虚拟点击</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="click" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">虚拟点赞</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="love" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">虚拟收藏</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="favorite" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="sort" id="laydate-sort" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">金币</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="money" placeholder="" autocomplete="off" class="layui-input">
+                                <div class="layui-form-mid layui-word-aux">金币>0 vip=0 免费<0</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上架时间</label>
+                            <div class="layui-input-block">
+                                <input type="text" class="layui-input" name="show_at" readonly="" id="laydate-start-at" placeholder="yyyy-MM-dd HH:mm:ss">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="status" value="" checked title="请选择">
+                                <?php foreach ($statusArr as $key => $item): ?>
+                                    <input type="radio" name="status" value="<?php echo $key; ?>" title="<?php echo $item; ?>">
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">图标</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="icon" value="" checked title="不设置">
+                                <?php foreach ($iconArr as $key => $item): ?>
+                                    <input type="radio" name="icon" value="<?php echo $key; ?>" title="<?php echo $item; ?>">
+                                <?php endforeach; ?>
+                                <br/>
+                                <div class="layui-form-mid layui-word-aux">不配置不会显示图标,金币会默认金币图标</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload', 'laydate'], function () {
+        var $ = layui.$, element = layui.element, form = layui.form, upload = layui.upload, laydate = layui.laydate;
+        //日期时间选择器
+        laydate.render({
+            elem: '#laydate-start-at'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#laydate-sort'
+            , type: 'datetime'
+        });
+        form.render(null, 'info-form');
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(info-form)', function (obj) {
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            obj.field.act = 'update';
+            doAjax(location.href, obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    // showSuccessMsg("保存成功!请手动刷新页面");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

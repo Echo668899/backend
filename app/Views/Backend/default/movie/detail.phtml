@@ -1,0 +1,328 @@
+<div class="layui-fluid">
+    <div class="layui-tab" lay-filter="info-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">预览</li>
+            <li>视频预览</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item  layui-show">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-header">视频详情</div>
+                            <div class="layui-card-body">
+                                <form class="layui-form" action="" lay-filter="info-form">
+                                    <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required">名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="name" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required">用户ID</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="user_id" lay-verify="required" placeholder="多个用户用英文逗号分隔" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">番号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="number" placeholder="厂牌视频,禁止重复,系统默认 FH_" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required">分类</label>
+                                        <div class="layui-input-block">
+                                            <select name="categories" lay-search>
+                                                <option value="">请选择..</option>
+                                                <?php foreach ($catArr as $item): ?>
+                                                    <option value="<?php echo $item['id']; ?>"><?php echo $item['id'] . ' | ' . $item['name']; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item tag-grid-layout" pane="">
+                                        <?php foreach ($tagArr as $group => $tag): ?>
+                                            <label class="layui-form-label"><?php echo $group; ?>:</label>
+                                            <div class="layui-input-block">
+                                                <?php foreach ($tag as $item): ?>
+                                                    <input type="checkbox" name="tags[]" <?php if ($row['tags'] && in_array($item['id'], $row['tags'])): ?>checked<?php endif; ?>
+                                                        value="<?php echo $item['id']; ?>" lay-skin="primary" title="<?php echo $item['id'] . ' | ' . $item['name']; ?>">
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <div class="layui-row">
+                                        <div class="layui-col-md6">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label layui-form-required">封面图-默认:</label>
+                                                <div class="layui-input-block">
+                                                    <div id="imgX" class="adv-type-image upload-select-picture-card">
+                                                        <span class="layui-icon layui-icon-addition"></span>
+                                                    </div>
+                                                    <input name="img_x" id="imgXInput" value="" type="hidden" class="layui-input" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md6">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">封面图-竖图:</label>
+                                                <div class="layui-input-block">
+                                                    <div id="imgY" class="adv-type-image upload-select-picture-card">
+                                                        <span class="layui-icon layui-icon-addition"></span>
+                                                    </div>
+                                                    <input name="img_y" id="imgYInput" value="" type="hidden" class="layui-input" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-row">
+                                        <div class="layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label layui-form-required">虚拟点击</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="click" placeholder="" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label layui-form-required">虚拟点赞</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="love" placeholder="" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label layui-form-required">虚拟收藏</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="favorite" placeholder="" autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">排序</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="sort" placeholder="" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required">金币</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="money" placeholder="" autocomplete="off" class="layui-input">
+                                            <div class="layui-form-mid layui-word-aux">金币>0 vip=0 免费<0< /div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">描述</label>
+                                            <div class="layui-input-block">
+                                                <textarea name="description" rows="3" maxlength="100" placeholder="请输入" class="layui-textarea"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="layui-row">
+                                            <div class="layui-col-md6">
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">发行商</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="publisher" placeholder=""
+                                                            autocomplete="off" class="layui-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-col-md6">
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">发行时间</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="issue_date" placeholder="发行时间"
+                                                            autocomplete="off" class="layui-input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label layui-form-required">分区</label>
+                                            <div class="layui-input-block">
+                                                <?php foreach ($posArr as $key => $item): ?>
+                                                    <input type="radio" name="position" value="<?php echo $key; ?>" title="<?php echo $item; ?>">
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">图标</label>
+                                            <div class="layui-input-block">
+                                                <input type="radio" name="icon" value="" checked title="不设置">
+                                                <?php foreach ($iconArr as $key => $item): ?>
+                                                    <input type="radio" name="icon" value="<?php echo $key; ?>" title="<?php echo $item; ?>">
+                                                <?php endforeach; ?>
+                                                <br />
+                                                <div class="layui-form-mid layui-word-aux">不配置不会显示图标,金币会默认金币图标</div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label layui-form-required">状态</label>
+                                            <div class="layui-input-block">
+                                                <?php foreach ($statusArr as $key => $item): ?>
+                                                    <input type="radio" name="status" value="<?php echo $key; ?>" title="<?php echo $item; ?>" <?php if ($key == 0): ?>checked<?php endif ?>>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <label class="layui-form-label">上架日期</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" class="layui-input" name="show_at" readonly="" id="laydate-show-at" placeholder="yyyy-MM-dd HH:mm:ss">
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item layui-form-text">
+                                            <label class="layui-form-label">自定义检索</label>
+                                            <div class="layui-input-block">
+                                                <textarea name="x_filter" placeholder="输入你需要的检索的条件" class="layui-textarea" style="min-height: 100px;"></textarea>
+
+                                                <div class="layui-form-mid layui-word-aux">
+                                                    自定义检索可以使用 x_filter 字段，建议使用拼音。
+                                                    <br>例如输入：<span style="color: #FF5722;">jinrituijian</span>
+                                                    <br>模块调用：<code>"x_filter":"jinrituijian"</code>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-form-item">
+                                            <div class="layui-input-block">
+                                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                            </div>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item">
+                <?php foreach ($row['links'] as $link): ?>
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md1">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label layui-form-required">集数:<?php echo $link['name']; ?></label>
+                            </div>
+                        </div>
+                        <div class="layui-col-md5">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">预览视频:</label>
+                                <div class="layui-input-block">
+                                    <video controls="controls" style="max-width:300px;max-height: 150px" id="previewPlayer_<?php echo $link['id']; ?>"></video>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md5">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">完整视频:</label>
+                                <div class="layui-input-block">
+                                    <video controls="controls" style="max-width:300px;max-height: 150px" id="originalPlayer_<?php echo $link['id']; ?>"></video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/admin/default/assets/js/hls.min.js"></script>
+
+<script>
+    layui.use(['index', 'form', 'upload', 'laydate', 'element', 'util'], function() {
+        var $ = layui.$,
+            element = layui.element,
+            form = layui.form,
+            upload = layui.upload,
+            laydate = layui.laydate,
+            util = layui.util;
+
+
+        form.val('info-form', <?php echo json_encode($row); ?>);
+        if (form.val("info-form").img_x) {
+            $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl; ?>" + form.val("info-form").img_x + "'>");
+        }
+        if (form.val("info-form").img_y) {
+            $("#imgY").html("<img width='102' height='102' src='<?php echo $mediaUrl; ?>" + form.val("info-form").img_y + "'>");
+        }
+        //日期时间选择器
+        laydate.render({
+            elem: '#laydate-start-at',
+            type: 'date'
+        });
+        laydate.render({
+            elem: '#laydate-show-at',
+            type: 'datetime'
+        });
+        form.render(null, 'info-form');
+        element.render('breadcrumb', 'breadcrumb');
+        upload.render({
+            elem: '#imgX' //绑定元素
+                ,
+            url: '<?php echo $uploadUrl; ?>' //上传接口
+                ,
+            done: function(res) {
+                $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl; ?>" + res.data + "'>");
+                $("#imgXInput").val(res.data);
+            },
+            error: function() {
+                //请求异常回调
+            }
+        });
+
+        upload.render({
+            elem: '#imgY' //绑定元素
+                ,
+            url: '<?php echo $uploadUrl; ?>' //上传接口
+                ,
+            done: function(res) {
+                $("#imgY").html("<img width='102' height='102' src='<?php echo $mediaUrl; ?>" + res.data + "'>");
+                $("#imgYInput").val(res.data);
+            },
+            error: function() {
+                //请求异常回调
+            }
+        });
+        form.on('submit(info-form)', function(obj) {
+            var loadIndex = layer.load(0, {
+                time: 30 * 1000
+            });
+            doAjax("<?php echo url()->get('/movie/save') ?>", obj.field, function(res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    // showSuccessMsg("保存成功!请手动刷新页面");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+
+        <?php foreach ($row['links'] as $link): ?>
+            initVideo('<?php echo $link['id']; ?>', '<?php echo $link['preview_m3u8_url']; ?>', '<?php echo $link['m3u8_url']; ?>')
+        <?php endforeach; ?>
+    });
+
+    initVideo = function(id, preview_url, m3u8_url) {
+        if (preview_url) {
+            var hlsPreview = new Hls();
+            hlsPreview.loadSource("<?php echo $mediaUrlVideo; ?>" + preview_url); // 传入路径
+            hlsPreview.attachMedia(document.getElementById('previewPlayer_' + id));
+        }
+        if (m3u8_url) {
+            var hlsOriginal = new Hls();
+            hlsOriginal.loadSource("<?php echo $mediaUrlVideo; ?>" + m3u8_url); // 传入路径
+            hlsOriginal.attachMedia(document.getElementById('originalPlayer_' + id));
+        }
+    }
+</script>

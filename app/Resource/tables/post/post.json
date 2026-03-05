@@ -1,0 +1,220 @@
+{
+    "table_name": "post",
+    "connect": "default",
+    "description": "社区帖子",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "source",
+            "type": "string",
+            "description": "来源"
+        },
+        {
+            "name": "title",
+            "type": "string",
+            "description": "标题"
+        },
+        {
+            "name": "content",
+            "type": "string",
+            "description": "内容"
+        },
+        {
+            "name": "tags",
+            "type": "array",
+            "description": "标签id"
+        },
+        {
+            "name": "at_users",
+            "type": "array",
+            "description": "被@用户id"
+        },
+        {
+            "name": "images",
+            "type": "array",
+            "description": "图片"
+        },
+        {
+            "name": "videos",
+            "type": "array",
+            "description": "视频"
+        },
+        {
+            "name": "files",
+            "type": "array",
+            "description": "附件"
+        },
+        {
+            "name": "extra_type",
+            "type": "string",
+            "description": "扩展类型，如 vote audio 等"
+        },
+        {
+            "name": "extra_data",
+            "type": "object",
+            "description": "扩展数据 JSON 内容（根据 extra_type 不同结构不同）"
+        },
+        {
+            "name": "click",
+            "type": "int",
+            "description": "虚拟点击次数"
+        },
+        {
+            "name": "real_click",
+            "type": "int",
+            "description": "真实点击次数"
+        },
+        {
+            "name": "love",
+            "type": "int",
+            "description": "虚拟点赞次数"
+        },
+        {
+            "name": "real_love",
+            "type": "int",
+            "description": "真实点赞次数"
+        },
+        {
+            "name": "favorite",
+            "type": "int",
+            "description": "虚拟收藏次数"
+        },
+        {
+            "name": "real_favorite",
+            "type": "int",
+            "description": "真实收藏次数"
+        },
+        {
+            "name": "favorite_rate",
+            "type": "int",
+            "description": "收藏率"
+        },
+        {
+            "name": "hot_rate",
+            "type": "int",
+            "description": "热度,详见Stats/StatsPostHotJob"
+        },
+        {
+            "name": "click_total",
+            "type": "int",
+            "description": "点击总数"
+        },
+        {
+            "name": "love_total",
+            "type": "int",
+            "description": "点赞总数"
+        },
+        {
+            "name": "favorite_total",
+            "type": "int",
+            "description": "收藏总数"
+        },
+        {
+            "name": "comment",
+            "type": "int",
+            "description": "评论次数"
+        },
+        {
+            "name": "last_comment",
+            "type": "int",
+            "description": "最后评论"
+        },
+        {
+            "name": "permission",
+            "type": "int",
+            "description": "权限 public(公开) private(私密) subscribe(订阅)"
+        },
+        {
+            "name": "money",
+            "type": "int",
+            "description": "金币"
+        },
+        {
+            "name": "pay_type",
+            "type": "string",
+            "description": "购买类型 money<0免费 money=0vip money>0金币"
+        },
+        {
+            "name": "position",
+            "type": "string",
+            "description": "板块"
+        },
+        {
+            "name": "global_top",
+            "type": "int",
+            "description": "全局置顶"
+        },
+        {
+            "name": "home_top",
+            "type": "int",
+            "description": "主页置顶"
+        },
+        {
+            "name": "ip",
+            "type": "string",
+            "description": "ip"
+        },
+        {
+            "name": "pos_info",
+            "type": "string",
+            "description": "位置信息"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 -2处理失败 -1处理中 0待审核 1正常 2审核不通过"
+        },
+        {
+            "name": "deny_msg",
+            "type": "string",
+            "description": "审核未通过原因"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "source",
+            "fields": {
+                "source": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "status",
+            "fields": {
+                "status": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

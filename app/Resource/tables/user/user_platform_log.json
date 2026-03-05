@@ -1,0 +1,95 @@
+{
+    "table_name": "user_platform_log",
+    "connect": "default",
+    "description": "用户跨平台资金托管",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "platform_code",
+            "type": "string",
+            "description": "第三方平台标识 如lsj_aigirl lsj_aitools"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户id"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "description": "用户名"
+        },
+        {
+            "name": "enter_amount",
+            "type": "double",
+            "description": "转入(冻结)金额"
+        },
+        {
+            "name": "exit_amount",
+            "type": "double",
+            "description": "转出(结算)金额,//未使用,因为退出直接删除当前数据"
+        },
+        {
+            "name": "status",
+            "type": "string",
+            "description": "状态,已转入第三方:locked 已正常退出并结算:settled 结算错误:error"
+        },
+        {
+            "name": "enter_time",
+            "type": "int",
+            "description": "进入时间"
+        },
+        {
+            "name": "exit_time",
+            "type": "int",
+            "description": "退出时间//未使用,因为退出直接删除当前数据"
+        },
+        {
+            "name": "error_num",
+            "type": "int",
+            "description": "下分错误次数"
+        },
+        {
+            "name": "error_msg",
+            "type": "string",
+            "description": "下分错误信息"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "username",
+            "fields": {
+                "username": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

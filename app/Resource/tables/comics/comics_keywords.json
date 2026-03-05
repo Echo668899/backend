@@ -1,0 +1,51 @@
+{
+    "table_name": "comics_keywords",
+    "connect": "default",
+    "description": "视频关键字",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "is_hot",
+            "type": "int",
+            "description": "是否热门"
+        },
+        {
+            "name": "sort",
+            "type": "string",
+            "description": "排序"
+        },
+        {
+            "name": "num",
+            "type": "int",
+            "description": "次数"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "is_hot",
+            "fields": {
+                "is_hot": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

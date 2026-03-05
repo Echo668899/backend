@@ -1,0 +1,81 @@
+{
+    "table_name": "movie_nav",
+    "connect": "default",
+    "description": "视频菜单",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "code",
+            "type": "string",
+            "description": "唯一标识,首页用home"
+        },
+        {
+            "name": "style",
+            "type": "string",
+            "description": "样式"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "position",
+            "type": "string",
+            "description": "分区"
+        },
+        {
+            "name": "filter",
+            "type": "string",
+            "description": "搜索条件"
+        },
+        {
+            "name": "seo_title",
+            "type": "string",
+            "description": "seo-标题"
+        },
+        {
+            "name": "seo_keywords",
+            "type": "string",
+            "description": "seo-关键字"
+        },
+        {
+            "name": "seo_description",
+            "type": "string",
+            "description": "seo-描述"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "position",
+            "fields": {
+                "position": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

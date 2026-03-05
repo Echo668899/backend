@@ -1,0 +1,41 @@
+{
+    "table_name": "ai_love",
+    "connect": "default",
+    "description": "点赞",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "order_id",
+            "type": "int",
+            "description": "订单编号"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,193 @@
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header system-main-nav">搜索</div>
+        <div class="layui-card-body">
+            <form class="layui-form toolbar" lay-filter="searchForm">
+                <div class="layui-form-item">
+                    <?php if (empty($objectType)): ?>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">类型</label>
+                            <div class="layui-input-inline">
+                                <select name="object_type">
+                                    <option value="" selected></option>
+                                    <?php foreach ($typeArr as $k => $v): ?>
+                                        <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否发货</label>
+                        <div class="layui-input-inline">
+                            <select name="status">
+                                <option value="" selected>请选择</option>
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">购买时间</label>
+                        <div class="layui-input-inline">
+                            <input name="start_time" id="start_time" value="<?php echo date("Y-m-d H:i:s", \App\Utils\CommonUtil::getTodayZeroTime()); ?>" class="layui-input date"
+                                   placeholder="开始时间"/>
+                        </div>
+
+                        <label class="layui-form-label">~</label>
+                        <div class="layui-input-inline">
+                            <input name="end_time" id="end_time" value="<?php echo date("Y-m-d H:i:s", \App\Utils\CommonUtil::getTodayEndTime()); ?>" class="layui-input date" placeholder="结束时间"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户ID</label>
+                        <div class="layui-input-inline">
+                            <input name="user_id" class="layui-input" placeholder="用户ID"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户名</label>
+                        <div class="layui-input-inline">
+                            <input name="username" class="layui-input" placeholder="用户名"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">资源ID</label>
+                        <div class="layui-input-inline">
+                            <input name="object_id" class="layui-input" placeholder="资源ID"/>
+                        </div>
+                    </div>
+                    <?php if ($objectType != 'goods'): ?>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">渠道名称</label>
+                            <div class="layui-input-inline">
+                                <input name="channel_name" class="layui-input" placeholder="渠道名称"/>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <div class="layui-inline">&emsp;
+                        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="searchFormBtn">搜索</button>
+                        <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+            <!-- 数据表格 -->
+            <table class="layui-hide" id="table" lay-filter="table"></table>
+            <!-- 数据表格-行工具条 -->
+            <script type="text/html" id="table-item-toolbar">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            </script>
+        </div>
+    </div>
+</div>
+<script>
+    var layerIndex, layer, table, form, laydate, $;
+    layui.use(['layer', 'form', 'table', 'admin', 'laydate'], function () {
+        $ = layui.jquery;
+        layer = layui.layer;
+        form = layui.form;
+        table = layui.table;
+        laydate = layui.laydate;
+
+        /*初始化表格*/
+        table.render({
+            elem: '#table'
+            , url: location.href
+            , method: "post"
+            , where: form.val("searchForm")
+            , skin: 'line'
+            , size: 'sm' //小尺寸的表格
+            , toolbar: '#table-toolbar'
+            , request: {
+                limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+                , curr: 1 //设定初始在第 1 页
+                , groups: 6 //只显示 5 个连续页码
+                , first: '首页'
+                , last: '尾页'
+                , limit: 30
+                , limits: [10, 30, 50, 100]
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                return res;
+            }
+            , cols: [[
+                {field: 'order_sn', title: '订单编号', align: 'center', sort: true},
+                {field: 'user_id', title: '用户ID', align: 'center', sort: true},
+                {field: 'username', title: '用户名', align: 'center', sort: true},
+                {field: 'object_id', title: '资源ID', align: 'center'},
+                <?php if($objectType != 'goods'):?>
+                {field: 'channel_name', title: '渠道', align: 'center',},
+                {field: 'object_type', title: '资源类型', align: 'center'},
+                <?php endif;?>
+                {field: 'object_money', title: '实际支付', align: 'center'},
+                {field: 'object_money_old', title: '金额', align: 'center'},
+                <?php if(!empty($objectType)):?>
+                <?php if($objectType == 'goods'):?>
+                {
+                    field: 'remark', title: '订单明细', align: 'center', width: 200, templet: function (row) {
+                        return "<p style='text-align: left;'>名字:" + row.remark.name + "</p>" +
+                            "<p style='text-align: left'>电话:" + row.remark.phone + "</p>" +
+                            "<p style='text-align: left'>地址:" + row.remark.address + "</p>"
+                    }
+                },
+                {field: 'express_sn', title: '快递单号', align: 'center', width: 200},
+                {field: 'express_time', title: '发货时间', align: 'center', width: 120},
+                <?php endif;?>
+                <?php endif;?>
+                {field: 'created_at', title: '创建时间', align: 'center', sort: true},
+                <?php if($objectType == 'goods'):?>
+                {title: '操作', toolbar: '#table-item-toolbar', align: 'center', width: 50}
+                <?php endif;?>
+            ]],
+        });
+        /*表格搜索事件*/
+        form.on('submit(searchFormBtn)', function (obj) {
+            table.reload('table', {where: obj.field, page: {curr: 1}});
+            return false;
+        });
+        /*表格排序事件*/
+        table.on('sort(table)', function (obj) {
+            var order = obj.type === 'asc' ? 1 : -1;
+            table.reload('table', {initSort: obj, where: {sort: obj.field, order: order}});
+        });
+        laydate.render({
+            elem: '#start_time'//指定元素
+            , trigger: 'click'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#end_time'//指定元素
+            , trigger: 'click'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#cre_start_time'//指定元素
+            , trigger: 'click'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#cre_end_time'//指定元素
+            , trigger: 'click'
+            , type: 'datetime'
+        });
+
+        /*表格-行事件*/
+        table.on('tool(table)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'edit':
+                    layerIndex = layer.open({
+                        type: 2,
+                        content: "<?php echo url()->get('/order/detail'); ?>?_id=" + data._id,
+                        area: ['50%', '60%']
+                    });
+                    break;
+            }
+        });
+    })
+</script>

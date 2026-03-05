@@ -1,0 +1,126 @@
+{
+    "table_name": "user_group",
+    "connect": "default",
+    "description": "用户组",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "描述"
+        },
+        {
+            "name": "tips",
+            "type": "string",
+            "description": "促销提示"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "状态"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "img",
+            "type": "string",
+            "description": "图片"
+        },
+        {
+            "name": "icon",
+            "type": "string",
+            "description": "图标"
+        },
+        {
+            "name": "group",
+            "type": "string",
+            "description": "分组 普通:normal 暗网:dark"
+        },
+        {
+            "name": "rate",
+            "type": "int",
+            "description": "购片折扣"
+        },
+        {
+            "name": "coupon_num",
+            "type": "int",
+            "description": "折扣券张数"
+        },
+        {
+            "name": "price",
+            "type": "double",
+            "description": "价格"
+        },
+        {
+            "name": "old_price",
+            "type": "double",
+            "description": "原价"
+        },
+        {
+            "name": "day_num",
+            "type": "int",
+            "description": "可用天数"
+        },
+        {
+            "name": "gift_num",
+            "type": "int",
+            "description": "赠送金币"
+        },
+        {
+            "name": "download_num",
+            "type": "int",
+            "description": "下载次数"
+        },
+        {
+            "name": "day_tips",
+            "type": "string",
+            "description": "天数提示"
+        },
+        {
+            "name": "price_tips",
+            "type": "string",
+            "description": "价格提示"
+        },
+        {
+            "name": "right",
+            "type": "array",
+            "description": "权益数组"
+        },
+        {
+            "name": "activity_id",
+            "type": "string",
+            "description": "绑定的促销活动id"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "is_disabled",
+            "fields": {
+                "is_disabled": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

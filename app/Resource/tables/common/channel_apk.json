@@ -1,0 +1,78 @@
+{
+    "table_name": "channel_apk",
+    "connect": "default",
+    "description": "渠道包",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "code",
+            "type": "string",
+            "description": "渠道标识"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "渠道名"
+        },
+        {
+            "name": "dual_link",
+            "type": "string",
+            "description": "下载链接-双端"
+        },
+        {
+            "name": "android_link",
+            "type": "string",
+            "description": "下载链接-安卓"
+        },
+        {
+            "name": "ios_link",
+            "type": "string",
+            "description": "下载链接-IOS"
+        },
+        {
+            "name": "line_code",
+            "type": "string",
+            "description": "线路编号"
+        },
+        {
+            "name": "is_auto",
+            "type": "int",
+            "description": "是否自动下载"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "code",
+            "fields": {
+                "code": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "is_disabled",
+            "fields": {
+                "is_disabled": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

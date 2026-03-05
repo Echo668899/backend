@@ -1,0 +1,116 @@
+{
+    "table_name": "danmaku",
+    "connect": "default",
+    "description": "弹幕表",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "彈幕编号"
+        },
+        {
+            "name": "object_id",
+            "type": "string",
+            "description": "资源编号"
+        },
+        {
+            "name": "sub_id",
+            "type": "string",
+            "description": "子资源编号(如章节ID、视频集数ID、音频集数ID等)"
+        },
+        {
+            "name": "object_type",
+            "type": "string",
+            "description": "资源类型"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户id"
+        },
+        {
+            "name": "pos",
+            "type": "int",
+            "description": "弹幕位置,movie为播放进度/s,comics和novel为该章节的阅读进度"
+        },
+        {
+            "name": "size",
+            "type": "int",
+            "description": "字体大小"
+        },
+        {
+            "name": "color",
+            "type": "int",
+            "description": "RGB色"
+        },
+        {
+            "name": "pool",
+            "type": "int",
+            "description": "弹幕池"
+        },
+        {
+            "name": "content",
+            "type": "string",
+            "description": "内容"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 正常1 待审核0"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "object_id",
+            "fields": {
+                "object_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "object_type",
+            "fields": {
+                "object_type": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "pos",
+            "fields": {
+                "pos": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "sub_id",
+            "fields": {
+                "sub_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "status",
+            "fields": {
+                "status": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

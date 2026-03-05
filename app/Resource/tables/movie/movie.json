@@ -1,0 +1,253 @@
+{
+    "table_name": "movie",
+    "connect": "default",
+    "description": "视频管理",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "mid",
+            "type": "string",
+            "description": "媒资库id {媒资库_mid} 例如 xb_1024"
+        },
+        {
+            "name": "user_id",
+            "type": "array",
+            "description": "用户ID"
+        },
+        {
+            "name": "categories",
+            "type": "int",
+            "description": "分类id"
+        },
+        {
+            "name": "tags",
+            "type": "array",
+            "description": "标签id"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "img_x",
+            "type": "string",
+            "description": "图片-横"
+        },
+        {
+            "name": "img_y",
+            "type": "string",
+            "description": "图片-竖"
+        },
+        {
+            "name": "number",
+            "type": "string",
+            "description": "番号(厂牌视频,可用于视频关联,默认生成编号)"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "favorite",
+            "type": "int",
+            "description": "虚拟收藏数"
+        },
+        {
+            "name": "real_favorite",
+            "type": "int",
+            "description": "真实收藏数"
+        },
+        {
+            "name": "click",
+            "type": "int",
+            "description": "虚拟点击数"
+        },
+        {
+            "name": "real_click",
+            "type": "int",
+            "description": "真实点击数"
+        },
+        {
+            "name": "love",
+            "type": "int",
+            "description": "虚拟点赞数"
+        },
+        {
+            "name": "real_love",
+            "type": "int",
+            "description": "真实点赞数"
+        },
+        {
+            "name": "dislove",
+            "type": "int",
+            "description": "虚拟点踩数 没啥用,为了保持结构,默认0"
+        },
+        {
+            "name": "real_dislove",
+            "type": "int",
+            "description": "真实点踩数"
+        },
+        {
+            "name": "favorite_rate",
+            "type": "int",
+            "description": "收藏率"
+        },
+        {
+            "name": "hot_rate",
+            "type": "int",
+            "description": "热度,详见Stats/StatsMovieHotJob"
+        },
+        {
+            "name": "click_total",
+            "type": "int",
+            "description": "点击总数"
+        },
+        {
+            "name": "love_total",
+            "type": "int",
+            "description": "点赞总数"
+        },
+        {
+            "name": "dislove_total",
+            "type": "int",
+            "description": "点踩总数"
+        },
+        {
+            "name": "favorite_total",
+            "type": "int",
+            "description": "收藏总数"
+        },
+        {
+            "name": "score",
+            "type": "int",
+            "description": "评分 0-100"
+        },
+        {
+            "name": "buy",
+            "type": "int",
+            "description": "购买次数"
+        },
+        {
+            "name": "comment",
+            "type": "int",
+            "description": "真实评论数"
+        },
+        {
+            "name": "money",
+            "type": "int",
+            "description": "金币"
+        },
+        {
+            "name": "pay_type",
+            "type": "string",
+            "description": "购买类型 money<0免费 money=0vip money>0金币"
+        },
+        {
+            "name": "width",
+            "type": "int",
+            "description": "宽度"
+        },
+        {
+            "name": "height",
+            "type": "int",
+            "description": "高度"
+        },
+        {
+            "name": "position",
+            "type": "string",
+            "description": "视频所属板块 动漫 视频 "
+        },
+        {
+            "name": "canvas",
+            "type": "string",
+            "description": "视频画布 long横 short竖"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 -2处理中 -1已下架 0待上架  1已上架 2待审核 3未通过"
+        },
+        {
+            "name": "is_more_link",
+            "type": "int",
+            "description": "是否多集 0否 1是"
+        },
+        {
+            "name": "links",
+            "type": "array",
+            "description": "播放地址 {id,name,duration,preview_url,m3u8_url}"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "描述"
+        },
+        {
+            "name": "preview_images",
+            "type": "array",
+            "description": "预览图片"
+        },
+        {
+            "name": "update_status",
+            "type": "int",
+            "description": "更新状态 1完 0更新中"
+        },
+        {
+            "name": "publisher",
+            "type": "string",
+            "description": "发行商"
+        },
+        {
+            "name": "issue_date",
+            "type": "string",
+            "description": "发行日期"
+        },
+        {
+            "name": "icon",
+            "type": "string",
+            "description": "角标"
+        },
+        {
+            "name": "show_at",
+            "type": "int",
+            "description": "上架时间"
+        },
+        {
+            "name": "async_at",
+            "type": "int",
+            "description": "同步时间"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "mid",
+            "fields": {
+                "mid": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

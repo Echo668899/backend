@@ -1,0 +1,13 @@
+ stages:
+     - build
+ deploy_dev:
+     stage: build
+     tags:
+         - dev
+     only:
+         - release-1.0
+     script:
+         - cd /var/www/html/yc152_php
+         - git fetch
+         - git checkout release-1.0
+         - git pull origin release-1.0

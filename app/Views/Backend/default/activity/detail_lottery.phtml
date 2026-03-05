@@ -1,0 +1,302 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">活动详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">名称:</label>
+                            <div class="layui-input-block">
+                                <input name="name" placeholder="请输入活动名称" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">介绍:</label>
+                            <div class="layui-input-block">
+                                <textarea name="description" rows="3" class="layui-textarea" placeholder="请输入活动简介"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" >
+                            <label class="layui-form-label layui-form-required">封面图:</label>
+                            <div class="layui-input-block">
+                                <div id="imgX" class="user-tag upload-select-picture-card">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                </div>
+                                <input name="img_x" id="imgXInput" value="" type="hidden" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">开始时间:</label>
+                            <div class="layui-input-block">
+                                <input name="start_time" id="start_time" placeholder="请输入开始时间" value="" type="text" autocomplete="off" class="layui-input icon-date" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">结束时间:</label>
+                            <div class="layui-input-block">
+                                <input name="end_time" id="end_time" placeholder="请输入结束" value="" type="text" class="layui-input icon-date" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">活动模板:</label>
+                            <div class="layui-input-block">
+                                <input name="tpl_id" placeholder="活动模板" value="<?php echo $tpl['code'];?>" disabled  class="layui-input layui-disabled" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-input-row">
+                            <?php foreach ($tpl['schema'] as $key=>$item):?>
+                                <?php if($item['type']=='list'):?>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">奖品列表:</label>
+                                        <div class="layui-input-block">
+                                            <table class="layui-table">
+                                                <thead><tr><td>名称</td><td>数量</td><td>概率</td><td>图片</td><td>类型</td><td></td></tr></thead>
+                                                <tbody id="prize-table"></tbody>
+                                            </table>
+                                            <button type="button" class="layui-btn layui-btn-sm" onclick="addPrize()">添加奖品</button>
+                                        </div>
+                                    </div>
+                                <?php elseif($item['type']=='number'):?>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
+                                        <div class="layui-input-block">
+                                            <input name="tpl_config[<?php echo $key;?>]" value="<?php echo $item['default']?>" placeholder="<?php echo $item['label'];?>" type="number" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+                                <?php elseif($item['type']=='select'):?>
+                                    <div class="layui-row">
+                                        <div class="layui-col-md6">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
+                                                <div class="layui-input-block">
+                                                    <select name="tpl_config[mode]" id="mode-select">
+                                                        <?php foreach ($item['options'] as $opt): ?>
+                                                            <option value="<?php echo $opt['code']; ?>" <?php if($opt['code']==$item['default'])echo 'selected';?> > <?php echo $opt['code'].' | '.$opt['name']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md6">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label layui-form-required">单次消耗:</label>
+                                                <div class="layui-input-block">
+                                                    <input type="number" name="tpl_config[mode_value]" class="layui-input" value="0"  placeholder="单次参与消耗,0为不消耗">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+
+                            <?php endforeach;?>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">权限:</label>
+                            <div class="layui-input-block">
+                                <?php foreach($rightArr as $key=>$item):?>
+                                    <input name="right" lay-filter="radio-right" value="<?php echo $key;?>" title="<?php echo $key.' | '.$item;?>"  type="radio" class="layui-input"/>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序:</label>
+                            <div class="layui-input-block">
+                                <input name="sort" placeholder="请输入排序" value="0" type="number" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">禁用</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($disArr as $key => $item): ?>
+                                    <input type="radio" name="is_disabled" value="<?php echo $key; ?>" title="<?php echo $item; ?>" <?php if ($key == 0): ?>checked<?php endif ?> >
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'laydate', 'upload'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , laydate = layui.laydate
+            , upload = layui.upload
+            , form = layui.form
+            , row = <?php echo json_encode($row);?>;
+
+        form.val('info-form', row);
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+
+        //回显部分数据
+        if(row){
+            if (row.img_x) {
+                $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + row.img_x + "'>");
+            }
+            if (row.tpl_config && row.tpl_config.max_times_per_day !== undefined) {
+                $("[name='tpl_config[max_times_per_day]']").val(row.tpl_config.max_times_per_day);
+            }
+            if (row.tpl_config && row.tpl_config.prizes) {
+                row.tpl_config.prizes.forEach(function (item) {
+                    addPrize(item);
+                });
+            }
+            if (row.tpl_config && row.tpl_config.mode) {
+                $("#mode-select").val(row.tpl_config.mode);
+            }
+            if (row.tpl_config && row.tpl_config.mode_value) {
+                $("[name='tpl_config[mode_value]']").val(row.tpl_config.mode_value);
+            }
+        }
+
+        form.render('select');
+
+        //时间
+        laydate.render({
+            elem: '#end_time',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#start_time',
+            type: 'datetime'
+        });
+
+        //上传图片
+        upload.render({
+            elem: '#imgX' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>' //上传接口
+            , before: function (obj) {
+                layer.load(0, {time: 30 * 1000});
+            }
+            , done: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 'y') {
+                    $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>");
+                    $("#imgXInput").val(res.data);
+                } else {
+                    showErrorMsg(res.error)
+                }
+            }
+            , error: function () {
+                //请求异常回调
+                showErrorMsg('上传异常')
+            }
+        });
+
+        form.on('submit(info-form)', function (obj) {
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            doAjax("<?php echo url()->get('/activity/save')?>", obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+    function addPrize(data = {}) {
+        let index = $("#prize-table tr").length;
+
+        let rowHtml = `
+<tr id="prize-${index}">
+    <td>
+        <input name="tpl_config[prizes][${index}][name]" value="${data.name ?? ''}" class="layui-input">
+    </td>
+
+    <td>
+        <input type="number" name="tpl_config[prizes][${index}][num]" value="${data.num ?? ''}" class="layui-input">
+    </td>
+    <td>
+        <input type="number" name="tpl_config[prizes][${index}][rate]" value="${data.rate ?? ''}" class="layui-input">
+    </td>
+
+    <td>
+        <div id="imgX_${index}" class="upload-select-picture-card">
+            ${
+            data.image
+                ? `<img width="102" height="102" src="<?php echo $mediaUrl;?>${data.image}">`
+                : '<span class="layui-icon layui-icon-addition"></span>'
+        }
+        </div>
+        <input name="tpl_config[prizes][${index}][image]" id="imgXInput_${index}" value="${data.image ?? ''}" type="hidden" class="layui-input"/>
+    </td>
+
+    <td>
+        <select name="tpl_config[prizes][${index}][type]">
+            <option value="vip"    ${data.type === 'vip' ? 'selected' : ''}>vip | 会员</option>
+            <option value="point"  ${data.type === 'point' ? 'selected' : ''}>point | 金币</option>
+            <option value="credit" ${data.type === 'credit' ? 'selected' : ''}>credit | 积分</option>
+            <option value="entity" ${data.type === 'entity' ? 'selected' : ''}>entity | 实物</option>
+            <option value="none"   ${data.type === 'none' ? 'selected' : ''}>none | 无奖品</option>
+        </select>
+    </td>
+
+    <td>
+        <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" onclick="removePrize(${index})">删除</button>
+    </td>
+</tr>
+`;
+
+        $("#prize-table").append(rowHtml);
+
+        layui.form.render(); // 渲染 select
+
+        // ⭐ 初始化这一行的上传
+        initPrizeUpload(index);
+    }
+
+    function removePrize(index) {
+        $("#prize-" + index).remove();
+    }
+
+
+    function initPrizeUpload(index) {
+        layui.upload.render({
+            elem: '#imgX_' + index  // 每行自己的 div
+            , url: '<?php echo $uploadUrl; ?>'
+            , before: function (obj) {
+                layer.load(0, {time: 30 * 1000});
+            }
+            , done: function (res) {
+                layer.closeAll('loading');
+                if (res.status == 'y') {
+                    // 更新当前这一行的预览图
+                    $("#imgX_" + index).html(
+                        "<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>"
+                    );
+                    // 把地址写入这一行的隐藏 input
+                    $("#imgXInput_" + index).val(res.data);
+                } else {
+                    showErrorMsg(res.error)
+                }
+            }
+            , error: function () {
+                showErrorMsg('上传异常')
+            }
+        });
+    }
+
+
+</script>

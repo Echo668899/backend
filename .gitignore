@@ -1,0 +1,10 @@
+/.env
+/public/media
+/app/Resource/ips/ips.txt
+/.idea
+/vendor
+/composer.json
+/composer.lock
+/runtime
+/public/upload
+/public/swagger.json

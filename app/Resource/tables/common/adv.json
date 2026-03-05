@@ -1,0 +1,101 @@
+{
+    "table_name": "adv",
+    "connect": "default",
+    "description": "广告",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "广告名称"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "广告位描述"
+        },
+        {
+            "name": "position_code",
+            "type": "string",
+            "description": "广告位标识"
+        },
+        {
+            "name": "type",
+            "type": "string",
+            "description": "广告类型 text文本 video视频 image图片"
+        },
+        {
+            "name": "right",
+            "type": "string",
+            "description": "权利 (全部:all 普通用户:normal 会员:vip)"
+        },
+        {
+            "name": "channel_code",
+            "type": "string",
+            "description": "渠道code"
+        },
+        {
+            "name": "content",
+            "type": "string",
+            "description": "广告内容"
+        },
+        {
+            "name": "start_time",
+            "type": "int",
+            "description": "开始时间"
+        },
+        {
+            "name": "end_time",
+            "type": "int",
+            "description": "结束"
+        },
+        {
+            "name": "show_time",
+            "type": "int",
+            "description": "展示时长"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "click",
+            "type": "int",
+            "description": "点击次数"
+        },
+        {
+            "name": "link",
+            "type": "string",
+            "description": "广告链接"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用0 1禁用"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "position_code",
+            "fields": {
+                "position_code": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

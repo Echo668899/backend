@@ -1,0 +1,68 @@
+{
+    "table_name": "post_tag",
+    "connect": "default",
+    "description": "帖子标签管理",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "介绍"
+        },
+        {
+            "name": "attribute",
+            "type": "string",
+            "description": "属性 新番 原作 人物"
+        },
+        {
+            "name": "is_hot",
+            "type": "int",
+            "description": "是否热门 1是 0否"
+        },
+        {
+            "name": "is_show_upload",
+            "type": "int",
+            "description": "是否显示在上传 1是 0否"
+        },
+        {
+            "name": "count",
+            "type": "int",
+            "description": "资源数量"
+        },
+        {
+            "name": "click",
+            "type": "int",
+            "description": "点击数量"
+        },
+        {
+            "name": "love",
+            "type": "int",
+            "description": "点赞数量"
+        },
+        {
+            "name": "favorite",
+            "type": "int",
+            "description": "收藏数量"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": []
+}

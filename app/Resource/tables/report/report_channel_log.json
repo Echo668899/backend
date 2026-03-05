@@ -1,0 +1,165 @@
+{
+    "table_name": "report_channel_log",
+    "connect": "default",
+    "description": "统计-渠道日活",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "唯一编号{channel_name}_{date}的md5值"
+        },
+        {
+            "name": "channel_name",
+            "type": "string",
+            "description": "渠道码"
+        },
+        {
+            "name": "date",
+            "type": "string",
+            "description": "日期"
+        },
+        {
+            "name": "reg",
+            "type": "int",
+            "description": "注册人数"
+        },
+        {
+            "name": "reg_android",
+            "type": "int",
+            "description": "注册人数"
+        },
+        {
+            "name": "reg_ios",
+            "type": "int",
+            "description": "注册人数"
+        },
+        {
+            "name": "reg_web",
+            "type": "int",
+            "description": "注册人数"
+        },
+        {
+            "name": "ip",
+            "type": "int",
+            "description": "独立ip数"
+        },
+        {
+            "name": "uv",
+            "type": "int",
+            "description": "独立用户数"
+        },
+        {
+            "name": "pv",
+            "type": "int",
+            "description": "页面访问次数"
+        },
+        {
+            "name": "view",
+            "type": "int",
+            "description": "内容访问次数"
+        },
+        {
+            "name": "adv",
+            "type": "int",
+            "description": "广告点击"
+        },
+        {
+            "name": "adv_app",
+            "type": "int",
+            "description": "广告-应用点击"
+        },
+        {
+            "name": "daot",
+            "type": "int",
+            "description": "DAOT 日均使用时长,单位/秒 新增用户总时长/新增用户数量"
+        },
+        {
+            "name": "daot_android",
+            "type": "int",
+            "description": "DAOT 日均使用时长,单位/秒 新增用户总时长/新增用户数量"
+        },
+        {
+            "name": "daot_ios",
+            "type": "int",
+            "description": "DAOT 日均使用时长,单位/秒 新增用户总时长/新增用户数量"
+        },
+        {
+            "name": "daot_web",
+            "type": "int",
+            "description": "DAOT 日均使用时长,单位/秒 新增用户总时长/新增用户数量"
+        },
+        {
+            "name": "dau_all",
+            "type": "int",
+            "description": "今日总日活,涵历史新增的用户,只要在今天活跃,就算总的"
+        },
+        {
+            "name": "dau_0",
+            "type": "int",
+            "description": "今日活跃总数(留存)"
+        },
+        {
+            "name": "dau_1",
+            "type": "int",
+            "description": "次日活跃总数(留存)"
+        },
+        {
+            "name": "dau_3",
+            "type": "int",
+            "description": "3日活跃总数(留存)"
+        },
+        {
+            "name": "dau_5",
+            "type": "int",
+            "description": "5日活跃总数(留存)"
+        },
+        {
+            "name": "dau_7",
+            "type": "int",
+            "description": "7日活跃总数(留存)"
+        },
+        {
+            "name": "dau_15",
+            "type": "int",
+            "description": "15日活跃总数(留存)"
+        },
+        {
+            "name": "agent_v3",
+            "type": "object",
+            "description": "渠道系统v3统计"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "channel_name",
+            "fields": {
+                "channel_name": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "date",
+            "fields": {
+                "date": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+    "table_name": "collection_ids",
+    "connect": "default",
+    "description": "自增ID生成",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "id",
+            "type": "string",
+            "description": "值"
+        }
+    ],
+    "index": [
+        {
+            "name": "name",
+            "fields": {
+                "name": 1
+            },
+            "type": "Unique"
+        }
+    ]
+}

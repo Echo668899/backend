@@ -1,0 +1,78 @@
+{
+    "table_name": "movie_download",
+    "connect": "default",
+    "description": "视频下载",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "movie_id",
+            "type": "int",
+            "description": "视频编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "link_ids",
+            "type": "string",
+            "description": "视频链接id"
+        },
+        {
+            "name": "img",
+            "type": "string",
+            "description": "封面图"
+        },
+        {
+            "name": "duration",
+            "type": "string",
+            "description": "时长"
+        },
+        {
+            "name": "label",
+            "type": "string",
+            "description": "日期时间"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 1正常 -1删除"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "updated_at",
+            "fields": {
+                "updated_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

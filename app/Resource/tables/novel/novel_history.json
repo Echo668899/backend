@@ -1,0 +1,74 @@
+{
+    "table_name": "novel_history",
+    "connect": "history",
+    "description": "小说历史记录管理",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户id"
+        },
+        {
+            "name": "novel_id",
+            "type": "string",
+            "description": "资源编号"
+        },
+        {
+            "name": "chapter_id",
+            "type": "string",
+            "description": "章节编号"
+        },
+        {
+            "name": "chapter_name",
+            "type": "string",
+            "description": "章节名称"
+        },
+        {
+            "name": "label",
+            "type": "string",
+            "description": "日期"
+        },
+        {
+            "name": "index",
+            "type": "string",
+            "description": "客户端进度"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 1正常 0删除"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id_updated_at",
+            "fields": {
+                "user_id": 1,
+                "updated_at": -1
+            },
+            "type": "Normal"
+        }
+    ]
+}

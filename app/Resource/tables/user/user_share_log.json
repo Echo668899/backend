@@ -1,0 +1,59 @@
+{
+    "table_name": "user_share_log",
+    "connect": "default",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "邀请人"
+        },
+        {
+            "name": "share_id",
+            "type": "int",
+            "description": "被邀请人"
+        },
+        {
+            "name": "label",
+            "type": "string",
+            "description": "日期"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "label",
+            "fields": {
+                "label": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

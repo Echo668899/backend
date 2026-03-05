@@ -1,0 +1,58 @@
+{
+    "table_name": "chat_read",
+    "connect": "default",
+    "description": "会话游标",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "ID"
+        },
+        {
+            "name": "chat_id",
+            "type": "string",
+            "description": "会话ID chatid"
+        },
+        {
+            "name": "user_id",
+            "type": "string",
+            "description": "用户ID(阅读方) 此处用字符串,因为chat_type!=single时,也不能为<=0的数,会导致userService获取错误数据"
+        },
+        {
+            "name": "last_read_id",
+            "type": "int",
+            "description": "最后阅读到的消息序号(chat_message.seqid)"
+        },
+        {
+            "name": "last_read_seqid",
+            "type": "int",
+            "description": "最后阅读到的消息ID(chat_message._id)"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "chat_id",
+            "fields": {
+                "chat_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

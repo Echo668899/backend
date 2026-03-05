@@ -1,0 +1,83 @@
+{
+    "table_name": "chat_message",
+    "connect": "default",
+    "description": "消息管理",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "自增ID"
+        },
+        {
+            "name": "chat_id",
+            "type": "string",
+            "description": "会话ID from_to"
+        },
+        {
+            "name": "from_id",
+            "type": "string",
+            "description": "发送人 此处用字符串,因为chat_type!=single时,也不能为<=0的数,会导致userService获取错误数据"
+        },
+        {
+            "name": "to_id",
+            "type": "string",
+            "description": "接收人 此处用字符串,因为chat_type!=single时,也不能为<=0的数,会导致userService获取错误数据"
+        },
+        {
+            "name": "seqid",
+            "type": "int",
+            "description": "会话内自增序号"
+        },
+        {
+            "name": "msg_type",
+            "type": "string",
+            "description": "消息类型 text image voice video location notify tips"
+        },
+        {
+            "name": "msg_body",
+            "type": "object",
+            "description": "消息体"
+        },
+        {
+            "name": "ext",
+            "type": "string",
+            "description": "扩展"
+        },
+        {
+            "name": "deleted_by",
+            "type": "array",
+            "description": "删除的用户"
+        },
+        {
+            "name": "is_recalled",
+            "type": "int",
+            "description": "消息级状态 0未撤回 1已撤回"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "chat_id",
+            "fields": {
+                "chat_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "msg_type",
+            "fields": {
+                "msg_type": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,125 @@
+{
+    "table_name": "user_withdraw",
+    "connect": "default",
+    "description": "提现记录",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "order_sn",
+            "type": "string",
+            "description": "订单编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "record_type",
+            "type": "string",
+            "description": "类型 balance balance_share balance_xxx "
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "操作状态,0处理中 1已提现 -1拒绝 2申请中 3预处理"
+        },
+        {
+            "name": "num",
+            "type": "double",
+            "description": "金币数量"
+        },
+        {
+            "name": "fee",
+            "type": "double",
+            "description": "费率"
+        },
+        {
+            "name": "method",
+            "type": "string",
+            "description": "提现方式bank alipay"
+        },
+        {
+            "name": "account",
+            "type": "string",
+            "description": "账号 支付是账号  银行卡就是卡号"
+        },
+        {
+            "name": "account_name",
+            "type": "string",
+            "description": "用户名称"
+        },
+        {
+            "name": "bank_name",
+            "type": "string",
+            "description": "银行名称"
+        },
+        {
+            "name": "admin_user",
+            "type": "string",
+            "description": "操作的管理员"
+        },
+        {
+            "name": "error_msg",
+            "type": "string",
+            "description": "拒绝原因"
+        },
+        {
+            "name": "channel_name",
+            "type": "string",
+            "description": "渠道"
+        },
+        {
+            "name": "reg_ip",
+            "type": "string",
+            "description": "注册ip"
+        },
+        {
+            "name": "ip",
+            "type": "string",
+            "description": "ip"
+        },
+        {
+            "name": "address",
+            "type": "string",
+            "description": "地区"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "order_sn",
+            "fields": {
+                "order_sn": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "record_type",
+            "fields": {
+                "record_type": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

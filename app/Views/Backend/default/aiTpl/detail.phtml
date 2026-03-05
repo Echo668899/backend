@@ -1,0 +1,157 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">AI模板详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">名称:</label>
+                            <div class="layui-input-block">
+                                <input name="name" placeholder="请输入模板名称" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">描述:</label>
+                            <div class="layui-input-block">
+                                <textarea name="description" rows="3" class="layui-textarea" placeholder="请输入模板描述"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label">标签:</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($tagArr as $item): ?>
+                                    <input type="checkbox" name="tags[]" <?php if ($row['tags'] && in_array($item['id'], $row['tags'])): ?>checked<?php endif; ?>
+                                           value="<?php echo $item['id']; ?>" lay-skin="primary" title="<?php echo $item['id'] . ' | ' . $item['name']; ?>">
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">类型:</label>
+                            <div class="layui-input-block">
+                                <select name="type" lay-verType="tips" lay-verify="required" required>
+                                    <option value="">请选择..</option>
+                                    <?php foreach ($typeArr as $key=>$value):?>
+                                        <option value="<?php echo $key;?>"><?php echo $key.' | '.$value;?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">封面图:</label>
+                            <div class="layui-input-block">
+                                <div id="imgX" class="user-tag upload-select-picture-card">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                </div>
+                                <input name="img" id="imgXInput" value="" type="hidden" class="layui-input"/>
+                                <p>注意:封面图和配置分离,最终效果是以下面配置为准</p>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">配置(JSON):</label>
+                            <div class="layui-input-block">
+                                <textarea name="config" id="configInput" rows="8" class="layui-textarea" placeholder="请输入JSON格式的配置，例如：&#10;{&#10;  &quot;code&quot;: &quot;雷军&quot;,&#10;  &quot;m3u8_url&quot;: &quot;/md-204/m3u8-download/e1d/e1de8d2f85b81f061daada62bfba7e72/7cf875-m.m3u8&quot;&#10;}"></textarea>
+                                <div class="layui-word-aux">
+                                    <p>注意:封面图和配置分离,最终效果是以这里配置为准</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">金额:</label>
+                            <div class="layui-input-block">
+                                <input name="money" placeholder="请输入金额" value="0" type="number" class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">排序:</label>
+                            <div class="layui-input-block">
+                                <input name="sort" placeholder="请输入排序" value="0" type="number" class="layui-input" />
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">成人内容:</label>
+                            <div class="layui-input-block">
+                                <input name="adult" type="radio" value="1" title="是" checked/>
+                                <input name="adult" type="radio" value="0" title="否"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">是否禁用:</label>
+                            <div class="layui-input-block">
+                                <input name="is_disabled" type="radio" value="1" title="是"/>
+                                <input name="is_disabled" type="radio" value="0" title="否" checked/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload'], function(){
+        var $ = layui.$
+            ,element = layui.element
+            ,upload = layui.upload
+            ,form = layui.form
+            ,row = <?php echo json_encode($row);?>;
+
+        form.val('info-form', row);
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+
+        //回显图片X
+        if(row && row.img){
+            $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>"+row.img+"'>");
+        }
+
+        //上传图片X
+        upload.render({
+            elem: '#imgX' //绑定元素
+            ,url: '<?php echo $uploadUrl; ?>' //上传接口
+            ,before: function(obj){
+                layer.load(0,{time: 30*1000});
+            }
+            ,done: function(res){
+                layer.closeAll('loading');
+                if(res.status=='y') {
+                    $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>"+res.data+"'>");
+                    $("#imgXInput").val(res.data);
+                }else {
+                    showErrorMsg(res.error)
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                showErrorMsg('上传异常')
+            }
+        });
+
+        form.on('submit(info-form)', function(obj){
+            var loadIndex=layer.load(0,{time: 30*1000});
+            doAjax("<?php echo url()->get('/aiTpl/save')?>",obj.field,function (res) {
+                layer.close(loadIndex);
+                if(res.status==='y'){
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

@@ -1,0 +1,297 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">用户等级详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">名称:</label>
+                            <div class="layui-input-block">
+                                <input name="name" placeholder="请输入名称" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">分组:</label>
+                            <div class="layui-input-block">
+                                <select name="group" lay-verType="tips" lay-verify="required" required>
+                                    <?php foreach ($userGroupItems as $value => $label): ?>
+                                        <option value="<?php echo $value; ?>"><?php echo $value . ' | ' . $label; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-md6">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">卡项图片</label>
+                                    <div class="layui-input-inline">
+                                        <div id="imgX" class="adv-type-image upload-select-picture-card">
+                                            <span class="layui-icon layui-icon-addition"></span>
+                                        </div>
+                                        <input name="img" id="imgXInput" value="" type="hidden" class="layui-input"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md6">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">等级图标</label>
+                                    <div class="layui-input-inline">
+                                        <div id="imgY" class="adv-type-image upload-select-picture-card">
+                                            <span class="layui-icon layui-icon-addition"></span>
+                                        </div>
+                                        <input name="icon" id="imgYInput" value="" type="hidden" class="layui-input"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">价格:</label>
+                            <div class="layui-input-block">
+                                <input name="price" placeholder="请输入价格" value="0" type="text" class="layui-input " lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">原价:</label>
+                            <div class="layui-input-block">
+                                <input name="old_price" placeholder="请输入原价" value="0" type="number" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">购片折扣:</label>
+                            <div class="layui-input-block">
+                                <input name="rate" placeholder="请输入折扣" value="100" type="text" class="layui-input " lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">折扣券张数:</label>
+                            <div class="layui-input-block">
+                                <input name="coupon_num" placeholder="请输入折扣券张数" class="layui-input" type="number" value="0" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">可用天数:</label>
+                            <div class="layui-input-block">
+                                <input name="day_num" placeholder="请输入可用天数" value="0" type="number" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">赠送金币:</label>
+                            <div class="layui-input-block">
+                                <input name="gift_num" placeholder="请输入赠送金币" value="0" type="number" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">下载次数:</label>
+                            <div class="layui-input-block">
+                                <input name="download_num" placeholder="请输入下载次数" value="0" type="number" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">天数提示:</label>
+                            <div class="layui-input-block">
+                                <input name="day_tips" placeholder="请输入天数提示" value="" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">价格提示:</label>
+                            <div class="layui-input-block">
+                                <input name="price_tips" placeholder="请输入价格提示" value="" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <?php foreach ($rightArr as $group=>$items): ?>
+                                    <div class="right-row">
+                                        <div class="layui-row" style="font-weight: bold">
+                                            <input lay-filter="select-parent-right" class="right-checkbox parent-right" type="checkbox"
+                                                   lay-skin="primary" value="<?php echo $group; ?>" title="<?php echo $group; ?>">
+                                        </div>
+                                        <div class="layui-row">
+                                            <?php foreach ($items as $key=>$item): ?>
+                                                <input type="checkbox" lay-skin="primary" class="right-checkbox child-right" lay-filter="select-child-right" data-type="child" name="right[<?php echo $group;?>][]"
+                                                       value="<?php echo $key; ?>" title="<?php echo $key.'-'.$item['name']; ?>">
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">排序:</label>
+                            <div class="layui-input-block">
+                                <input name="sort" placeholder="请输入排序" class="layui-input" type="number" value="0" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">促销提示:</label>
+                            <div class="layui-input-block">
+                                <input name="tips" placeholder="请输入促销提示" value="" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">描述:</label>
+                            <div class="layui-input-block">
+                                <textarea name="description" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">绑定活动:</label>
+                            <div class="layui-input-block">
+                                <select name="activity_id" lay-verType="tips">
+                                    <option value="">不绑定..</option>
+                                    <?php foreach ($activityArr as $item): ?>
+                                        <option value="<?php echo $item['id']; ?>"><?php echo  $item['id'].' | '. $item['name']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">是否禁用:</label>
+                            <div class="layui-input-block">
+                                <input name="is_disabled" type="radio" value="0" title="否" checked/>
+                                <input name="is_disabled" type="radio" value="1" title="是"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">谷歌验证码:</label>
+                            <div class="layui-input-block">
+                                <input name="google_code" placeholder="请输入谷歌验证码,5分钟有效" value="" type="text" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , upload = layui.upload
+            , form = layui.form
+            , row = <?php echo json_encode($row);?>;
+
+        form.val('info-form', row);
+
+        if (form.val("info-form").img) {
+            $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + form.val("info-form").img + "'>");
+        }
+        if (form.val("info-form").icon) {
+            $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + form.val("info-form").icon + "'>");
+        }
+
+
+        form.render(null, 'info-form');
+        element.render('breadcrumb', 'breadcrumb');
+        ///回显所有权限
+        if (row) {
+            $(".right-checkbox").each(function () {
+                var value = this.value;
+                for (var i = 0; i < row['right'].length; i++) {
+                    var item = row['right'][i];
+                    if (item === value) {
+                        this.checked = true;
+                        break;
+                    }
+                }
+            });
+            checkboxChange();
+        }
+
+        /** 子选项 **/
+        form.on('checkbox(select-child-right)', function (data) {
+            checkboxChange()
+        });
+        /** 父级权限**/
+        form.on('checkbox(select-parent-right)', function (data) {
+            var isChecked = data.elem.checked;
+            $(this).parents('.right-row').find(".child-right").each(function () {
+                this.checked = isChecked;
+            });
+            checkboxChange()
+        });
+
+        /***处理二级权限选中***/
+        function checkboxChange() {
+            var checkedAll = true;
+            $(".child-right").each(function () {
+                var selectd = true;
+                var $obj = $(this);
+                $obj.parents('.right-row').find(".child-right").each(function () {
+                    if (!this.checked) {
+                        selectd = false;
+                        return;
+                    }
+                });
+                $obj.parents('.right-row').find(".parent-right")[0].checked = selectd;
+            });
+            $(".parent-right").each(function (index) {
+                if (!this.checked) {
+                    checkedAll = false;
+                }
+            });
+            form.render('checkbox', 'info-form');
+        }
+
+        upload.render({
+            elem: '#imgX' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>' //上传接口
+            , done: function (res) {
+                $("#imgX").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>");
+                $("#imgXInput").val(res.data);
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+        upload.render({
+            elem: '#imgY' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>' //上传接口
+            , done: function (res) {
+                $("#imgY").html("<img width='102' height='102' src='<?php echo $mediaUrl;?>" + res.data + "'>");
+                $("#imgYInput").val(res.data);
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+
+        form.on('submit(info-form)', function (obj) {
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            doAjax("<?php echo url()->get('/userGroup/save')?>", obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

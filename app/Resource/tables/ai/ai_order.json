@@ -1,0 +1,188 @@
+{
+    "table_name": "ai_order",
+    "connect": "default",
+    "description": "AI订单",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "order_sn",
+            "type": "string",
+            "description": "订单编号"
+        },
+        {
+            "name": "order_type",
+            "type": "string",
+            "description": "订单类型"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "tpl_id",
+            "type": "int",
+            "description": "模板编号"
+        },
+        {
+            "name": "device_type",
+            "type": "string",
+            "description": "设备类型"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "description": "用户名"
+        },
+        {
+            "name": "channel_name",
+            "type": "string",
+            "description": "渠道名称"
+        },
+        {
+            "name": "extra",
+            "type": "array",
+            "description": "订单需求"
+        },
+        {
+            "name": "out_data",
+            "type": "array",
+            "description": "返回处理结果"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "处理状态 -2错误(不退款,技术检查)  -1处理失败(退款)  0待处理 1处理中 2处理成功"
+        },
+        {
+            "name": "amount",
+            "type": "double",
+            "description": "金额"
+        },
+        {
+            "name": "real_amount",
+            "type": "double",
+            "description": "实际金额"
+        },
+        {
+            "name": "task_id",
+            "type": "string",
+            "description": "任务 id，ai接口返回的任务id"
+        },
+        {
+            "name": "is_delete",
+            "type": "int",
+            "description": "是否删除"
+        },
+        {
+            "name": "error_msg",
+            "type": "string",
+            "description": "错误信息"
+        },
+        {
+            "name": "label",
+            "type": "string",
+            "description": "日期"
+        },
+        {
+            "name": "register_ip",
+            "type": "string",
+            "description": "注册ip"
+        },
+        {
+            "name": "created_ip",
+            "type": "string",
+            "description": "购买ip"
+        },
+        {
+            "name": "register_at",
+            "type": "int",
+            "description": "注册日期"
+        },
+        {
+            "name": "register_date",
+            "type": "string",
+            "description": "注册时间"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "order_sn",
+            "fields": {
+                "order_sn": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "order_type",
+            "fields": {
+                "order_type": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "channel_name",
+            "fields": {
+                "channel_name": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "register_at",
+            "fields": {
+                "register_at": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "label",
+            "fields": {
+                "label": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "tpl_id_label",
+            "fields": {
+                "tpl_id": 1,
+                "label": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "status",
+            "fields": {
+                "status": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

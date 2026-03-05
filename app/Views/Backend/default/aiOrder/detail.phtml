@@ -1,0 +1,216 @@
+<style>
+    .img-ai{
+        height: 118px;
+        width: 118px;
+    }
+    video{
+        width: 220px;
+    }
+    p{
+        display: inline-block;
+        vertical-align: top;
+    }
+    .layui-col-md12 {
+        padding:8px 0;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header"><?php echo $row['_id'];?>-订单详情</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-header">订单信息</div>
+                    <blockquote class="layui-elem-quote">
+                        <div class="layui-row">
+                            订单号:<?php echo $row['order_sn'];?><br/>
+                            订单类型:<?php echo \App\Constants\CommonValues::getAiTplType($row['order_type']);?><br/>
+                            创建时间:<?php echo $row['created_at'];?><br/>
+                        </div>
+                    </blockquote>
+                    <div class="layui-card-header">用户需求</div>
+                    <blockquote class="layui-elem-quote">
+                        <?php if($row['order_type']=='novel'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    模型:<?php echo $row['extra']['method'];?><br/>
+                                    人物设定/故事背景:<?php echo $row['extra']['background'];?><br/>
+                                    场景地点:<?php echo $row['extra']['scene'];?><br/>
+                                    故事情节:<?php echo $row['extra']['story'];?><br/>
+                                    细节说明:<?php echo $row['extra']['description'];?><br/>
+                                </div>
+                            </div>
+                        <?php elseif($row['order_type']=='change_face_image'||$row['order_type']=='change_face_video'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    <?php if(!empty($row['extra']['source_path'])):?>
+                                        <div class="layui-col-md6">
+                                            人脸参照：<br/>
+                                            <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['source_path'];?>" >
+                                                <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['source_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                            </a>
+                                        </div>
+                                    <?php endif;?>
+                                    <?php if(strtolower(pathinfo($row['extra']['target_path'], PATHINFO_EXTENSION))==='m3u8'):?>
+                                        <div class="layui-col-md6">
+                                            视频模版：<br/>
+                                            <video controls="controls" data-url="<?php echo $mediaUrlVideo.$row['extra']['target_path'];?>" style="max-width:800px;max-height: 500px" id="targetPathPlayer">
+                                            </video>
+                                        </div>
+                                    <?php elseif(!empty($row['extra']['target_path'])):?>
+                                        <div class="layui-col-md6">
+                                            图片模版：<br/>
+                                            <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['target_path'];?>" >
+                                                <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['target_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                            </a>
+                                        </div>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+                        <?php elseif($row['order_type']=='change_dress'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    模型:<?php echo $row['extra']['method'];?><br/>
+                                    <div class="layui-col-md6">
+                                        脸部图片：<br/>
+                                        <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['source_path'];?>" >
+                                            <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['source_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                        </a>
+                                    </div>
+                                    <div class="layui-col-md6">
+                                        目标图片：<br/>
+                                        <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['target_path'];?>" >
+                                            <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['target_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php elseif($row['order_type']=='change_dress_bare'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    模型:<?php echo $row['extra']['method'];?><br/>
+                                    <div class="layui-col-md6">
+                                        换装图片：<br/>
+                                        <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['source_path'];?>" >
+                                            <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['source_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php elseif($row['order_type']=='text_to_image'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    模型:<?php echo $row['extra']['method'];?><br/>
+                                    提示词:<?php echo $row['extra']['prompt'];?><br/>
+                                    参考图片:
+                                    <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['source_path'];?>" >
+                                        <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['source_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                    </a>
+                                    <br/>
+                                    生成组数:<?php echo $row['extra']['batch_count'];?><br/>
+                                    每组生成张数:<?php echo $row['extra']['batch_size'];?><br/>
+                                    每张尺寸:<?php echo $row['extra']['size'];?><br/>
+                                </div>
+                            </div>
+                        <?php elseif($row['order_type']=='image_to_video'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    模型:<?php echo $row['extra']['method'];?><br/>
+
+                                    <span>图片:</span>
+                                    <a target="_blank" href="<?php echo $mediaUrl.$row['extra']['source_path'];?>" >
+                                        <img class="img-ai" src="<?php echo $mediaUrl.$row['extra']['source_path'];?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/>
+                                    </a>
+                                    <br/>
+
+                                </div>
+                            </div>
+                        <?php elseif($row['order_type']=='text_to_voice'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    模板ID:<?php echo $row['tpl_id']?:'-';?><br/>
+                                    模型:<?php echo $row['extra']['method'];?><br/>
+                                    文字内容:<?php echo $row['extra']['content'];?><br/>
+                                    语音源:<?php echo $row['extra']['source_path'];?><br/>
+                                </div>
+                            </div>
+                        <?php endif;?>
+                    </blockquote>
+                    <div class="layui-card-header">处理结果</div>
+                    <blockquote class="layui-elem-quote">
+                        状态:<?php echo \App\Constants\CommonValues::getAiOrderStatus($row['status']);?><br/>
+                        <?php if($row['order_type']=='novel'):?>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    <?php echo $row['out_data']['text']?:'-';?>
+                                </div>
+                            </div>
+                        <?php elseif(in_array($row['order_type'],['change_face_image','change_face_video','change_dress_bare','change_dress_bare','text_to_image','image_to_video','text_to_voice'])):?>
+                            <div class="layui-row">
+                                <?php foreach($row['out_data']['files'] as $out):?>
+                                    <?php if(strtolower(pathinfo($out, PATHINFO_EXTENSION))==='m3u8'):?>
+                                        <div class="layui-col-md6"><video controls="controls" data-url="<?php echo $mediaUrlVideo.$out;?>" style="max-width:800px;max-height: 500px" id="outDataPlayer1"></video></div>
+                                    <?php elseif(in_array(strtolower(pathinfo($out, PATHINFO_EXTENSION)),['jpg','png'])):?>
+                                        <div ><a target="_blank" href="<?php echo $mediaUrl.$out;?>" ><img style="margin: 6px;float: left" class="img-ai" src="<?php echo $mediaUrl.$out;?>" onmouseout="hideImg(this)" onmouseover="showImg(this)"/></a></div>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                                ZIP密码:<?php echo $row['zip_pwd']?:'-';?><br/>
+                            </div>
+                        <?php endif;?>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="<?php  echo createStaticUrl('/admin/default/assets/js/hls.min.js'); ?>"></script>
+
+<script>
+    layui.use(['index', 'form', 'upload'], function(){
+        var $ = layui.$
+            ,element = layui.element
+            ,upload = layui.upload
+            ,form = layui.form
+            ,row = <?php echo json_encode($row);?>;
+        form.val('info-form',row);
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+
+
+        if(document.getElementById('targetPathPlayer')){
+            var hlsTargetPathPlayer = new Hls();
+            hlsTargetPathPlayer.loadSource(document.getElementById('targetPathPlayer').getAttribute('data-url')); // 传入路径
+            hlsTargetPathPlayer.attachMedia(document.getElementById('targetPathPlayer'));
+        }
+        if(document.getElementById('outDataPlayer1')){
+            var hlsOutDataPlayer1 = new Hls();
+            hlsOutDataPlayer1.loadSource(document.getElementById('outDataPlayer1').getAttribute('data-url')); // 传入路径
+            hlsOutDataPlayer1.attachMedia(document.getElementById('outDataPlayer1'));
+        }
+
+        form.on('submit(info-form)', function(obj){
+            var loadIndex=layer.load(0,{time: 30*1000});
+            doAjax("<?php echo createUrl('/aiOrder/save')?>",obj.field,function (res) {
+                layer.close(loadIndex);
+                if(res.status==='y'){
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+
+</script>

@@ -1,0 +1,118 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">Up详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <!--                        <input type="hidden" name="_id"  placeholder="" autocomplete="off" class="layui-input">-->
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">用户编号:</label>
+                            <div class="layui-input-block">
+                                <input name="_id" placeholder="请输入用户编号" autocomplete="off" class="layui-input" lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户昵称:</label>
+                            <div class="layui-input-inline">
+                                <input name="nickname" class="layui-input" placeholder="输入用户昵称"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" pane="">
+                            <label class="layui-form-label  layui-form-required">分类:</label>
+                            <div class="layui-input-block">
+                                <select name="categories" lay-verType="tips" lay-verify="required" required>
+                                    <option value="">请选择..</option>
+                                    <?php foreach ($cateArr as $key => $value): ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $key . ' | ' . $value; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="layui-input-block">
+                                设置分类,比如帖子区域的热门读取的是帖子up的热门,检索的时候可以用于检索
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">胸围</label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="cup" value="A" title="A" placeholder="" autocomplete="off" class="layui-input">
+                                <input type="radio" name="cup" value="B" title="B" placeholder="" autocomplete="off" class="layui-input">
+                                <input type="radio" name="cup" value="C" title="C" placeholder="" autocomplete="off" class="layui-input">
+                                <input type="radio" name="cup" value="D" title="D" placeholder="" autocomplete="off" class="layui-input">
+                                <input type="radio" name="cup" value="E" title="E" placeholder="" autocomplete="off" class="layui-input">
+                                <input type="radio" name="cup" value="F" title="F" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">是否热门</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($hotArr as $key => $val): ?>
+                                    <input type="radio" <?php if ($key == 1): ?>checked<?php endif; ?> name="is_hot" value="<?php echo $key; ?>" title="<?php echo $val; ?>">
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">排序:</label>
+                            <div class="layui-input-block">
+                                <input name="sort" placeholder="请输入排序" value="0" autocomplete="off" type="text" class="layui-input " lay-verType="tips"
+                                       lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label ">出生日期</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="birthday" placeholder="" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label ">首字母</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="first_letter" placeholder="请输入首字母,不填写自动生成" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['index', 'form', 'upload'], function () {
+        var $ = layui.$
+            , element = layui.element
+            , upload = layui.upload
+            , form = layui.form
+            , row = <?php echo json_encode($row);?>;
+
+        form.val('info-form', row);
+        form.render(null, 'info-form');
+
+        element.render('breadcrumb', 'breadcrumb');
+
+        form.on('submit(info-form)', function (obj) {
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            doAjax("<?php echo url()->get('/userUp/save')?>", obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+    });
+</script>

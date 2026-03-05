@@ -1,0 +1,368 @@
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">帖子详情</div>
+                <div class="layui-card-body">
+                    <form class="layui-form" action="" lay-filter="info-form">
+                        <input type="hidden" name="_id" placeholder="" autocomplete="off" class="layui-input">
+
+                        <div class="layui-form-item" pane="">
+                            <?php foreach ($tagArr as $group => $tag): ?>
+                                <label class="layui-form-label"><?php echo $group; ?>:</label>
+                                <div class="layui-input-block">
+                                    <?php foreach ($tag as $item): ?>
+                                        <input type="checkbox" name="tags[]" <?php if ($row['tags'] && in_array($item['id'], $row['tags'])): ?>checked<?php endif; ?> value="<?php echo $item['id']; ?>"
+                                               lay-skin="primary" title="<?php echo $item['id'] . ' | ' . $item['name']; ?>">
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">标题:</label>
+                            <div class="layui-input-block">
+                                <input name="title" placeholder="请输入标题标题" class="layui-input" type="text"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">用户ID:</label>
+                            <div class="layui-input-block">
+                                <input name="user_id" placeholder="请输入用户ID" class="layui-input " type="number" lay-verType="tips" lay-verify="required|number" required/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item batch select-type select-type0">
+                            <label class="layui-form-label layui-form-required">图片</label>
+                            <div class="layui-input-block  upload-container">
+                                <div class="add" id="photos">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                </div>
+                                <div class="upload-select-picture-cards">
+                                    <div class="cares" style="display: flex;flex-wrap: wrap;">
+                                        <?php if (isset($row['images'])): ?>
+                                            <?php foreach ($row['images'] as $key => $val): ?>
+                                                <div style="margin-bottom: 8px" class="card-item">
+                                                    <input type="hidden" lay-verify="required" required name="images[]" value="<?php echo $val['url']; ?>">
+                                                    <a target="_blank" href="<?php echo $mediaUrl . $val['url']; ?>"><img width="102" height="102" src="<?php echo $mediaUrl . $val['url']; ?>"></a>
+                                                    <i class="del layui-icon layui-icon-close" lay-active="image_del"></i>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item batch select-type select-type0">
+                            <label class="layui-form-label layui-form-required">视频</label>
+                            <div class="layui-input-block  upload-container">
+                                <label class="add">
+                                    <span class="layui-icon layui-icon-addition"></span>
+                                    <input type="file" id="videosFile" style="display: none;" accept="video/*">
+                                </label>
+                                <div class="upload-select-video-cards">
+                                    <div class="cares" style="display: flex;flex-wrap: wrap;">
+                                        <?php if (isset($row['videos'])): ?>
+                                            <?php foreach ($row['videos'] as $key => $val): ?>
+                                                <div style="margin-bottom: 8px" class="card-item">
+                                                    <div>
+                                                        <video style="height: 120px;width: 170px;background-color: #555" src="" id="videos_<?php echo $key; ?>" controls></video>
+                                                        <i class="del layui-icon layui-icon-close" lay-active="video_del"></i>
+                                                    </div>
+                                                    <input type="text" lay-verify="required" class="layui-input" readonly required id="videos_value_'+videoKey+'" name="videos[]"
+                                                           value="<?php echo $val['url']; ?>">
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">内容:</label>
+                            <div class="layui-input-block">
+                                <!--                                <div id="content_text"></div>-->
+                                <textarea name="content" rows="10" id="content_text" style="height: auto" placeholder="请输入" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">金币:</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="money" value="0" placeholder="" autocomplete="off" class="layui-input">
+                                <div class="layui-form-mid layui-word-aux">金币>0 vip=0 免费<0</div>
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">虚拟点击</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="click" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">虚拟点赞</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="love" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label layui-form-required">虚拟收藏</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="favorite" placeholder="" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">排序:</label>
+                            <div class="layui-input-block">
+                                <input name="sort" placeholder="请输入排序" class="layui-input" type="number" value="0" lay-verType="tips" lay-verify="required" required/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">全局置顶:</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($topArr as $key => $item): ?>
+                                    <input type="radio" name="global_top" value="<?php echo $key; ?>" title="<?php echo $item; ?>" <?php if ($key == 0): ?>checked<?php endif ?> >
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">主页置顶:</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($topArr as $key => $item): ?>
+                                    <input type="radio" name="home_top" value="<?php echo $key; ?>" title="<?php echo $item; ?>" <?php if ($key == 0): ?>checked<?php endif ?> >
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">权限:</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($permissionArr as $key => $item): ?>
+                                    <input type="radio" name="permission" value="<?php echo $key; ?>" title="<?php echo $item; ?>" <?php if ($key == 0): ?>checked<?php endif ?> >
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label layui-form-required">分区</label>
+                            <div class="layui-input-block">
+                                <?php foreach ($posArr as $key => $item): ?>
+                                    <input type="radio" name="position" value="<?php echo $key; ?>" title="<?php echo $item; ?>">
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <?php if ($row): ?>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label layui-form-required">审核状态</label>
+                                <div class="layui-input-block">
+                                    <?php foreach ($statusArr as $key => $val): ?>
+                                        <input lay-filter="select-status" type="radio" <?php if ($key == 1): ?>checked<?php endif; ?> name="status" value="<?php echo $key; ?>"
+                                               title="<?php echo $val; ?>">
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <div class="layui-form-item select-status select-status2">
+                                <label class="layui-form-label">审核未通过原因</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="deny_msg" placeholder="" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上架时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="show_at" id="show_at" placeholder="" autocomplete="off" class="layui-input  icon-date">
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="info-form">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/admin/default/assets/js/hls.min.js"></script>
+<script src="/admin/default/assets/js/md5.js"></script>
+<script src="/admin/default/assets/js/upload.js"></script>
+<!--<script type="text/javascript" src="/admin/default/assets/libs/wangeditor/wangEditor.min.js"></script>-->
+<script>
+    // const E = window.wangEditor;
+    // const editor = new E('#content_text');
+    var $, element, form;
+    layui.use(['index', 'form', 'upload', 'util', 'laydate', 'element'], function () {
+        $ = layui.$,
+            element = layui.element,
+            upload = layui.upload,
+            util = layui.util,
+            laydate = layui.laydate,
+            form = layui.form;
+        form.val('info-form',<?php echo json_encode($row);?>);
+        form.render(null, 'info-form');
+        element.render('breadcrumb', 'breadcrumb');
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#show_at',
+            type: 'datetime'
+        });
+
+        //多图上传
+        var imgKey = $(".upload-select-picture-cards .card-item").length;
+        upload.render({
+            elem: '#photos' //绑定元素
+            , url: '<?php echo $uploadUrl; ?>&small=1' //上传接口
+            , multiple: true
+            , done: function (res) {
+                if (res.status == 'y') {
+                    var html = [
+                        '<div style="margin-bottom: 8px" class="card-item">',
+                        '<input type="hidden" lay-verify="required" required name="images[]" value="' + res.data + '">',
+                        '<a target="_blank" href="<?php echo $mediaUrl;?>' + res.data + '"><img width="102" height="102" src="<?php echo $mediaUrl;?>' + res.data + '"></a>',
+                        '<i class="del layui-icon layui-icon-close" lay-active="image_del"></i>',
+                        '</div>',
+                    ].join('');
+                    $(".upload-select-picture-cards .cares").append(html);
+                    imgKey++;
+                }
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+
+
+        //视频上传
+        var videoKey = $(".upload-select-video-cards .card-item").length;
+        $("#videosFile").change(function (e) {
+            let _this = this;
+            const file = e.target.files[0];
+            if (file) {
+                new UploadChunk({
+                    url: "<?php echo $uploadVideoUrl; ?>",
+                    files: e.target.files,
+                    source: 'lsj',
+                    before: function (file) {
+                        videoKey++;
+                        var videoUrl = URL.createObjectURL(file);
+                        var html = [
+                            '<div style="margin-bottom: 8px" class="card-item layui-input-inline">',
+                            '<div>',
+                            '<video style="height: 120px;width: 170px;background-color: #555" src="' + videoUrl + '" id="videos_' + videoKey + '" controls></video>',
+                            '<i class="del layui-icon layui-icon-close" lay-active="video_del"></i>',
+                            '</div>',
+                            '<div  id="videos_upload_' + videoKey + '" >上传中: 0%</div>',
+                            '<input type="text" lay-verify="required" class="layui-input"   readonly required id="videos_value_' + videoKey + '" name="videos[]" value="">',
+                            '</div>',
+                        ].join('');
+                        $(".upload-select-video-cards .cares").append(html);
+                        console.log(file)
+                        // 重置input的值，允许重复选择同一文件
+                        _this.value = '';
+                    },
+                    process: function (index, total, status) {
+                        var process = parseInt(index / total * 100);
+                        $('#videos_upload_' + videoKey).html(`上传中: ${Math.round(process)}%`)
+                    },
+                    success: function (uploadId) {
+                        if (uploadId) {
+                            $('#videos_upload_' + videoKey).html('转码中')
+                            var intervalHandle = setInterval(function () {
+                                $.ajax({
+                                    url: "<?php echo $uploadVideoQueryUrl;?>&id=" + uploadId,
+                                    type: "post",
+                                    success: function (res) {
+                                        if (res.status === 'n') {
+                                            showErrorMsg('视频' + videoKey + '上传失败');
+                                            $('#videos_upload_' + videoKey).html('上传失败!')
+                                            clearInterval(intervalHandle);
+                                        }
+                                        if (res.status === 'y' && res.data.file_m3u8) {
+                                            $('#videos_upload_' + videoKey).html('上传成功')
+                                            $('#videos_value_' + videoKey).val(res.data.file_m3u8)
+                                            clearInterval(intervalHandle);
+                                        }
+                                    },
+                                    error: function (error) {
+                                    }
+                                });
+                            }, 1000)
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    },
+                });
+            }
+        });
+
+        util.event('lay-active', {
+            image_del: function (e) {
+                $(e).parent().remove();
+            },
+            video_del: function (e) {
+                $(e).parent().parent().remove();
+            }
+        });
+
+        form.on('submit(info-form)', function (obj) {
+            var loadIndex = layer.load(0, {time: 30 * 1000});
+            // obj.field.content_text=editor.txt.html();
+            doAjax("<?php echo url()->get('/post/save')?>", obj.field, function (res) {
+                layer.close(loadIndex);
+                if (res.status === 'y') {
+                    showSuccessMsg("保存成功!");
+                    parent.layer.close(parent.layerIndex);
+                    parent.table.reload('table');
+                    return;
+                }
+                showErrorMsg(res.error);
+            });
+            return false;
+        });
+
+        <?php foreach ($row['videos'] as $key=>$link):?>
+        initVideo('<?php echo $key;?>', '<?php echo $link['url'];?>')
+        <?php endforeach;?>
+        // initEditor();
+    });
+    initEditor = function () {
+        editor.config.height = 500;
+        editor.config.uploadImgMaxSize = 1024 * 1024 * 3;//最大3M
+        editor.config.customUploadImg = function (resultFiles, insertImgFn) {
+            // resultFiles 是 input 中选中的文件列表
+            // insertImgFn 是获取图片 url 后，插入到编辑器的方法
+            $.each(resultFiles, function (index, file) {
+                var uploadIndex = layer.load(0, {time: 30 * 1000});
+                doUploadFile('<?php echo $uploadUrl;?>', file, function (res) {
+                    layer.close(uploadIndex);
+                    var link = "<?php echo $mediaUrl;?>" + res.data;
+                    // editor.cmd.do( 'insertHTML', `<img src="`+link+`" style="max-width:100%;"/>` );
+                    // 上传图片，返回结果，将图片插入到编辑器中
+                    insertImgFn(link)
+                }, function (error) {
+                    layer.close(uploadIndex);
+                });
+            })
+        };
+        editor.create();
+        editor.txt.html(`<?php echo $row['content'] ?? '';?>`);
+    }
+
+    initVideo = function (id, m3u8_url) {
+        if (m3u8_url) {
+            var hlsOriginal = new Hls();
+            hlsOriginal.loadSource("<?php echo $mediaUrlVideo;?>" + m3u8_url); // 传入路径
+            hlsOriginal.attachMedia(document.getElementById('videos_' + id));
+        }
+    }
+</script>

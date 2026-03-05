@@ -1,0 +1,502 @@
+<style>
+    .margin5 {
+        line-height: 41px;
+    }
+
+    .layui-btn-sm-category {
+        margin-right: 12px;
+        margin-left: 0 !important;
+    }
+
+    .layui-table-col-special a {
+        margin-top: 6px;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header system-main-nav">搜索</div>
+        <div class="layui-card-body">
+            <form class="layui-form toolbar" lay-filter="searchForm">
+                <div class="layui-form-item">
+                    <div>
+                        <input type="hidden" name="tags" id="tag" value="">
+                        <?php foreach ($tagArr as $group => $tag): ?>
+                            <div class="layui-row">
+                                <div class="layui-col-md">
+                                    <label class="layui-form-label"><?php echo $group; ?>:</label>
+                                </div>
+                                <div style="display: flex;flex-wrap: wrap;margin-top: 3px;">
+                                    <?php foreach ($tag as $item): ?>
+                                        <button style="margin:6px 12px 6px 0;" lay-active="tag" data-id="<?php echo $item['id']; ?>" type="button"
+                                                class="layui-btn layui-margin-top layui-btn-sm-tag layui-btn-primary layui-btn-sm"><?php echo $item['id'] . " | " . $item['name']; ?></button>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <hr class="layui-border-black">
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">帖子来源:</label>
+                        <div class="layui-input-inline">
+                            <select name="source" lay-search>
+                                <option value="">请选择..</option>
+                                <?php foreach ($sourceArr as $key => $item): ?>
+                                    <option value="<?php echo $key; ?>"><?php echo $key . ' | ' . $item; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">状态:</label>
+                        <div class="layui-input-inline">
+                            <select name="status" lay-search>
+                                <option value="">请选择..</option>
+                                <?php foreach ($statusArr as $key => $item): ?>
+                                    <option value="<?php echo $key; ?>" <?php if ($key == $defaultStatus) {
+                                        echo 'selected';
+                                    }; ?>><?php echo $key . ' | ' . $item; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">权限类型</label>
+                        <div class="layui-input-inline">
+                            <select name="permission">
+                                <option value="">请选择...</option>
+                                <?php foreach ($permissionArr as $key => $item): ?>
+                                    <option value="<?php echo $key; ?>"><?php echo $key . ' | ' . $item; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">购买类型</label>
+                        <div class="layui-input-inline">
+                            <select name="pay_type">
+                                <option value="">请选择...</option>
+                                <?php foreach ($payTypeArr as $key=>$item): ?>
+                                    <option value="<?php echo $key; ?>"><?php echo $key.' | '.$item; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">全局置顶</label>
+                        <div class="layui-input-inline">
+                            <select name="global_top">
+                                <option value="">请选择...</option>
+                                <?php foreach ($topArr as $key => $item): ?>
+                                    <option value="<?php echo $key; ?>"><?php echo $key . ' | ' . $item; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <hr class="layui-border-black">
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">观看范围:</label>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <input type="text" name="clickMinSort" placeholder="最小值" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <input type="text" name="clickMaxSort" placeholder="最大值" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">收藏率范围:</label>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <input type="text" name="favMinSort" placeholder="最小值" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <input type="text" name="favMaxSort" placeholder="最大值" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">排序范围:</label>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <input type="text" name="minSort" placeholder="最小值" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 100px;">
+                            <input type="text" name="maxSort" placeholder="最大值" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">开始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="start_time" readonly="" id="start_time" placeholder="yyyy-MM-dd HH:mm:ss">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="layui-input" name="end_time" readonly="" id="end_time" placeholder="yyyy-MM-dd HH:mm:ss">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">帖子ID</label>
+                        <div class="layui-input-inline">
+                            <input name="_id" class="layui-input" placeholder="输入帖子ID"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户ID</label>
+                        <div class="layui-input-inline">
+                            <input name="user_id" value="<?php echo $user_id; ?>" class="layui-input" placeholder="输入用户ID"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">标题</label>
+                        <div class="layui-input-inline">
+                            <input name="title" value="" class="layui-input" placeholder="输入标题"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">内容</label>
+                        <div class="layui-input-inline">
+                            <input name="content" value="" class="layui-input" placeholder="输入内容"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="searchFormBtn">搜索</button>
+                        <button type="reset" lay-active="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+            <!-- 数据表格 -->
+            <table class="layui-hide" id="table" lay-filter="table"></table>
+            <!-- 数据表格-顶部工具条 -->
+            <script type="text/html" id="table-toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-xs" lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-xs" lay-event="up">上架</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="down">下架</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+                    <button class="layui-btn layui-btn-xs" lay-event="async">媒资同步</button>
+                    <button class="layui-btn layui-btn-xs  layui-btn-danger" lay-event="clearTag">清空标签</button>
+                    <button class="layui-btn layui-btn-xs" lay-event="update">批量设置(覆盖)</button>
+                    <button class="layui-btn layui-btn-xs" lay-event="update-overlay">批量设置(叠加)</button>
+                    <button class="layui-btn layui-btn-xs" lay-event="update-remove">批量设置(移除)</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="es">刷新索引</button>
+                    <button class="layui-btn layui-btn-xs layui-btn-primary" lay-event="sign">运营签到</button>
+                </div>
+            </script>
+            <!-- 数据表格-行工具条 -->
+            <script type="text/html" id="table-item-toolbar">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="comment">评论</a>
+                <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="user">用户</a>
+                <!--                <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="post">用户动态</a>-->
+            </script>
+        </div>
+    </div>
+</div>
+<script>
+    var layerIndex, layer, table, form, util, laydate, $;
+    layui.use(['layer', 'form', 'table', 'admin', 'util', 'laydate'], function () {
+        $ = layui.jquery;
+        layer = layui.layer;
+        form = layui.form;
+        util = layui.util;
+        laydate = layui.laydate;
+        table = layui.table;
+
+        /*初始化表格*/
+        table.render({
+            elem: '#table'
+            , url: location.href
+            , method: "post"
+            , where: form.val("searchForm")
+            , skin: 'line'
+            , size: 'sm' //小尺寸的表格
+            , toolbar: '#table-toolbar'
+            , request: {
+                limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            , page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit']
+                , curr: 1 //设定初始在第 1 页
+                , groups: 6 //只显示 5 个连续页码
+                , first: '首页'
+                , last: '尾页'
+                , limit: 30
+                , limits: [10, 30, 50, 100]
+            }
+            , parseData: function (res) { //res 即为原始返回的数据
+                return res;
+            }
+            , cols: [[
+                {type: 'checkbox'}
+                , {field: '_id', title: 'ID', align: 'center', width: 70, sort: true}
+                , {
+                    field: '_id', width: 100, title: '用户ID', templet: function (row) {
+                        return "<p>ID: " + row.user._id + "</p>" +
+                            "<p>用户名: " + row.user.username + "</p>" +
+                            "<p>语言: " + row.user.lang + "</p>";
+                    }, align: 'left'
+                }
+
+                , {
+                    field: 'nickname', title: '昵称', width: 110, templet: function (row) {
+                        var html = '';
+                        html += '<span>昵称:' + row.user.nickname + '</span><br/>';
+                        html += '<span>性别:' + row.user.sex + '</span><br/>';
+                        html += '<span>会员:' + row.user.group_name + '</span><br/>';
+                        if (row.user.is_up) {
+                            html += '<span style="color: red">Up主:是</span><br/>';
+                        } else {
+                            html += '<span>Up主:否</span><br/>';
+                        }
+                        if (row.user.is_mer) {
+                            html += '<span style="color: red">商家:是</span><br/>';
+                        } else {
+                            html += '<span>商家:否</span><br/>';
+                        }
+                        return html;
+                    }, align: 'left'
+                }
+                , {
+                    field: 'img', title: '头像', width: 100, templet: function (row) {
+                        if (row.user.headico) {
+                            var link = '<?php echo $mediaUrl;?>' + row.user.headico;
+                            return '<a target="_blank" href="' + link + '" ><img src="' + link + '" onmouseout="hideImg(this)" onmouseover="showImg(this)" class="table-tips-img" style="max-width: 50px;max-height: 50px"/></a>'
+                        }
+                        return '-';
+                    }, align: 'center'
+                }
+                // ,{field: 'title', title: '标题',align: 'left',width:100}
+                , {field: 'content', title: '内容', align: 'left', width: 150}
+                , {
+                    field: 'images', title: "图片", align: 'left', templet: function (row) {
+                        var html = '';
+                        $.each(row.images, function (i, e) {
+                            if (typeof e == 'undefinded' || e == null || e == '') return;
+                            var link = '<?php echo $mediaUrl;?>' + e.url;
+                            html += '<a target="_blank" href="' + link + '" ><img src="' + link + '" onmouseout="hideImg(this)" onmouseover="showImg(this)" class="table-tips-img" style="width: 33px;height: 33px;margin-left:6px;margin-top:6px;"/></a>';
+                        });
+                        return html ? html : '-';
+                    }, width: 150
+                }
+                , {field: 'videos', title: "视频/数量", align: 'center', width: 60}
+                , {field: 'tags', title: '标签', align: 'center', width: 120}
+                , {field: 'permission', title: '权限', align: 'center', width: 80}
+                // ,{field: 'pay_type', title: "购买类型",align: 'center',width: 70}
+                , {
+                    field: 'top', title: "置顶", align: 'center', templet: function (row) {
+                        var html = '';
+                        html += '<span>全局:' + row.global_top + '</span><br/>';
+                        html += '<span>主页:' + row.home_top + '</span><br/>';
+                        return html;
+                    }, width: 70
+                }
+                , {field: 'real_click', title: "点击", align: 'center', width: 60, sort: true}
+                , {field: 'real_love', title: "点赞", align: 'center', width: 60, sort: true}
+                , {field: 'real_favorite', title: "收藏", align: 'center', width: 60, sort: true}
+                , {field: 'comment', title: "评论", align: 'center', width: 60, sort: true}
+                , {field: 'sort', title: "排序", align: 'center', width: 50, sort: true}
+                , {field: 'status', title: "状态", align: 'center', width: 50}
+                , {field: 'created_at', title: "创建时间", align: 'center', width: 80}
+                , {title: "操作", toolbar: '#table-item-toolbar', align: 'center', width: 120}
+            ]],
+        });
+        /*表格搜索事件*/
+        form.on('submit(searchFormBtn)', function (obj) {
+            table.reload('table', {where: obj.field, page: {curr: 1}});
+            return false;
+        });
+        /*表格排序事件*/
+        table.on('sort(table)', function (obj) {
+            var order = obj.type === 'asc' ? 1 : -1;
+            table.reload('table', {initSort: obj, where: {sort: obj.field, order: order}});
+        });
+
+        /*表格-顶部工具条事件*/
+        table.on('toolbar(table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var data = checkStatus.data;
+            var ids = new Array();
+            for (var index = 0; index < data.length; index++) {
+                ids.push(data[index]._id)
+            }
+            switch (obj.event) {
+                case 'add':
+                    layerIndex = layer.open({
+                        type: 2,
+                        content: "<?php echo url()->get('/post/detail'); ?>",
+                        area: ['90%', '90%']
+                    });
+                    break;
+                case 'async':
+                    asyncRow();
+                    break;
+                case 'up':
+                    doRow(ids, 'up');
+                    break;
+                case 'update':
+                    updateRow(ids);
+                    break;
+                case 'update-overlay':
+                    updateOverlayRow(ids);
+                    break;
+                case 'update-remove':
+                    updateRemoveRow(ids);
+                    break;
+                case 'clearTag':
+                    doRow(ids, 'clearTag');
+                    break;
+                case 'es':
+                    doRow(ids, 'es');
+                    break;
+                case 'down':
+                    doRow(ids, 'down');
+                    break;
+                case 'del':
+                    doRow(ids, 'del');
+                    break;
+                case 'sign':
+                    doAdminSign();
+                    break;
+            }
+        });
+
+
+        //监听其他事件
+        util.event('lay-active', {
+            tag: function (e) {
+                var isSelected = !e.hasClass('layui-btn-primary');
+                if (isSelected) {
+                    e.addClass('layui-btn-primary');
+                    $("#tag").val('');
+                    return;
+                }
+                $('.layui-btn-sm-tag').addClass('layui-btn-primary');
+                e.removeClass('layui-btn-primary');
+                $("#tag").val(e.attr('data-id'));
+            },
+            reset: function (e) {
+                $('.layui-btn-sm-tag').addClass('layui-btn-primary');
+                $('.layui-btn-sm-tag-all').removeClass('layui-btn-primary');
+                $("#tag").val('');
+            },
+        });
+
+        //时间
+        laydate.render({
+            elem: '#end_time',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#start_time',
+            type: 'datetime'
+        });
+
+        /*表格-行事件*/
+        table.on('tool(table)', function (obj) {
+            var data = obj.data;
+            switch (obj.event) {
+                case 'edit':
+                    layerIndex = layer.open({
+                        type: 2,
+                        content: "<?php echo url()->get('/post/detail'); ?>?_id=" + data._id,
+                        area: ['90%', '90%']
+                    });
+                    break;
+                case 'del':
+                    var ids = new Array();
+                    ids.push(data._id);
+                    doRow(ids, 'del');
+                    break;
+                case 'comment':
+                    layerIndex = layer.open({
+                        type: 2,
+                        content: "<?php echo url()->get('/comment/list'); ?>?object_type=post&object_id=" + data._id,
+                        area: ['90%', '80%']
+                    });
+                    break;
+                case 'user':
+                    window.open("<?php echo url()->get('/user/detail'); ?>?_id=" + data.user_id);
+                    break;
+                case 'post':
+                    window.open("<?php echo url()->get('/post/list'); ?>?user_id=" + data.user_id);
+                    break;
+            }
+        });
+
+        //操作
+        function doRow(ids, act) {
+            if (ids == null || ids.length < 1) {
+                showErrorMsg("请选择需要的数据!");
+                return false;
+            }
+            showConfirmMsg("确定操作吗?", function () {
+                var loadIndex = layer.load(0, {time: 30 * 1000});
+                doAjax("<?php echo url()->get('/post/do')?>", {act: act, id: ids.join(",")}, function (res) {
+                    layer.close(loadIndex);
+                    if (res.status == 'y') {
+                        showSuccessMsg("操作成功!请手动刷新页面");
+                    } else {
+                        showErrorMsg(res.error);
+                    }
+                });
+            });
+        }
+
+        //同步
+        function asyncRow() {
+            layerIndex = layer.open({
+                title: '媒资库帖子同步',
+                type: 2,
+                shade: 0.8,
+                content: "<?php echo url()->get('/post/widget'); ?>?type=async",
+                area: ['80%', '80%'],
+            });
+        }
+
+        //批量设置
+        function updateRow(ids) {
+            ids = ids.join(',');
+            if (ids == null || ids.length < 1) {
+                showErrorMsg("请选择需要的数据!");
+                return false;
+            }
+            layerIndex = layer.open({
+                type: 2,
+                shade: 0.8,
+                content: "<?php echo url()->get('/post/update'); ?>?ids=" + ids,
+                area: ['85%', '80%'],
+            });
+        }
+
+        // 批量叠加设置
+        function updateOverlayRow(ids) {
+            ids = ids.join(',');
+            layerIndex = layer.open({
+                type: 2,
+                shade: 0.8,
+                content: "<?php echo url()->get('/post/update-overlay'); ?>?ids=" + ids,
+                area: ['85%', '80%'],
+            });
+        }
+
+
+        function updateRemoveRow(ids) {
+            ids = ids.join(',');
+            layerIndex = layer.open({
+                type: 2,
+                shade: 0.8,
+                content: "<?php echo url()->get('/post/update-remove'); ?>?ids=" + ids,
+                area: ['85%', '80%'],
+            });
+        }
+    })
+</script>

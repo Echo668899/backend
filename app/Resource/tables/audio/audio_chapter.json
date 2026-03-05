@@ -1,0 +1,66 @@
+{
+    "table_name": "audio_chapter",
+    "connect": "default",
+    "description": "有声章节",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "img",
+            "type": "string",
+            "description": "封面"
+        },
+        {
+            "name": "preview_content",
+            "type": "string",
+            "description": "试听内容"
+        },
+        {
+            "name": "content",
+            "type": "string",
+            "description": "完整内容"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "audio_id",
+            "type": "string",
+            "description": "有声编号"
+        },
+        {
+            "name": "is_audio",
+            "type": "int",
+            "description": "是否是有声有声"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "audio_id",
+            "fields": {
+                "audio_id": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,76 @@
+{
+    "table_name": "adv_app",
+    "connect": "default",
+    "description": "应用中心",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "position",
+            "type": "array",
+            "description": "位置"
+        },
+        {
+            "name": "image",
+            "type": "string",
+            "description": "图片"
+        },
+        {
+            "name": "download_url",
+            "type": "string",
+            "description": "下载地址"
+        },
+        {
+            "name": "download",
+            "type": "string",
+            "description": "下载次数,直接填写"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "描述"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "is_hot",
+            "type": "int",
+            "description": "热门"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用0 1禁用"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "is_hot",
+            "fields": {
+                "is_hot": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

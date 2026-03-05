@@ -1,0 +1,86 @@
+{
+    "table_name": "ai_tpl",
+    "connect": "default",
+    "description": "ai模板",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "描述"
+        },
+        {
+            "name": "type",
+            "type": "string",
+            "description": "类型 绘画 换脸 换装 文生图片 图生视频 文字转语音"
+        },
+        {
+            "name": "tags",
+            "type": "array",
+            "description": "标签id"
+        },
+        {
+            "name": "money",
+            "type": "int",
+            "description": "金币"
+        },
+        {
+            "name": "adult",
+            "type": "int",
+            "description": "是否成人 1是0否"
+        },
+        {
+            "name": "img",
+            "type": "string",
+            "description": "封面图"
+        },
+        {
+            "name": "config",
+            "type": "object",
+            "description": "配置值"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "is_hot",
+            "type": "int",
+            "description": "热门"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否显示"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "type",
+            "fields": {
+                "type": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

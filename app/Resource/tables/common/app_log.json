@@ -1,0 +1,113 @@
+{
+    "table_name": "app_log",
+    "connect": "default",
+    "description": "APP日志",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "date",
+            "type": "string",
+            "description": "日期"
+        },
+        {
+            "name": "month",
+            "type": "string",
+            "description": "日期"
+        },
+        {
+            "name": "channel_name",
+            "type": "string",
+            "description": "渠道"
+        },
+        {
+            "name": "device_type",
+            "type": "string",
+            "description": "设备类型"
+        },
+        {
+            "name": "register_date",
+            "type": "string",
+            "description": "注册日期"
+        },
+        {
+            "name": "jet_lag",
+            "type": "int",
+            "description": "从注册之日到该条数据距离多少天 0当日 1次日等等"
+        },
+        {
+            "name": "ip",
+            "type": "string",
+            "description": "ip"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "date",
+            "fields": {
+                "date": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "month",
+            "fields": {
+                "month": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "channel_name",
+            "fields": {
+                "channel_name": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "jet_lag",
+            "fields": {
+                "jet_lag": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "register_date",
+            "fields": {
+                "register_date": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,425 @@
+{
+    "table_name": "user",
+    "connect": "default",
+    "description": "用户",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "nickname",
+            "type": "string",
+            "description": "昵称"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "description": "用户名"
+        },
+        {
+            "name": "country",
+            "type": "string",
+            "description": "国家 英文"
+        },
+        {
+            "name": "lang",
+            "type": "string",
+            "description": "语言"
+        },
+        {
+            "name": "area",
+            "type": "string",
+            "description": "国际电话区号"
+        },
+        {
+            "name": "phone",
+            "type": "string",
+            "description": "手机号码"
+        },
+        {
+            "name": "account_type",
+            "type": "string",
+            "description": "账户类型 deviceId email google"
+        },
+        {
+            "name": "account",
+            "type": "string",
+            "description": "唯一账号 统一小写格式化",
+            "index": "Unique"
+        },
+        {
+            "name": "password",
+            "type": "string",
+            "description": "账户密码"
+        },
+        {
+            "name": "device_type",
+            "type": "string",
+            "description": "设备类型"
+        },
+        {
+            "name": "device_version",
+            "type": "double",
+            "description": "设备版本号"
+        },
+        {
+            "name": "balance",
+            "type": "double",
+            "description": "充值余额"
+        },
+        {
+            "name": "balance_freeze",
+            "type": "double",
+            "description": "冻结余额"
+        },
+        {
+            "name": "balance_income",
+            "type": "double",
+            "description": "收入余额"
+        },
+        {
+            "name": "balance_income_freeze",
+            "type": "double",
+            "description": "冻结收入余额"
+        },
+        {
+            "name": "balance_share",
+            "type": "double",
+            "description": "邀请余额,邀请任务送现金"
+        },
+
+        {
+            "name": "balance_share_freeze",
+            "type": "double",
+            "description": "冻结邀请余额"
+        },
+        {
+            "name": "group_id",
+            "type": "int",
+            "description": "用户组"
+        },
+        {
+            "name": "group_rate",
+            "type": "int",
+            "description": "用户折扣"
+        },
+        {
+            "name": "group_name",
+            "type": "string",
+            "description": "用户组名称"
+        },
+        {
+            "name": "group_start_time",
+            "type": "int",
+            "description": "组开始时间"
+        },
+        {
+            "name": "group_end_time",
+            "type": "int",
+            "description": "组结束时间"
+        },
+        {
+            "name": "group_icon",
+            "type": "int",
+            "description": "组图标"
+        },
+        {
+            "name": "right",
+            "type": "array",
+            "description": "用户权益"
+        },
+        {
+            "name": "group_dark_id",
+            "type": "int",
+            "description": "用户组"
+        },
+        {
+            "name": "group_dark_rate",
+            "type": "int",
+            "description": "用户折扣"
+        },
+        {
+            "name": "group_dark_name",
+            "type": "string",
+            "description": "用户组名称"
+        },
+        {
+            "name": "group_dark_start_time",
+            "type": "int",
+            "description": "组开始时间"
+        },
+        {
+            "name": "group_dark_end_time",
+            "type": "int",
+            "description": "组结束时间"
+        },
+        {
+            "name": "headico",
+            "type": "string",
+            "description": "头像"
+        },
+        {
+            "name": "headbg",
+            "type": "string",
+            "description": "背景图"
+        },
+        {
+            "name": "sign",
+            "type": "string",
+            "description": "个性签名"
+        },
+        {
+            "name": "sex",
+            "type": "string",
+            "description": "性别 unknown man woman"
+        },
+        {
+            "name": "age",
+            "type": "string",
+            "description": "年龄"
+        },
+        {
+            "name": "height",
+            "type": "string",
+            "description": "身高"
+        },
+        {
+            "name": "weight",
+            "type": "string",
+            "description": "体重 kg"
+        },
+        {
+            "name": "fans",
+            "type": "int",
+            "description": "粉丝数量"
+        },
+        {
+            "name": "follow",
+            "type": "int",
+            "description": "关注数量"
+        },
+        {
+            "name": "love",
+            "type": "int",
+            "description": "获赞数量"
+        },
+        {
+            "name": "share",
+            "type": "int",
+            "description": "分享次数"
+        },
+        {
+            "name": "tag",
+            "type": "string",
+            "description": "用户标签"
+        },
+        {
+            "name": "channel_name",
+            "type": "string",
+            "description": "渠道"
+        },
+        {
+            "name": "parent_name",
+            "type": "string",
+            "description": "推荐人"
+        },
+        {
+            "name": "parent_id",
+            "type": "int",
+            "description": "推荐人编号"
+        },
+        {
+            "name": "transfer_id",
+            "type": "int",
+            "description": "资金转移ID"
+        },
+        {
+            "name": "withdraw_fee",
+            "type": "int",
+            "description": "提现费率"
+        },
+        {
+            "name": "withdraw_info",
+            "type": "object",
+            "description": "提现信息(历史)"
+        },
+        {
+            "name": "first_pay",
+            "type": "int",
+            "description": "第一次充值时间"
+        },
+        {
+            "name": "last_pay",
+            "type": "int",
+            "description": "最后一次充值时间"
+        },
+        {
+            "name": "pay_total",
+            "type": "int",
+            "description": "累计充值金额"
+        },
+        {
+            "name": "register_at",
+            "type": "int",
+            "description": "注册时间"
+        },
+        {
+            "name": "register_date",
+            "type": "string",
+            "description": "注册日"
+        },
+        {
+            "name": "register_ip",
+            "type": "string",
+            "description": "注册ip"
+        },
+        {
+            "name": "login_num",
+            "type": "int",
+            "description": "登录次数"
+        },
+        {
+            "name": "login_at",
+            "type": "int",
+            "description": "最后登录时间"
+        },
+        {
+            "name": "login_date",
+            "type": "string",
+            "description": "最后登录日"
+        },
+        {
+            "name": "login_ip",
+            "type": "string",
+            "description": "最近登录ip"
+        },
+        {
+            "name": "login_device",
+            "type": "array",
+            "description": "登录设备"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用 1是 0否"
+        },
+        {
+            "name": "error_msg",
+            "type": "string",
+            "description": "禁用原因"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间",
+            "index": "Normal"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "username",
+            "fields": {
+                "username": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "phone",
+            "fields": {
+                "phone": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "account",
+            "fields": {
+                "account": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "device_type",
+            "fields": {
+                "device_type": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "group_id",
+            "fields": {
+                "group_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "group_dark_id",
+            "fields": {
+                "group_dark_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "channel_name",
+            "fields": {
+                "channel_name": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "parent_id",
+            "fields": {
+                "parent_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "register_at",
+            "fields": {
+                "register_at": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "register_date",
+            "fields": {
+                "register_date": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "login_at",
+            "fields": {
+                "login_at": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "login_date",
+            "fields": {
+                "login_date": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "updated_at",
+            "fields": {
+                "updated_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

@@ -1,0 +1,63 @@
+{
+    "table_name": "domain",
+    "connect": "default",
+    "description": "域名管理",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "type",
+            "type": "string",
+            "description": "域名类型（主域名/网站域名）"
+        },
+        {
+            "name": "domain",
+            "type": "string",
+            "description": "域名"
+        },
+        {
+            "name": "tracking_code",
+            "type": "string",
+            "description": "统计脚本"
+        },
+        {
+            "name": "check",
+            "type": "array",
+            "description": "检查节点状态"
+        },
+        {
+            "name": "is_disabled",
+            "type": "int",
+            "description": "是否禁用"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "domain",
+            "fields": {
+                "domain": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "type",
+            "fields": {
+                "type": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

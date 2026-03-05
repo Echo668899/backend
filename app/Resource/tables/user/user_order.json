@@ -1,0 +1,217 @@
+{
+    "table_name": "user_order",
+    "connect": "default",
+    "description": "用户会员订单",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "order_sn",
+            "type": "string",
+            "description": "订单编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户编号"
+        },
+        {
+            "name": "device_type",
+            "type": "string",
+            "description": "设备类型"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "description": "用户名"
+        },
+        {
+            "name": "channel_name",
+            "type": "string",
+            "description": "渠道名称"
+        },
+        {
+            "name": "register_at",
+            "type": "int",
+            "description": "注册日期"
+        },
+        {
+            "name": "group_id",
+            "type": "int",
+            "description": "用户组"
+        },
+        {
+            "name": "group_name",
+            "type": "string",
+            "description": "用户组名称"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "支付状态 0未支付 1已支付 -1支付失败"
+        },
+        {
+            "name": "day_num",
+            "type": "int",
+            "description": "天数"
+        },
+        {
+            "name": "gift_num",
+            "type": "int",
+            "description": "赠送金币"
+        },
+        {
+            "name": "download_num",
+            "type": "int",
+            "description": "下载次数"
+        },
+        {
+            "name": "discount_coupon",
+            "type": "int",
+            "description": "折扣券张数"
+        },
+        {
+            "name": "group_rate",
+            "type": "int",
+            "description": "折扣率"
+        },
+        {
+            "name": "price",
+            "type": "int",
+            "description": "价格"
+        },
+        {
+            "name": "real_price",
+            "type": "double",
+            "description": "真实价格"
+        },
+        {
+            "name": "pay_id",
+            "type": "string",
+            "description": "支付编号"
+        },
+        {
+            "name": "pay_name",
+            "type": "string",
+            "description": "支付名称"
+        },
+        {
+            "name": "pay_at",
+            "type": "int",
+            "description": "支付时间"
+        },
+        {
+            "name": "pay_rate",
+            "type": "double",
+            "description": "费率"
+        },
+        {
+            "name": "trade_sn",
+            "type": "string",
+            "description": "交易单号"
+        },
+        {
+            "name": "register_ip",
+            "type": "string",
+            "description": "注册ip"
+        },
+        {
+            "name": "created_ip",
+            "type": "string",
+            "description": "购买ip"
+        },
+        {
+            "name": "register_date",
+            "type": "string",
+            "description": "注册时间"
+        },
+        {
+            "name": "jet_lag",
+            "type": "int",
+            "description": "从注册之日到该条订单距离多少天 0当日注册当日购买 1当日注册次日购买等等"
+        },
+        {
+            "name": "pay_date",
+            "type": "string",
+            "description": "支付日期"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "order_sn",
+            "fields": {
+                "order_sn": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "channel_name",
+            "fields": {
+                "channel_name": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "register_at",
+            "fields": {
+                "register_at": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "status",
+            "fields": {
+                "status": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "trade_sn",
+            "fields": {
+                "trade_sn": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "jet_lag",
+            "fields": {
+                "jet_lag": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "pay_date",
+            "fields": {
+                "pay_date": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

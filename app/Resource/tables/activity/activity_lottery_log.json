@@ -1,0 +1,109 @@
+{
+    "table_name": "activity_lottery_log",
+    "connect": "default",
+    "description": "活动-抽奖记录",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "activity_id",
+            "type": "string",
+            "description": "活动编号"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "用户id"
+        },
+        {
+            "name": "username",
+            "type": "string",
+            "description": "用户名"
+        },
+        {
+            "name": "order_sn",
+            "type": "string",
+            "description": "订单号"
+        },
+        {
+            "name": "prize_name",
+            "type": "string",
+            "description": "奖品名称"
+        },
+        {
+            "name": "prize_type",
+            "type": "string",
+            "description": "奖品类型"
+        },
+        {
+            "name": "prize_image",
+            "type": "string",
+            "description": "奖品图片"
+        },
+        {
+            "name": "prize_rate",
+            "type": "string",
+            "description": "奖品概率,当时概率,因为活动运行中可以修改概率"
+        },
+        {
+            "name": "cost_model",
+            "type": "int",
+            "description": "消耗模式"
+        },
+        {
+            "name": "cost_value",
+            "type": "int",
+            "description": "消耗值"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "activity_id",
+            "fields": {
+                "activity_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "username",
+            "fields": {
+                "username": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "order_sn",
+            "fields": {
+                "order_sn": 1
+            },
+            "type": "Unique"
+        },
+        {
+            "name": "created_at",
+            "fields": {
+                "created_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

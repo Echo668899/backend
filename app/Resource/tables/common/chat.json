@@ -1,0 +1,122 @@
+{
+    "table_name": "chat",
+    "connect": "default",
+    "description": "会话管理",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "会话ID chatid_{from or to}"
+        },
+        {
+            "name": "chat_id",
+            "type": "string",
+            "description": "会话ID chatid"
+        },
+        {
+            "name": "chat_type",
+            "type": "string",
+            "description": "会话类型,实体来源 single私聊 system系统 service官方号 (group群聊板块独立,单独创建chat_group表)"
+        },
+        {
+            "name": "from_id",
+            "type": "string",
+            "description": "发送人 此处用字符串,因为chat_type!=single时,也不能为<=0的数,会导致userService获取错误数据"
+        },
+        {
+            "name": "to_id",
+            "type": "string",
+            "description": "接收人 此处用字符串,因为chat_type!=single时,也不能为<=0的数,会导致userService获取错误数据"
+        },
+        {
+            "name": "last_msg_id",
+            "type": "int",
+            "description": "最新消息ID"
+        },
+        {
+            "name": "last_msg_seqid",
+            "type": "int",
+            "description": "最新消息序号（chat_message.seqid）"
+        },
+        {
+            "name": "last_msg_preview",
+            "type": "string",
+            "description": "最新消息预览"
+        },
+        {
+            "name": "last_msg_role",
+            "type": "string",
+            "description": "最后消息发送方 user或service,主要用于chat_type=service,后台判断消息是否处理,last_msg_role==user就是未处理"
+        },
+        {
+            "name": "inbox",
+            "type": "string",
+            "description": "会话收件箱,用户视角下的归类 main主收件箱 request消息请求箱(粉丝或陌生人消息) system(系统推送消息) service(品牌、机器人、客服)"
+        },
+        {
+            "name": "top",
+            "type": "int",
+            "description": "是否置顶 0否 1是"
+        },
+        {
+            "name": "unread_count",
+            "type": "int",
+            "description": "未读计数(缓存,每次发送消息后计算,chat_message.seqid-chat_read.last_msg_seqid)"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "from_id",
+            "fields": {
+                "from_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "to_id",
+            "fields": {
+                "to_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "chat_type",
+            "fields": {
+                "chat_type": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "inbox",
+            "fields": {
+                "inbox": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "from_id_and_last_msg_role",
+            "fields": {
+                "from_id": 1,
+                "last_msg_role": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "updated_at",
+            "fields": {
+                "updated_at": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

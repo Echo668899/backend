@@ -1,0 +1,191 @@
+{
+    "table_name": "comics",
+    "connect": "default",
+    "description": "漫画资源",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号"
+        },
+        {
+            "name": "name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "alias_name",
+            "type": "string",
+            "description": "名称"
+        },
+        {
+            "name": "cat_id",
+            "type": "string",
+            "description": "分类"
+        },
+        {
+            "name": "tags",
+            "type": "array",
+            "description": "标签"
+        },
+        {
+            "name": "img_x",
+            "type": "string",
+            "description": "封面图-默认"
+        },
+        {
+            "name": "img_y",
+            "type": "string",
+            "description": "封面图-竖"
+        },
+        {
+            "name": "click",
+            "type": "int",
+            "description": "虚拟点击数"
+        },
+        {
+            "name": "real_click",
+            "type": "int",
+            "description": "真实点击数"
+        },
+        {
+            "name": "love",
+            "type": "int",
+            "description": "虚拟点赞"
+        },
+        {
+            "name": "real_love",
+            "type": "int",
+            "description": "真实点赞"
+        },
+        {
+            "name": "favorite",
+            "type": "int",
+            "description": "虚拟收藏数"
+        },
+        {
+            "name": "real_favorite",
+            "type": "int",
+            "description": "真实收藏数"
+        },
+        {
+            "name": "favorite_rate",
+            "type": "int",
+            "description": "收藏率"
+        },
+        {
+            "name": "click_total",
+            "type": "int",
+            "description": "点击总数"
+        },
+        {
+            "name": "love_total",
+            "type": "int",
+            "description": "点赞总数"
+        },
+        {
+            "name": "favorite_total",
+            "type": "int",
+            "description": "收藏总数"
+        },
+        {
+            "name": "comment",
+            "type": "int",
+            "description": "真实评论数"
+        },
+        {
+            "name": "buy",
+            "type": "int",
+            "description": "购买次数"
+        },
+        {
+            "name": "money",
+            "type": "int",
+            "description": "金币"
+        },
+        {
+            "name": "pay_type",
+            "type": "string",
+            "description": "购买类型 money<0免费 money=0vip money>0金币"
+        },
+        {
+            "name": "score",
+            "type": "int",
+            "description": "评分"
+        },
+        {
+            "name": "free_chapter",
+            "type": "string",
+            "description": "免费章节"
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "description": "描述"
+        },
+        {
+            "name": "chapter_count",
+            "type": "int",
+            "description": "总章节"
+        },
+        {
+            "name": "sort",
+            "type": "int",
+            "description": "排序"
+        },
+        {
+            "name": "is_adult",
+            "type": "int",
+            "description": "是否成人 0否 1是"
+        },
+        {
+            "name": "status",
+            "type": "int",
+            "description": "状态 -1已下架 0待上架  1已上架"
+        },
+        {
+            "name": "update_status",
+            "type": "int",
+            "description": "更新状态 0更新中 1已完结"
+        },
+        {
+            "name": "update_date",
+            "type": "string",
+            "description": "更新时间 周一 周二 ..."
+        },
+        {
+            "name": "last_update",
+            "type": "string",
+            "description": "最后更新时间"
+        },
+        {
+            "name": "icon",
+            "type": "string",
+            "description": "角标"
+        },
+        {
+            "name": "show_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "status",
+            "fields": {
+                "status": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}

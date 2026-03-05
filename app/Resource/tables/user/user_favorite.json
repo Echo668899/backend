@@ -1,0 +1,53 @@
+{
+    "table_name": "user_favorite",
+    "connect": "default",
+    "description": "用户收藏,适用于收藏某个板块",
+    "fields": [
+        {
+            "name": "_id",
+            "type": "string",
+            "description": "编号 {user_id}_{object_type}_{object_id}"
+        },
+        {
+            "name": "user_id",
+            "type": "int",
+            "description": "编号"
+        },
+        {
+            "name": "object_type",
+            "type": "string",
+            "description": "资源类型"
+        },
+        {
+            "name": "object_id",
+            "type": "string",
+            "description": "资源类型"
+        },
+        {
+            "name": "created_at",
+            "type": "int",
+            "description": "创建时间"
+        },
+        {
+            "name": "updated_at",
+            "type": "int",
+            "description": "更新时间"
+        }
+    ],
+    "index": [
+        {
+            "name": "user_id",
+            "fields": {
+                "user_id": 1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "object_type",
+            "fields": {
+                "object_type": 1
+            },
+            "type": "Normal"
+        }
+    ]
+}
