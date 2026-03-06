@@ -37,6 +37,7 @@ use App\Models\Comics\ComicsModel;
 use App\Models\Common\AdvAppModel;
 use App\Models\Common\AdvModel;
 use App\Models\Movie\MovieModel;
+use App\Models\Novel\NovelModel;
 use App\Models\Post\PostModel;
 use App\Models\User\UserModel;
 use App\Models\User\UserOrderModel;
@@ -180,7 +181,7 @@ class EventBusJob extends BaseJob
                 CenterDataService::doMovieBuy($payload->movieId, $movieRow['name'], $movieRow['categories'], '', $payload->orderSn, $payload->num);
                 break;
             case NovelBuyPayload::class:
-                $novelRow = MovieModel::findByID(strval($payload->novelId));
+                $novelRow = NovelModel::findByID(strval($payload->novelId));
                 CenterDataService::doReduceBalance($payload->novelId, $novelRow['name'], $payload->num, $payload->oldMoney, $payload->newMoney, 'content_purchase', $novelRow['created_at']);
                 break;
             case PostBuyPayload::class:
