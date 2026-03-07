@@ -8,6 +8,6 @@
          - release-1.0
      script:
          - cd /var/www/html/yc152_php
-         - git fetch
+         - git fetch origin
          - git checkout release-1.0
-         - git pull origin release-1.0
+         - git reset --hard origin/release-1.0
