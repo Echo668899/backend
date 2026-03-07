@@ -52,47 +52,16 @@
                             <?php foreach ($tpl['schema'] as $key=>$item):?>
                                 <?php if($item['type']=='list'):?>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">奖品列表:</label>
+                                        <label class="layui-form-label">奖品列表(请配置每一天):</label>
                                         <div class="layui-input-block">
                                             <table class="layui-table">
-                                                <thead><tr><td>名称</td><td>数量</td><td>概率</td><td>图片</td><td>类型</td><td></td></tr></thead>
+                                                <thead><tr><td>日期</td><td>名称</td><td>数量</td><td>图片</td><td>类型</td><td></td></tr></thead>
                                                 <tbody id="prize-table"></tbody>
                                             </table>
-                                            <button type="button" class="layui-btn layui-btn-sm" onclick="addPrize()">添加奖品</button>
-                                        </div>
-                                    </div>
-                                <?php elseif($item['type']=='number'):?>
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
-                                        <div class="layui-input-block">
-                                            <input name="tpl_config[<?php echo $key;?>]" value="<?php echo $item['default']?>" placeholder="<?php echo $item['label'];?>" type="number" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required" required/>
-                                        </div>
-                                    </div>
-                                <?php elseif($item['type']=='select'):?>
-                                    <div class="layui-row">
-                                        <div class="layui-col-md6">
-                                            <div class="layui-form-item">
-                                                <label class="layui-form-label layui-form-required"><?php echo $item['label'];?>:</label>
-                                                <div class="layui-input-block">
-                                                    <select name="tpl_config[mode]" id="mode-select">
-                                                        <?php foreach ($item['options'] as $opt): ?>
-                                                            <option value="<?php echo $opt['code']; ?>" <?php if($opt['code']==$item['default'])echo 'selected';?> > <?php echo $opt['code'].' | '.$opt['name']; ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="layui-col-md6">
-                                            <div class="layui-form-item">
-                                                <label class="layui-form-label layui-form-required">单次消耗:</label>
-                                                <div class="layui-input-block">
-                                                    <input type="number" name="tpl_config[mode_value]" class="layui-input" value="0"  placeholder="单次参与消耗,0为不消耗">
-                                                </div>
-                                            </div>
+<!--                                            <button type="button" class="layui-btn layui-btn-sm" onclick="addPrize()">添加奖品</button>-->
                                         </div>
                                     </div>
                                 <?php endif;?>
-
                             <?php endforeach;?>
                         </div>
 
@@ -159,12 +128,6 @@
                     addPrize(item);
                 });
             }
-            if (row.tpl_config && row.tpl_config.mode) {
-                $("#mode-select").val(row.tpl_config.mode);
-            }
-            if (row.tpl_config && row.tpl_config.mode_value) {
-                $("[name='tpl_config[mode_value]']").val(row.tpl_config.mode_value);
-            }
         }
 
         form.render('select');
@@ -172,11 +135,14 @@
         //时间
         laydate.render({
             elem: '#end_time',
-            type: 'datetime'
+            type: 'date',
+            done: function () { autoGeneratePrizesByRange(); }
         });
         laydate.render({
             elem: '#start_time',
-            type: 'datetime'
+            type: 'date',
+            done: function () { autoGeneratePrizesByRange(); }
+
         });
 
         //上传图片
@@ -218,21 +184,84 @@
 
     });
 
+    function autoGeneratePrizesByRange() {
+        let startVal = $("#start_time").val();
+        let endVal   = $("#end_time").val();
+
+        if (!startVal || !endVal) return;
+
+        let start = parseLayuiDatetime(startVal);
+        let end   = parseLayuiDatetime(endVal);
+
+        if (!start || !end) return;
+
+        if (end < start) {
+            showErrorMsg('结束时间不能早于开始时间');
+            return;
+        }
+
+        // ✅ 清理旧的“自动生成行”，保留手动添加行
+        $("#prize-table tr[data-auto='1']").remove();
+
+        // ✅ 遍历日期（按天）
+        let cur = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        let endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+
+        // 可选：限制最大天数，防止活动跨度一年导致卡死
+        let guard = 0;
+        while (cur <= endDate) {
+            if (++guard > 31) { // 自行调整
+                showErrorMsg('日期范围过大，请缩小活动周期');
+                break;
+            }
+
+            let ymd = formatYMD(cur);
+
+            // 你可以把这条奖品的内容按业务改掉：
+            addPrize({
+                _auto: 1,
+                _id:ymd,
+                name: '签到奖励',
+                num: 1,
+                image: '',
+                type: ''
+                // 你如果要把日期也提交给后端，可加个 date 字段，并在表单里增加隐藏 input（下方给你）
+            });
+
+            cur.setDate(cur.getDate() + 1);
+        }
+    }
+
+    function parseLayuiDatetime(str) {
+        // 兼容 'YYYY-MM-DD HH:mm:ss'
+        // Safari 对 '-' 解析不稳，替换为 '/'
+        let s = str.replace(/-/g, '/');
+        let d = new Date(s);
+        return isNaN(d.getTime()) ? null : d;
+    }
+
+    function formatYMD(d) {
+        let y = d.getFullYear();
+        let m = String(d.getMonth() + 1).padStart(2, '0');
+        let day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
     function addPrize(data = {}) {
-        // let index = $("#prize-table tr").length;
-        let index = prizeSeq++;
+        let index = window.prizeSeq++;
+        let isAuto = data._auto ? 1 : 0;
 
         let rowHtml = `
-<tr id="prize-${index}">
+<tr id="prize-${index}" data-index="${index}" data-auto="${isAuto}">
+    <td>
+        <input name="tpl_config[prizes][${index}][_id]" value="${data._id ?? ''}" class="layui-input">
+    </td>
     <td>
         <input name="tpl_config[prizes][${index}][name]" value="${data.name ?? ''}" class="layui-input">
     </td>
 
     <td>
         <input type="number" name="tpl_config[prizes][${index}][num]" value="${data.num ?? ''}" class="layui-input">
-    </td>
-    <td>
-        <input type="number" name="tpl_config[prizes][${index}][rate]" value="${data.rate ?? ''}" class="layui-input">
     </td>
 
     <td>
@@ -261,12 +290,8 @@
     </td>
 </tr>
 `;
-
         $("#prize-table").append(rowHtml);
-
-        layui.form.render(); // 渲染 select
-
-        // ⭐ 初始化这一行的上传
+        layui.form.render('select');
         initPrizeUpload(index);
     }
 

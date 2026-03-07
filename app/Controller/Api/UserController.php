@@ -43,6 +43,7 @@ class UserController extends BaseApiController
         $this->sendSuccessResult($result);
     }
 
+
     /**
      * 头像库
      * @return void
@@ -74,10 +75,10 @@ class UserController extends BaseApiController
      */
     public function passwordAction()
     {
-        $userId      = $this->getUserId();
+        $userId = $this->getUserId();
         $oldPassword = $this->getRequest('old_password', 'string');
         $newPassword = $this->getRequest('new_password', 'string');
-        $result      = UserRepository::changePassword($userId, $oldPassword, $newPassword);
+        $result = UserRepository::changePassword($userId, $oldPassword, $newPassword);
         $this->sendSuccessResult($result);
     }
 
@@ -88,12 +89,12 @@ class UserController extends BaseApiController
     {
         $userId = $this->getUserId();
         $homeId = $this->getRequest('home_id');
-        $action = $this->getRequest('action', 'string', 'follow');
+        $action = $this->getRequest('action','string','follow');
         if (empty($homeId) || $homeId < 1) {
             $this->sendErrorResult('请检查参数!');
         }
-        $result = UserRepository::doFollow($userId, $homeId, $action);
-        $this->sendSuccessResult(['status' => $result]);
+        $result = UserRepository::doFollow($userId, $homeId,$action);
+        $this->sendSuccessResult(['status'=>$result]);
     }
 
     /**
@@ -102,14 +103,14 @@ class UserController extends BaseApiController
     public function followAction()
     {
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
+        $page = $this->getRequest('page', 'int', 1);
         $homeId = $this->getRequest('home_id', 'string');
-        $action = $this->getRequest('action', 'string', 'follow');
+        $action = $this->getRequest('action','string','follow');
         $cursor = $this->getRequest('cursor', 'string');
-        if (empty($homeId) || $homeId < 1) {
-            $this->sendErrorResult('请检查参数!');
+        if (empty($homeId)) {
+            $homeId = $userId;
         }
-        $result = UserRepository::getFollowList($userId, $homeId, $action, $page, $cursor);
+        $result = UserRepository::getFollowList($userId, $homeId,$action, $page,$cursor);
         $this->sendSuccessResult($result);
     }
 
@@ -119,13 +120,13 @@ class UserController extends BaseApiController
     public function fansAction()
     {
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
+        $page = $this->getRequest('page', 'int', 1);
         $homeId = $this->getRequest('home_id', 'string');
         $cursor = $this->getRequest('cursor', 'string');
-        if (empty($homeId) || $homeId < 1) {
-            $this->sendErrorResult('请检查参数!');
+        if (empty($homeId)) {
+            $homeId = $userId;
         }
-        $result = UserRepository::getFansList($userId, $homeId, $page, $cursor);
+        $result = UserRepository::getFansList($userId, $homeId,$page,$cursor);
         $this->sendSuccessResult($result);
     }
 
@@ -136,11 +137,11 @@ class UserController extends BaseApiController
      */
     public function doFavoriteAction()
     {
-        $userId     = $this->getUserId();
+        $userId = $this->getUserId();
         $objectType = $this->getRequest('object_type', 'string', '');
-        $objectId   = $this->getRequest('object_id', 'string', '');
-        $result     = UserRepository::doFavorite($userId, $objectType, $objectId);
-        $this->sendSuccessResult($result ? 'y' : 'n');
+        $objectId = $this->getRequest('object_id', 'string', '');
+        $result = UserRepository::doFavorite($userId, $objectType,$objectId);
+        $this->sendSuccessResult($result?'y':'n');
     }
 
     /**
@@ -149,10 +150,10 @@ class UserController extends BaseApiController
      */
     public function favoriteAction()
     {
-        $userId     = $this->getUserId();
+        $userId = $this->getUserId();
         $objectType = $this->getRequest('object_type', 'string', '');
-        $page       = $this->getRequest('page', 'int', 1);
-        $result     = UserRepository::favorite($userId, $objectType, $page);
+        $page = $this->getRequest('page', 'int', 1);
+        $result = UserRepository::favorite($userId, $objectType,$page);
         $this->sendSuccessResult($result);
     }
 
@@ -162,7 +163,7 @@ class UserController extends BaseApiController
     public function vipAction()
     {
         $userId = $this->getUserId();
-        $group  = $this->getRequest('group', 'string', 'normal');
+        $group = $this->getRequest('group', 'string', 'normal');
         $result = UserRepository::vipInfo($userId, $group);
         $this->sendSuccessResult($result);
     }
@@ -173,8 +174,8 @@ class UserController extends BaseApiController
      */
     public function doVipAction()
     {
-        $userId    = $this->getUserId();
-        $groupId   = $this->getRequest('group_id', 'int');
+        $userId = $this->getUserId();
+        $groupId = $this->getRequest('group_id', 'int');
         $paymentId = $this->getRequest('payment_id', 'string');
         if (empty($groupId)) {
             $this->sendErrorResult('请选择购买套餐!');
@@ -193,7 +194,7 @@ class UserController extends BaseApiController
     public function rechargeAction()
     {
         $userId = $this->getUserId();
-        $type   = $this->getRequest('type', 'string', 'point');
+        $type = $this->getRequest('type', 'string', 'point');
         if (!in_array($type, ['point'])) {
             $this->sendErrorResult('参数错误');
         }
@@ -207,10 +208,10 @@ class UserController extends BaseApiController
      */
     public function doRechargeAction()
     {
-        $userId    = $this->getUserId();
+        $userId = $this->getUserId();
         $productId = $this->getRequest('group_id', 'int');
         $paymentId = $this->getRequest('payment_id', 'string');
-        $type      = $this->getRequest('type', 'string', 'point');
+        $type = $this->getRequest('type', 'string', 'point');
         if (empty($productId)) {
             $this->sendErrorResult('请选择购买套餐!');
         }
@@ -228,10 +229,10 @@ class UserController extends BaseApiController
     public function accountLogAction()
     {
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
-        $field  = $this->getRequest('field', 'string');
+        $page = $this->getRequest('page', 'int', 1);
+        $field = $this->getRequest('field', 'string');
         $cursor = $this->getRequest('cursor', 'string');
-        $result = UserRepository::getAccountLog($userId, $field, $page, $cursor);
+        $result = UserRepository::getAccountLog($userId,$field, $page,$cursor);
         $this->sendSuccessResult($result);
     }
 
@@ -239,23 +240,23 @@ class UserController extends BaseApiController
      * 兑换码
      * @return void
      */
-    public function doCodeAction()
-    {
+    public function doCodeAction(){
         $userId = $this->getUserId();
-        $code   = $this->getRequest('code', 'string');
-        $result = UserRepository::doCode($userId, $code);
+        $code = $this->getRequest('code', 'string');
+        $result = UserRepository::doCode($userId,$code);
         $this->sendSuccessResult($result);
+
     }
 
     /**
      * 兑换码记录
      * @return void
      */
-    public function codeLogAction()
-    {
+    public function codeLogAction(){
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
-        $result = UserRepository::codeLog($userId, $page);
+        $page = $this->getRequest('page', 'int',1);
+        $cursor = $this->getRequest('cursor', 'string');
+        $result = UserRepository::codeLog($userId,$page,20,$cursor);
         $this->sendSuccessResult($result);
     }
 
@@ -266,9 +267,9 @@ class UserController extends BaseApiController
     public function orderLogAction()
     {
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
-        $type   = $this->getRequest('type', 'string');
-        $result = UserRepository::getOrderLog($userId, $type, $page);
+        $page = $this->getRequest('page', 'int',1);
+        $type = $this->getRequest('type','string');
+        $result = UserRepository::getOrderLog($userId,$type,$page);
         $this->sendSuccessResult($result);
     }
 
@@ -290,10 +291,12 @@ class UserController extends BaseApiController
     public function shareLogAction()
     {
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
-        $result = UserRepository::getShareLog($userId, $page);
+        $page = $this->getRequest('page','int',1);
+        $cursor = $this->getRequest('cursor', 'string');
+        $result = UserRepository::getShareLog($userId,$page,20,$cursor);
         $this->sendSuccessResult($result);
     }
+
 
     /**
      * 客户端心跳-活跃
@@ -305,10 +308,10 @@ class UserController extends BaseApiController
     public function doActiveAction()
     {
         $userId = $this->getUserId();
-        $route  = $this->getRequest('route', 'string');
-        $params = $this->getRequest('params', 'string');
+        $route = $this->getRequest('route','string');
+        $params = $this->getRequest('params','string');
         UserRepository::doActive($userId, $route, $params);
-        /* $this->sendSuccessResult();//没有响应的意义,浪费出口带宽 */
+        /*$this->sendSuccessResult();//没有响应的意义,浪费出口带宽*/
     }
 
     /**
@@ -318,8 +321,8 @@ class UserController extends BaseApiController
     public function getActiveAction()
     {
         $userId = $this->getUserId(false);
-        $route  = $this->getRequest('route', 'string');
-        $params = $this->getRequest('params', 'string');
+        $route = $this->getRequest('route','string');
+        $params = $this->getRequest('params','string');
         $result = UserRepository::getActive($route, $params);
         $this->sendSuccessResult($result);
     }
@@ -330,16 +333,17 @@ class UserController extends BaseApiController
      */
     public function doWithdrawAction()
     {
-        $userId       = $this->getUserId();
-        $method       = $this->getRequest('method', 'string');// 提现方式
-        $bankName     = $this->getRequest('bank_name', 'string');// 银行名称
-        $accountName  = $this->getRequest('account_name', 'string');// 账号名称
-        $account      = $this->getRequest('account', 'string');// 账号
-        $num          = $this->getRequest('num', 'int');// 提现数量
-        $balanceField = $this->getRequest('field', 'string', 'balance');
-        UserRepository::doWithdraw($userId, $method, $bankName, $accountName, $account, $num, $balanceField);
+        $userId = $this->getUserId();
+        $method = $this->getRequest('method','string');//提现方式
+        $bankName = $this->getRequest('bank_name','string');//银行名称
+        $accountName = $this->getRequest('account_name','string');//账号名称
+        $account = $this->getRequest('account','string');//账号
+        $num = $this->getRequest('num','int');//提现数量
+        $balanceField = $this->getRequest('field','string','balance');
+        UserRepository::doWithdraw($userId,$method,$bankName,$accountName,$account,$num,$balanceField);
         $this->sendSuccessResult();
     }
+
 
     /**
      * 提现记录
@@ -348,9 +352,9 @@ class UserController extends BaseApiController
     public function withdrawLogAction()
     {
         $userId = $this->getUserId();
-        $page   = $this->getRequest('page', 'int', 1);
-        $field  = $this->getRequest('field', 'string');
-        $result = UserRepository::getWithdrawLog($userId, $field, $page);
+        $page = $this->getRequest('page', 'int', 1);
+        $field = $this->getRequest('field', 'string');
+        $result = UserRepository::getWithdrawLog($userId,$field, $page);
         $this->sendSuccessResult($result);
     }
 

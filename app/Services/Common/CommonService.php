@@ -16,11 +16,12 @@ class CommonService extends BaseService
         cache()->clear();
     }
 
+
     /**
      * 获取cdn链接
-     * @param                              $link
-     * @param                              $contentType
-     * @param                              $cdnDrive
+     * @param $link
+     * @param $contentType
+     * @param $cdnDrive
      * @return array|mixed|string|string[]
      */
     public static function getCdnUrl($link, $contentType = 'image', $cdnDrive = null)
@@ -28,18 +29,18 @@ class CommonService extends BaseService
         if (empty($link) || strpos($link, '://') > 0) {
             return strval($link);
         }
-        if (strpos($link, 'media://') !== false) {
+        if (strpos($link, "media://") !== false) {
             $link = str_replace('media://', '', $link);
         }
 
         $cdnDrive = $cdnDrive ?: self::getCdnDrive($contentType);
-        $domain   = self::getCdnDomain($contentType, $cdnDrive);
+        $domain = self::getCdnDomain($contentType, $cdnDrive);
         if (empty($domain) || empty($cdnDrive)) {
             return '';
         }
 
         $ext = self::getLinkExt($link);
-        if (!in_array($cdnDrive, ['free', 'source']) && in_array($ext, ['.txt', '.gif', '.jpg', '.jpeg', '.bmp', '.png', '.webp'])) {
+        if (!in_array($cdnDrive,['free','source']) && in_array($ext, array('.txt', '.gif', '.jpg', '.jpeg', '.bmp', '.png', '.webp'))) {
             $link = str_replace($ext, '.bnc', $link);
         }
         try {
@@ -57,7 +58,7 @@ class CommonService extends BaseService
                     $needCache = false;
                     if (strpos($link, '.bnc') !== false) {
                         $needCache = true;
-                        $cacheKey  = 'cdn_aws:' . md5($link);
+                        $cacheKey = 'cdn_aws:' . md5($link);
                     }
                     if ($needCache) {
                         $fullLink = redis()->get($cacheKey);
@@ -72,13 +73,14 @@ class CommonService extends BaseService
                     return $fullLink;
             }
         } catch (\Error $e) {
+
         }
         return $domain . $link;
     }
 
     /**
      * 获取cdn驱动
-     * @param             $contentType
+     * @param $contentType
      * @return mixed|null
      */
     public static function getCdnDrive($contentType)
@@ -88,15 +90,15 @@ class CommonService extends BaseService
 
     /**
      * 获取cdn域名
-     * @param               $contentType
-     * @param               $cdnDrive
+     * @param $contentType
+     * @param $cdnDrive
      * @return mixed|string
      */
     public static function getCdnDomain($contentType, $cdnDrive)
     {
         $domains = ConfigService::getConfig('cdn_' . $contentType);
 
-        $split   = CommonUtil::getSplitChar($domains);
+        $split = CommonUtil::getSplitChar($domains);
         $domains = explode($split, $domains);
 
         $backup = '';
@@ -113,10 +115,28 @@ class CommonService extends BaseService
     }
 
     /**
+     * 获取后缀
+     * @param $filename
+     * @return mixed|string
+     */
+    private static function getLinkExt($filename)
+    {
+        $exts = array(
+            '.txt', '.gif', '.jpg', '.jpeg', '.bmp', '.png', '.webp'
+        );
+        foreach ($exts as $ext) {
+            if (strpos($filename, $ext) > 0) {
+                return $ext;
+            }
+        }
+        return '';
+    }
+
+    /**
      * 限流动作检查
-     * @param       $keyName
-     * @param  int  $seconds
-     * @param  int  $num
+     * @param $keyName
+     * @param int $seconds
+     * @param int $num
      * @return bool
      */
     public static function checkActionLimit($keyName, $seconds = 60, $num = 3)
@@ -130,7 +150,7 @@ class CommonService extends BaseService
 
     /**
      * 获取计数器
-     * @param            $keyName
+     * @param $keyName
      * @return float|int
      */
     public static function getRedisCounter($keyName)
@@ -141,7 +161,7 @@ class CommonService extends BaseService
 
     /**
      * 获取计数器-批量
-     * @param        $keyNames
+     * @param $keyNames
      * @return array
      */
     public static function getRedisCounters($keyNames)
@@ -156,9 +176,9 @@ class CommonService extends BaseService
 
     /**
      * 更新设置计数器
-     * @param            $keyName
-     * @param  int       $value
-     * @param  int       $timeout
+     * @param $keyName
+     * @param int $value
+     * @param integer $timeout
      * @return float|int
      */
     public static function setRedisCounter($keyName, int $value, $timeout = null)
@@ -169,8 +189,8 @@ class CommonService extends BaseService
 
     /**
      * 更新设置计数器
-     * @param            $keyName
-     * @param  int       $value
+     * @param $keyName
+     * @param int $value
      * @return float|int
      */
     public static function updateRedisCounter($keyName, int $value)
@@ -181,34 +201,40 @@ class CommonService extends BaseService
 
     public static function getUploadImageUrl($configs)
     {
+        /**
+         * 根据项目情况打开
+         */
+
+        /*其他*/
         return sprintf('%s/upload/image?key=%s', $configs['upload_url'], $configs['upload_key']);
+
+        /*tx*/
+        return sprintf('%s/upload/image?project=%s&upload_token=%s', $configs['upload_url'],env()->path('app.name'), md5(strval(microtime(true))));
     }
 
     public static function getUploadFileUrl($configs)
     {
+        /**
+         * 根据项目情况打开
+         */
+
+        /*其他*/
         return sprintf('%s/upload/byte?key=%s', $configs['upload_url'], $configs['upload_key']);
+
+        /*tx*/
+        return sprintf('%s/upload/video?project=%s&upload_token=%s', $configs['upload_url'],env()->path('app.name'),md5(strval(microtime(true))));
+
     }
 
     public static function getUploadFileQueryUrl($configs)
     {
+        /**
+         * 根据项目情况打开
+         */
+        /*其他*/
         return sprintf('%s/upload/query?key=%s', $configs['upload_url'], $configs['upload_key']);
-    }
 
-    /**
-     * 获取后缀
-     * @param               $filename
-     * @return mixed|string
-     */
-    private static function getLinkExt($filename)
-    {
-        $exts = [
-            '.txt', '.gif', '.jpg', '.jpeg', '.bmp', '.png', '.webp'
-        ];
-        foreach ($exts as $ext) {
-            if (strpos($filename, $ext) > 0) {
-                return $ext;
-            }
-        }
-        return '';
+        /*tx*/
+        return sprintf('%s/upload/query?project=%s&upload_token=%s', $configs['upload_url'],env()->path('app.name'),md5(strval(microtime(true))));
     }
 }

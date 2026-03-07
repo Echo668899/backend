@@ -99,6 +99,14 @@
                 "username": 1
             },
             "type": "Normal"
+        },
+        {
+            "name": "user_id_updated_at",
+            "fields": {
+                "user_id": 1,
+                "updated_at": -1
+            },
+            "type": "Normal"
         }
     ]
 }

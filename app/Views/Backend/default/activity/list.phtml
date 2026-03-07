@@ -45,6 +45,7 @@
                 <div class="layui-btn-container">
                     <button class="layui-btn layui-btn-xs" lay-event="add_lottery">添加抽奖活动</button>
                     <button class="layui-btn layui-btn-xs" lay-event="add_countdown">添加倒计时活动</button>
+                    <button class="layui-btn layui-btn-xs" lay-event="add_sign">添加签到活动</button>
                     <button class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
                 </div>
             </script>
@@ -143,6 +144,13 @@
                     layerIndex = layer.open({
                         type: 2,
                         content: "<?php echo url()->get('/activity/detail'); ?>?tpl_id=countdown",
+                        area: ['80%', '90%']
+                    });
+                    break;
+                case 'add_sign':
+                    layerIndex = layer.open({
+                        type: 2,
+                        content: "<?php echo url()->get('/activity/detail'); ?>?tpl_id=sign",
                         area: ['80%', '90%']
                     });
                     break;

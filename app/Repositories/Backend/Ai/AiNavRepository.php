@@ -12,113 +12,116 @@ use App\Models\Ai\AiNavModel;
 use App\Services\Ai\AiNavService;
 use App\Utils\CommonUtil;
 
+/**
+ *
+ */
 class AiNavRepository extends BaseRepository
 {
     /**
      * 获取列表
-     * @param        $request
+     * @param $request
      * @return array
      */
     public static function getList($request)
     {
-        $page     = self::getRequest($request, 'page', 'int', 1);
+        $page = self::getRequest($request, 'page', 'int', 1);
         $pageSize = self::getRequest($request, 'pageSize', 'int', 15);
-        $sort     = self::getRequest($request, 'sort', 'string', '_id');
-        $order    = self::getRequest($request, 'order', 'int', -1);
+        $sort = self::getRequest($request, 'sort', 'string', '_id');
+        $order = self::getRequest($request, 'order', 'int', -1);
 
-        $query  = [];
-        $filter = [];
+        $query = array();
+        $filter = array();
 
         if ($request['name']) {
             $filter['name'] = self::getRequest($request, 'name');
-            $query['name']  = ['$regex' => $filter['name'], '$options' => 'i'];
+            $query['name'] = array('$regex' => $filter['name'], '$options' => 'i');
         }
         if ($request['position']) {
             $filter['position'] = self::getRequest($request, 'position', 'string');
-            $query['position']  = $filter['position'];
+            $query['position'] = $filter['position'];
         }
 
-        $skip   = ($page - 1) * $pageSize;
-        $fields = [];
-        $count  = AiNavModel::count($query);
-        $items  = AiNavModel::find($query, $fields, [$sort => $order], $skip, $pageSize);
+        $skip = ($page - 1) * $pageSize;
+        $fields = array();
+        $count = AiNavModel::count($query);
+        $items = AiNavModel::find($query, $fields, array($sort => $order), $skip, $pageSize);
         foreach ($items as $index => $item) {
             $item['is_disabled'] = CommonValues::getIs($item['is_disabled']);
-            $item['position']    = CommonValues::getAiNavPosition($item['position']);
-            $item['created_at']  = date('Y-m-d H:i:s', $item['created_at']);
-            $item['updated_at']  = date('Y-m-d H:i:s', $item['updated_at']);
+            $item['position'] = CommonValues::getAiNavPosition($item['position']);
+            $item['created_at'] = date('Y-m-d H:i:s', $item['created_at']);
+            $item['updated_at'] = date('Y-m-d H:i:s', $item['updated_at']);
 
             $item['style'] = value(function () use ($item) {
                 $style = CommonValues::getAiNavStyle($item['style']);
-                return $item['style'] . ' | ' . (is_array($style) ? '注意:错误的样式' : $style);
+                return $item['style'] . ' | ' . (is_array($style)?"注意:错误的样式":$style);
             });
             $items[$index] = $item;
         }
 
-        return [
-            'filter'   => $filter,
-            'items'    => empty($items) ? [] : array_values($items),
-            'count'    => $count,
-            'page'     => $page,
+        return array(
+            'filter' => $filter,
+            'items' => empty($items) ? array() : array_values($items),
+            'count' => $count,
+            'page' => $page,
             'pageSize' => $pageSize
-        ];
+        );
     }
 
     /**
-     * @param                 $data
+     * @param $data
      * @return bool|int|mixed
      * @throws \Exception
      */
     public static function save($data)
     {
-        $row = [
-            'name'            => self::getRequest($data, 'name'),
-            'code'            => self::getRequest($data, 'code', 'string'),
-            'position'        => self::getRequest($data, 'position', 'string'),
-            'style'           => self::getRequest($data, 'style', 'string'),
-            'sort'            => self::getRequest($data, 'sort', 'int', 0),
-            'filter'          => self::getRequest($data, 'filter'),
-            'is_disabled'     => self::getRequest($data, 'is_disabled', 'int', 0),
-            'seo_title'       => self::getRequest($data, 'seo_title', 'string'),
-            'seo_keywords'    => self::getRequest($data, 'seo_keywords', 'string'),
+        $row = array(
+            'name'      => self::getRequest($data, 'name'),
+            'code'      => self::getRequest($data, 'code', 'string'),
+            'position'  => self::getRequest($data, 'position', 'string'),
+            'style'     => self::getRequest($data, 'style', 'string'),
+            'sort'      => self::getRequest($data, 'sort', 'int',0),
+            'filter'    => self::getRequest($data, 'filter'),
+            'is_disabled' => self::getRequest($data, 'is_disabled', 'int',0),
+            'seo_title' => self::getRequest($data, 'seo_title', 'string'),
+            'seo_keywords' => self::getRequest($data, 'seo_keywords', 'string'),
             'seo_description' => self::getRequest($data, 'seo_description', 'string'),
-        ];
-        if (empty($row['name']) || empty($row['position'])) {
+        );
+        if (empty($row['name'])|| empty($row['position'])) {
             throw  new BusinessException(StatusCode::PARAMETER_ERROR, '参数错误!');
         }
 
-        if ($row['style'] == 'ai_2') {
+        if($row['style']=='ai_2'){
             $row['filter'] = stripcslashes($row['filter']);
             if (!json_decode($row['filter'], true)) {
-                throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getComicsNavStyle($row['style']) . ' 必须输入搜索条件!');
+                throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getComicsNavStyle($row['style']).' 必须输入搜索条件!');
             }
         }
 
-        if ($row['style'] == 'ai_3') {
+        if($row['style']=='ai_3'){
             $row['filter'] = stripcslashes($row['filter']);
-            if (CommonUtil::arrayDepth(json_decode($row['filter'], true)) == 1) {
-                throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getComicsNavStyle($row['style']) . ' 该样式务必输入数组,格式为: [{"name":"二次元":"filter":{}},{"name":"二次元":"filter":{}}]  其中filter为具体搜索条件,搜索条件参考模块 ');
+            if(CommonUtil::arrayDepth(json_decode($row['filter'],true))==1){
+                throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getAiNavStyle($row['style']).' 该样式务必输入数组,格式为: [{"name":"二次元","filter":{}},{"name":"二次元","filter":{}}]  其中filter为具体搜索条件,搜索条件参考模块 ');
             }
 
             $hasChildFilter = false;
-            foreach (json_decode($row['filter'], true) as $index => $item) {
-                if (empty($item['name'])) {
-                    throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getComicsNavStyle($row['style']) . " 搜索条件第{$index}项,name必须有效\n可寻求技术指导");
+            foreach (json_decode($row['filter'],true) as $index=>$item) {
+                if(empty($item['name'])){
+                    throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getAiNavStyle($row['style'])." 搜索条件第{$index}项,name必须有效\n可寻求技术指导");
                 }
-                if (empty($item['filter'])) {
-                    throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getComicsNavStyle($row['style']) . " 搜索条件第{$index}项,filter必须是有效的搜索条件\n可寻求技术指导");
+                if(empty($item['filter'])){
+                    throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getAiNavStyle($row['style'])." 搜索条件第{$index}项,filter必须是有效的搜索条件\n可寻求技术指导");
                 }
-                $hasChildFilter = true;
+                $hasChildFilter=true;
             }
-            if ($hasChildFilter == false) {
-                throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getComicsNavStyle($row['style']) . " 搜索条件无效\n可寻求技术指导");
+            if($hasChildFilter==false){
+                throw  new BusinessException(StatusCode::PARAMETER_ERROR, CommonValues::getAiNavStyle($row['style'])." 搜索条件无效\n可寻求技术指导");
             }
         }
         if ($data['_id']) {
             $row['_id'] = self::getRequest($data, '_id', 'int');
         }
         $result = AiNavModel::save($row);
-        if ($result) {
+        if($result){
             AiNavService::deleteCache();
         }
         return $result;
@@ -126,7 +129,7 @@ class AiNavRepository extends BaseRepository
 
     /**
      * 获取详情
-     * @param             $id
+     * @param $id
      * @return mixed
      * @throws \Exception
      */
@@ -140,7 +143,7 @@ class AiNavRepository extends BaseRepository
     }
 
     /**
-     * @param        $id
+     * @param $id
      * @return mixed
      */
     public static function delete($id)

@@ -20,40 +20,38 @@ class AdvService extends BaseService
     }
 
     /**
-     * @param             $positionCode
-     * @param             $userIsVip
-     * @param  int        $limit
+     * @param $positionCode
+     * @param $userIsVip
+     * @param int $limit
      * @return mixed|null
      * @throws Exception
      */
     public static function getRandAd($positionCode, $userIsVip, $limit = 100)
     {
         $items = self::getAll($positionCode, $userIsVip, $limit);
-        if (empty($items)) {
-            return null;
-        }
+        if (empty($items)) return null;
         return $items[mt_rand(0, count($items) - 1)];
     }
 
     /**
-     * @param            $positionCode
-     * @param            $userIsVip
-     * @param  int       $limit
+     * @param $positionCode
+     * @param $userIsVip
+     * @param int $limit
      * @return array
      * @throws Exception
      */
     public static function getAll($positionCode, $userIsVip = null, $limit = 100): array
     {
         $keyName = CacheKey::ADV;
-        $result  = cache()->get($keyName);
+        $result = cache()->get($keyName);
         if (is_null($result)) {
             $nowTime = time();
-            $query   = [
+            $query = array(
                 'is_disabled' => 0,
-                'start_time'  => ['$lte' => $nowTime],
-                'end_time'    => ['$gte' => $nowTime]
-            ];
-            $result = AdvModel::find($query, [], ['sort' => -1], 0, 1000);
+                'start_time' => array('$lte' => $nowTime),
+                'end_time' => array('$gte' => $nowTime)
+            );
+            $result = AdvModel::find($query, array(), array('sort' => -1), 0, 1000);
 
             foreach ($result as &$item) {
                 $item['content'] = CommonService::getCdnUrl($item['content'], $item['type']);
@@ -66,7 +64,7 @@ class AdvService extends BaseService
             if ($positionCode != $item['position_code']) {
                 continue;
             }
-            if ($item['right'] != 'all' && !empty($userIsVip)) {
+            if($item['right']!='all'&&!empty($userIsVip)){
                 if ($userIsVip == 'y' && $item['right'] != 'vip') {
                     continue;
                 }
@@ -79,73 +77,153 @@ class AdvService extends BaseService
                 break;
             }
             $rows[] = [
-                'id'          => strval($item['_id']),
-                'name'        => strval($item['name']),
+                'id' => strval($item['_id']),
+                'name' => strval($item['name']),
                 'description' => strval($item['description']),
-                'type'        => strval($item['type']),
-                'content'     => strval($item['content']),
-                'link'        => strval($item['link']),
-                'time'        => strval($item['show_time']),
+                'type' => strval($item['type']),
+                'content' => strval($item['content']),
+                'link' => strval($item['link']),
+                'time' => strval($item['show_time']),
             ];
         }
         return $rows;
     }
 
     /**
-     * 插入广告到列表 $pos = $n * $period + $index + $insertCount;
-     * @param  array     $list
-     * @param  string    $adCode
-     * @param  int       $index  广告插入的偏移位置
-     * @param  int       $period 控制每插入一条广告后，间隔多少个原始数据项
-     * @param  bool      $loop
+     * 插入广告到列表,支持分页
+     * @param array $list
+     * @param string $adCode
+     * @param int $index 广告插入起始偏移位置
+     * @param int $period 插入间隔
+     * @param int $page
+     * @param int $pageSize
+     * @param bool $loop 是否循环(广告不足时循环插入)
      * @return array
      * @throws Exception
      */
-    public static function insertAdsToList(array $list, string $adCode, int $index, int $period, bool $loop = false): array
-    {
+    public static function insertAdsToListByPage(array $list, string $adCode, int $index, int $period, int $page = 1, int $pageSize = 10, bool $loop = false): array {
         $ads = AdvService::getAll($adCode);
-        if (empty($ads)) {
-            return $list;
-        }
+        if (empty($ads)) return $list;
 
-        shuffle($ads); // 打乱广告顺序
+//        shuffle($ads);//不用打乱广告
 
-        // 标记广告
         foreach ($ads as &$ad) {
             $ad['_ad'] = true;
         }
-        unset($ad); // 避免引用残留
-
-        $result      = $list;
-        $insertCount = 0;
+        unset($ad);
 
         $adCount = count($ads);
-        $adIndex = 0;
 
-        while (true) {
-            $pos = $insertCount * $period + $index + $insertCount;
+        // 当前页在“原始 list（不含广告）”中的全局起始下标
+        $page = max(1, $page);
+        $pageSize = max(1, $pageSize);
+        $start = ($page - 1) * $pageSize;
+        $endExclusive = $start + $pageSize;
 
-            if ($pos >= count($result)) {
-                break;
+        // 该全局位置对应的“第几个广告插入点”
+        // 插入点：pos(k) = index + k * period   （pos 是在原始 list 中的下标）
+        // 需要找到所有 pos(k) 落在 [start, endExclusive) 的插入点
+        $result = $list;
+
+        // k 的最小值：pos(k) >= start  => k >= (start - index) / period
+        $kStart = (int)ceil(($start - $index) / $period);
+        if ($kStart < 0) $kStart = 0;
+
+        // k 的最大值：pos(k) < endExclusive
+        $kEnd = (int)floor(($endExclusive - 1 - $index) / $period);
+
+        if ($kEnd < $kStart) {
+            return $result; // 当前页没有广告插入点
+        }
+
+        // 为了在同一个页内 splice 时位置不被后续插入影响，从后往前插
+        // 在“当前页 list”里的插入位置：localPos = pos(k) - start
+        for ($k = $kEnd; $k >= $kStart; $k--) {
+            $posInOrigin = $index + $k * $period;
+
+            // 如果当前页实际返回的 list 不是满 pageSize（例如最后一页），要保护一下
+            $localPos = $posInOrigin - $start;
+            if ($localPos < 0 || $localPos > count($result)) {
+                continue;
             }
 
-            // 获取当前广告
+            // 选广告：第 k 次插入用第 k 个广告（保持跨页稳定）
+            if (!$loop && $k >= $adCount) {
+                continue; // 不循环则广告用完后不再插
+            }
+            $adIndex = $loop ? ($k % $adCount) : $k;
             $currentAd = $ads[$adIndex];
 
-            array_splice($result, $pos, 0, [$currentAd]);
-            $insertCount++;
+            array_splice($result, $localPos, 0, [$currentAd]);
+        }
 
-            $adIndex++;
+        return $result;
+    }
 
-            // 如果没有开启循环且广告用完，结束插入
-            if (!$loop && $adIndex >= $adCount) {
-                break;
+    /**
+     * 插入广告块到列表,支持分页
+     * @param array $list
+     * @param string $adCode
+     * @param int $index
+     * @param int $page
+     * @param int $pageSize
+     * @return array
+     * @throws Exception
+     */
+    public static function insertAdsAllToListByPage(array $list, string $adCode, int $index, int $period, int $page = 1, int $pageSize = 10, bool $loop = false): array {
+        $ads = AdvService::getAll($adCode);
+        if (empty($ads)) return $list;
+
+        $page     = max(1, $page);
+        $pageSize = max(1, $pageSize);
+
+        $result       = $list;
+        $currentCount = count($result);
+        if ($currentCount === 0) {
+            return $result;
+        }
+
+        // 当前页在“原始 list（不含广告）”中的全局起始/结束下标
+        $start        = ($page - 1) * $pageSize;
+        // 用当前页实际条数来算结束位置，兼容最后一页不足 pageSize 的情况
+        $endExclusive = $start + $currentCount;  // [start, endExclusive)
+
+        // 插入点：pos(k) = index + k * period   （pos 是在原始 list 中的下标）
+        // 需要找到所有 pos(k) 落在 [start, endExclusive) 的插入点
+
+        // k 的最小值：pos(k) >= start  => k >= (start - index) / period
+        $kStart = (int)ceil(($start - $index) / $period);
+        if ($kStart < 0) $kStart = 0;
+
+        // k 的最大值：pos(k) <= endExclusive - 1
+        $kEnd = (int)floor(($endExclusive - 1 - $index) / $period);
+
+        if ($kEnd < $kStart) {
+            return $result; // 当前页没有广告插入点
+        }
+
+        // 为了在同一个页内 splice 时位置不被后续插入影响，从后往前插
+        // 在“当前页 list”里的插入位置：localPos = pos(k) - start
+        for ($k = $kEnd; $k >= $kStart; $k--) {
+            // 不循环时，只插第一组（全局第一个插入点）
+            if (!$loop && $k > 0) {
+                continue;
             }
 
-            // 循环使用广告
-            if ($loop && $adIndex >= $adCount) {
-                $adIndex = 0;
+            $posInOrigin = $index + $k * $period;
+
+            $localPos = $posInOrigin - $start;
+            if ($localPos < 0 || $localPos > count($result)) {
+                continue;
             }
+
+            // ⭐ 关键：在这里插入的是「一个广告块对象」，不是把 $ads 展开插进去
+            $adBlock = [
+                'ads' => $ads,
+                '_ad' => true,
+            ];
+
+            array_splice($result, $localPos, 0, [$adBlock]);
         }
 
         return $result;

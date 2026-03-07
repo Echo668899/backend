@@ -14,19 +14,20 @@ class ActivityTplService extends BaseService
      */
     public static function getAll(): array
     {
-        $rows  = [];
-        $class = [
+        $rows = [];
+        $class=[
             \App\Services\Activity\Handler\LotteryHandler::class,
             \App\Services\Activity\Handler\CountdownHandler::class,
+            \App\Services\Activity\Handler\SignHandler::class,
         ];
         foreach ($class as $item) {
-            $object                = new $item();
-            $rows[$object->code()] = [
-                'handler'     => $item,
-                'code'        => $object->code(),
-                'name'        => $object->name(),
-                'description' => $object->description(),
-                'schema'      => $object->schema(),
+            $object = new $item();
+            $rows[$object->code()]=[
+                'handler'=>$item,
+                'code'  =>$object->code(),
+                'name'  =>$object->name(),
+                'description'=>$object->description(),
+                'schema'=>$object->schema(),
             ];
         }
         return $rows;
