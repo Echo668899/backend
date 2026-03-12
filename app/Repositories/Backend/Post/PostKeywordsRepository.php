@@ -18,56 +18,56 @@ class PostKeywordsRepository extends BaseRepository
 {
     /**
      * 获取列表
-     * @param        $request
+     * @param $request
      * @return array
      */
     public static function getList($request)
     {
-        $page     = self::getRequest($request, 'page', 'int', 1);
+        $page = self::getRequest($request, 'page', 'int', 1);
         $pageSize = self::getRequest($request, 'pageSize', 'int', 15);
-        $sort     = self::getRequest($request, 'sort', 'string', '_id');
-        $order    = self::getRequest($request, 'order', 'int', -1);
-        $query    = [];
-        $filter   = [];
+        $sort = self::getRequest($request, 'sort', 'string', '_id');
+        $order = self::getRequest($request, 'order', 'int', -1);
+        $query = array();
+        $filter = array();
 
         if ($request['name']) {
             $filter['name'] = self::getRequest($request, 'name');
-            $query['name']  = ['$regex' => $filter['name'], '$options' => 'i'];
+            $query['name'] = array('$regex' => $filter['name'], '$options' => 'i');
         }
 
         if ($request['is_hot'] !== null && $request['is_hot'] !== '') {
             $filter['is_hot'] = self::getRequest($request, 'is_hot', 'int');
-            $query['is_hot']  = $filter['is_hot'];
+            $query['is_hot'] = $filter['is_hot'];
         }
         if ($request['position'] !== null && $request['position'] !== '') {
             $filter['position'] = self::getRequest($request, 'position', 'string');
-            $query['position']  = $filter['position'];
+            $query['position'] = $filter['position'];
         }
 
-        $skip   = ($page - 1) * $pageSize;
-        $fields = [];
-        $count  = PostKeywordsModel::count($query);
-        $items  = PostKeywordsModel::find($query, $fields, [$sort => $order], $skip, $pageSize);
+        $skip = ($page - 1) * $pageSize;
+        $fields = array();
+        $count = PostKeywordsModel::count($query);
+        $items = PostKeywordsModel::find($query, $fields, array($sort => $order), $skip, $pageSize);
         foreach ($items as $index => $item) {
             $item['created_at'] = date('Y-m-d H:i', $item['created_at']);
             $item['updated_at'] = date('Y-m-d H:i', $item['updated_at']);
-            $item['position']   = empty($item['position']) ? '' : CommonValues::getMoviePosition($item['position']) . ' | ' . $item['position'];
-            $item['is_hot']     = $item['is_hot'] ? '是' : '否';
-            $items[$index]      = $item;
+            $item['position'] = empty($item['position']) ? '' : CommonValues::getPostPosition($item['position']) . ' | ' . $item['position'];
+            $item['is_hot'] = $item['is_hot'] ? '是' : '否';
+            $items[$index] = $item;
         }
 
-        return [
-            'filter'   => $filter,
-            'items'    => empty($items) ? [] : array_values($items),
-            'count'    => $count,
-            'page'     => $page,
+        return array(
+            'filter' => $filter,
+            'items' => empty($items) ? array() : array_values($items),
+            'count' => $count,
+            'page' => $page,
             'pageSize' => $pageSize
-        ];
+        );
     }
 
     /**
      * 获取详情
-     * @param                    $id
+     * @param $id
      * @return mixed
      * @throws BusinessException
      */
@@ -82,19 +82,19 @@ class PostKeywordsRepository extends BaseRepository
 
     /**
      * 保存数据
-     * @param                    $data
+     * @param $data
      * @return bool|int|mixed
      * @throws BusinessException
      */
     public static function save($data)
     {
-        $row = [
-            'name'     => self::getRequest($data, 'name', 'string'),
+        $row = array(
+            'name' => self::getRequest($data, 'name', 'string'),
             'position' => self::getRequest($data, 'position', 'string'),
-            'is_hot'   => self::getRequest($data, 'is_hot', 'int', 0),
-            'num'      => self::getRequest($data, 'num', 'int', 0),
-            'sort'     => self::getRequest($data, 'sort', 'int', 0),
-        ];
+            'is_hot' => self::getRequest($data, 'is_hot', 'int', 0),
+            'num' => self::getRequest($data, 'num', 'int', 0),
+            'sort' => self::getRequest($data, 'sort', 'int', 0),
+        );
         if (empty($row['name'])) {
             throw  new BusinessException(StatusCode::PARAMETER_ERROR, '参数错误!');
         }
@@ -102,17 +102,19 @@ class PostKeywordsRepository extends BaseRepository
 
         if (PostKeywordsModel::count(['_id' => $row['_id']]) > 0) {
             return PostKeywordsModel::updateById($row, $row['_id']);
+        } else {
+            return PostKeywordsModel::insert($row);
         }
-        return PostKeywordsModel::insert($row);
     }
 
     /**
      * 删除
-     * @param        $id
+     * @param $id
      * @return mixed
      */
     public static function delete($id)
     {
         return PostKeywordsModel::deleteByID($id);
     }
+
 }

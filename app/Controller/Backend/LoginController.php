@@ -10,6 +10,7 @@ use App\Jobs\Report\ReportAgentV3Job;
 use App\Repositories\Backend\Admin\AdminUserRepository;
 use App\Utils\CommonUtil;
 
+
 /**
  * Class LoginController
  * @package App\Controller\Backend
@@ -33,20 +34,20 @@ class LoginController extends BaseBackendController
      */
     public function doAction()
     {
-        $username   = $this->getRequest('username');
-        $password   = $this->getRequest('password');
-        $googleCode = $this->getRequest('google_code');
+        $username = $this->getRequest("username");
+        $password = $this->getRequest("password");
+        $googleCode = $this->getRequest("google_code");
         if (empty($username) || empty($password) || empty($googleCode)) {
-            $this->sendErrorResult('参数错误!');
+            $this->sendErrorResult("参数错误!");
         }
         $token = AdminUserRepository::login($username, $password, $googleCode);
         if ($token) {
-            if (kProdMode) {
-                ReportAgentV3Job::doAdminLog('login', $username, CommonUtil::getClientIp());
+            if(kProdMode){
+                ReportAgentV3Job::doAdminLog('login',$username,CommonUtil::getClientIp());
             }
             $this->sendSuccessResult($token);
         }
-        $this->sendErrorResult('登陆失败!');
+        $this->sendErrorResult("登陆失败!");
     }
 
     /**
@@ -55,6 +56,6 @@ class LoginController extends BaseBackendController
     public function exitAction()
     {
         AdminUserRepository::logout();
-        $this->redirect('/login/');
+        $this->redirect('/login');
     }
 }
