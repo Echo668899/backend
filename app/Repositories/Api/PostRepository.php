@@ -31,6 +31,25 @@ use App\Utils\CommonUtil;
  */
 class PostRepository extends BaseRepository
 {
+
+    /**
+     * 获取顶部菜单列表
+     * @return array
+     */
+    public static function navList()
+    {
+        $fields = ['name', 'code', 'filter', 'sort', 'style'];
+        $items = PostNavModel::find(['is_disabled' => 0], $fields, ['sort' => -1], 0, 20);
+        foreach ($items as $index => &$item) {
+            $item['style_name'] = value(function () use ($item) {
+                $style = CommonValues::getPostNavStyle($item['style']);
+                return (is_array($style)?"注意:错误的样式":$style);
+            });
+        }
+
+        return empty($items) ? [] : array_values($items);
+    }
+    
     /**
      * nav下模块
      * @param                             $navId

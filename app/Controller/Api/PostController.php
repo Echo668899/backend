@@ -8,6 +8,17 @@ use App\Repositories\Api\PostRepository;
 
 class PostController extends BaseApiController
 {
+
+    /**
+     * nav 列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function navListAction(){
+        $result = PostRepository::navList();
+        $this->sendSuccessResult($result);
+    }
+
     /**
      * nav下模块,常规模块,带items
      * @return void
