@@ -19,6 +19,7 @@ use App\Services\Post\PostBlockService;
 use App\Services\Post\PostFavoriteService;
 use App\Services\Post\PostHistoryService;
 use App\Services\Post\PostLoveService;
+use App\Services\Post\PostNavService;
 use App\Services\Post\PostService;
 use App\Services\User\UserBuyLogService;
 use App\Services\User\UserFansService;
@@ -38,16 +39,12 @@ class PostRepository extends BaseRepository
      */
     public static function navList()
     {
-        $fields = ['name', 'code', 'filter', 'sort', 'style'];
-        $items = PostNavModel::find(['is_disabled' => 0], $fields, ['sort' => -1], 0, 20);
-        foreach ($items as $index => &$item) {
-            $item['style_name'] = value(function () use ($item) {
-                $style = CommonValues::getPostNavStyle($item['style']);
-                return (is_array($style)?"注意:错误的样式":$style);
-            });
+        $row = PostNavService::getAll();
+        if (empty($row)) {
+            throw new BusinessException(StatusCode::PARAMETER_ERROR, '未找到相关列表!');
         }
 
-        return empty($items) ? [] : array_values($items);
+        return $row;
     }
     
     /**
