@@ -962,9 +962,13 @@ class UserRepository extends BaseRepository
         $deviceType = ApiService::getDeviceType();
         $version = ApiService::getVersion();
         $configs  = CenterCustomerJob::getCenterConfig('customer');
-        $service = new CenterCustomerService($configs['url'],$configs['appid'],$configs['appkey']);
-        return [
-            'url'=>$service->getUrl($userId,$deviceType,$deviceType,$version)
-        ];
+        try {
+            $service = new CenterCustomerService($configs['url'],$configs['appid'],$configs['appkey']);
+            return [
+                'url'=>$service->getUrl($userId,$deviceType,$deviceType,$version)
+            ];
+        }catch (\Exception $e){
+            throw new BusinessException(StatusCode::PARAMETER_ERROR,$e->getMessage());
+        }
     }
 }

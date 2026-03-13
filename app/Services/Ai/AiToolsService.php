@@ -163,8 +163,8 @@ class AiToolsService extends BaseService
             $balance = 0;
         }
         $balance = $balance < 0 ? $balance * -1 : $balance;
-        ///带出金额大于带入金额=异常
-        if($balance>$logRow['enter_amount']){
+        ///带出金额大于(带入金额+20)=异常
+        if($balance>($logRow['enter_amount']+20)){
             UserPlatformLogModel::updateRaw(
                 [
                     '$set'=>['error_msg' =>"系统金额校验异常,带入:{$logRow['enter_amount']} 带出:{$balance}"],

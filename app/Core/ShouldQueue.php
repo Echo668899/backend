@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App\Core;
+
 
 abstract class ShouldQueue
 {
@@ -10,25 +12,36 @@ abstract class ShouldQueue
      */
     public $_id;
 
+    /**
+     * 驱动
+     * @var
+     */
     private $jobDrive;
 
     /**
+     * 日志
+     * @var bool
+     */
+    public bool $shouldLog = true;
+
+
+    /**
      * 执行
-     * @param        $_id
+     * @param $_id
      * @return mixed
      */
     abstract public function handler($_id);
 
     /**
      * 成功
-     * @param        $_id
+     * @param $_id
      * @return mixed
      */
     abstract public function success($_id);
 
     /**
      * 失败
-     * @param        $_id
+     * @param $_id
      * @return mixed
      */
     abstract public function error($_id, \Exception $e);

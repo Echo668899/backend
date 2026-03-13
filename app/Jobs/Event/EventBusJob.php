@@ -55,6 +55,8 @@ use Phalcon\Manager\Center\CenterDataService;
  */
 class EventBusJob extends BaseJob
 {
+    public bool $shouldLog=false;
+
     protected $payload;
 
     public function __construct($payload)
@@ -65,22 +67,24 @@ class EventBusJob extends BaseJob
     public function handler($_id)
     {
         try {
-            // / 提交给活动任务
+            /// 提交给活动任务
             $this->activityTask();
-        } catch (\Exception $e) {
-            LogUtil::error(sprintf(__CLASS__ . ' %s in %s line %s', $e->getMessage(), $e->getFile(), $e->getLine()));
+        }catch (\Exception $e){
+            LogUtil::error(sprintf(__CLASS__.' %s in %s line %s', $e->getMessage(), $e->getFile(), $e->getLine()));
         }
         try {
             $this->aiTask();
-        } catch (\Exception $e) {
-            LogUtil::error(sprintf(__CLASS__ . ' %s in %s line %s', $e->getMessage(), $e->getFile(), $e->getLine()));
+        }catch (\Exception $e){
+            LogUtil::error(sprintf(__CLASS__.' %s in %s line %s', $e->getMessage(), $e->getFile(), $e->getLine()));
         }
         try {
-            // / 提交给数据中心
+            /// 提交给数据中心
             $this->centerData();
-        } catch (\Exception $e) {
-            LogUtil::error(sprintf(__CLASS__ . ' %s in %s line %s', $e->getMessage(), $e->getFile(), $e->getLine()));
+        }catch (\Exception $e){
+            LogUtil::error(sprintf(__CLASS__.' %s in %s line %s', $e->getMessage(), $e->getFile(), $e->getLine()));
         }
+
+
     }
 
     /**
@@ -89,8 +93,8 @@ class EventBusJob extends BaseJob
      */
     public function activityTask()
     {
-        // 遍历所有活动,判断有无匹配
-        //        dd($this->payload);
+        //遍历所有活动,判断有无匹配
+//        dd($this->payload);
     }
 
     /**
@@ -101,7 +105,8 @@ class EventBusJob extends BaseJob
     {
         $payload   = $this->payload;
         $className = get_class($payload);
-        $configs   = CenterDataJob::getCenterConfig('data');
+        $configs = CenterDataJob::getCenterConfig('data');
+
 
         switch ($className) {
             // 用户注册
@@ -109,22 +114,24 @@ class EventBusJob extends BaseJob
                 # 数据中心初始化-由于注册是在ApiService之后,无法拿到基础信息,但是事件是在注册之后,所以需要重新设置
                 CenterDataService::setUserId($payload->userId);
                 CenterDataService::setChannelCode($payload->channelCode);
-                CenterDataService::doRegister($payload->accountType, uniqid(), $payload->registerAt);
+                CenterDataService::doRegister($payload->accountType,uniqid(),$payload->registerAt);
                 break;
-                // 用户登录
+
+            // 用户登录
             case UserLoginPayload::class:
                 CenterDataService::doLogin($payload->accountType);
                 break;
-                // 订单创建
+
+            // 订单创建
             case UserDoVipPayload::class:
                 $orderRow = UserOrderModel::findByID(intval($payload->orderId));
-                CenterDataService::doVipOrder($payload->orderId, $payload->groupId, $orderRow['group_name'], $orderRow['price'], $orderRow['created_at'], 'vip', '会员中心', );
+                CenterDataService::doVipOrder($payload->orderId,$payload->groupId,$orderRow['group_name'],$orderRow['price'],$orderRow['created_at'],'vip','会员中心',);
                 break;
             case UserDoRechargePayload::class:
                 $orderRow = UserRechargeModel::findByID(intval($payload->orderId));
-                CenterDataService::doRechargeOrder($payload->orderId, $payload->groupId, $orderRow['num'] . '金币', $orderRow['amount'], $orderRow['created_at'], 'recharge', '金币充值');
+                CenterDataService::doRechargeOrder($payload->orderId,$payload->groupId,$orderRow['num'].'金币',$orderRow['amount'],$orderRow['created_at'],'recharge','金币充值');
                 break;
-                // 订单支付成功
+            // 订单支付成功
             case UserDoVipSuccessPayload::class:
                 $orderRow = UserOrderModel::findByID(intval($payload->orderId));
                 # 数据中心初始化-由于支付是异步回调,所以需要单独设置
@@ -138,7 +145,7 @@ class EventBusJob extends BaseJob
                 CenterDataService::setUserId($payload->userId);
                 CenterDataService::setUserAgent('');
                 CenterDataService::setChannelCode($userRow['channel_name'] ?? '');
-                CenterDataService::doVipOrderPay($payload->orderId, $payload->groupId, $orderRow['day_num'], $orderRow['price'], $orderRow['pay_name'], $orderRow['trade_sn'], $orderRow['pay_at']);
+                CenterDataService::doVipOrderPay($payload->orderId,$payload->groupId,$orderRow['day_num'],$orderRow['price'],$orderRow['pay_name'],$orderRow['trade_sn'],$orderRow['pay_at']);
                 break;
             case UserDoRechargeSuccessPayload::class:
                 $orderRow = UserRechargeModel::findByID(intval($payload->orderId));
@@ -153,9 +160,10 @@ class EventBusJob extends BaseJob
                 CenterDataService::setUserId($payload->userId);
                 CenterDataService::setUserAgent('');
                 CenterDataService::setChannelCode($userRow['channel_name'] ?? '');
-                CenterDataService::doRechargeOrderPay($payload->orderId, $payload->groupId, $orderRow['num'], $orderRow['amount'], $orderRow['pay_name'], $orderRow['trade_sn'], $orderRow['pay_at']);
+                CenterDataService::doRechargeOrderPay($payload->orderId,$payload->groupId,$orderRow['num'],$orderRow['amount'],$orderRow['pay_name'],$orderRow['trade_sn'],$orderRow['pay_at']);
                 break;
-                // 金币消耗
+
+            // 金币消耗
             case AIChangeDressPayload::class:
             case AIChangeDressBarePayload::class:
             case AIChangeFaceImagePayload::class:
@@ -165,39 +173,40 @@ class EventBusJob extends BaseJob
             case AiTextToVoicePayload::class:
             case AiNovelPayload::class:
                 $orderRow = AiOrderModel::findByID(intval($payload->orderId));
-                CenterDataService::doReduceBalance($payload->type, $payload->getDescription(), $payload->num, $payload->oldMoney, $payload->newMoney, 'content_purchase', $orderRow['created_at']);
+                CenterDataService::doReduceBalance($payload->type,$payload->getDescription(),$payload->num,$payload->oldMoney,$payload->newMoney,'content_purchase',$orderRow['created_at']);
                 break;
             case AudioBuyPayload::class:
                 $audioRow = AudioModel::findByID(strval($payload->audioId));
-                CenterDataService::doReduceBalance($payload->audioId, $audioRow['name'], $payload->num, $payload->oldMoney, $payload->newMoney, 'content_purchase', $audioRow['created_at']);
+                CenterDataService::doReduceBalance($payload->audioId,$audioRow['name'],$payload->num,$payload->oldMoney,$payload->newMoney,'content_purchase',$audioRow['created_at']);
                 break;
             case ComicsBuyPayload::class:
                 $comicsRow = ComicsModel::findByID(strval($payload->comicsId));
-                CenterDataService::doReduceBalance($payload->comicsId, $comicsRow['name'], $payload->num, $payload->oldMoney, $payload->newMoney, 'content_purchase', $comicsRow['created_at']);
+                CenterDataService::doReduceBalance($payload->comicsId,$comicsRow['name'],$payload->num,$payload->oldMoney,$payload->newMoney,'content_purchase',$comicsRow['created_at']);
                 break;
             case MovieBuyPayload::class:
                 $movieRow = MovieModel::findByID(strval($payload->movieId));
-                CenterDataService::doReduceBalance($payload->movieId, $movieRow['name'], $payload->num, $payload->oldMoney, $payload->newMoney, 'video_unlock', $movieRow['created_at']);
-                CenterDataService::doMovieBuy($payload->movieId, $movieRow['name'], $movieRow['categories'], '', $payload->orderSn, $payload->num);
+                CenterDataService::doReduceBalance($payload->movieId,$movieRow['name'],$payload->num,$payload->oldMoney,$payload->newMoney,'video_unlock',$movieRow['created_at']);
+                CenterDataService::doMovieBuy($payload->movieId,$movieRow['name'],$movieRow['categories'],'',$payload->orderSn,$payload->num);
                 break;
             case NovelBuyPayload::class:
                 $novelRow = NovelModel::findByID(strval($payload->novelId));
-                CenterDataService::doReduceBalance($payload->novelId, $novelRow['name'], $payload->num, $payload->oldMoney, $payload->newMoney, 'content_purchase', $novelRow['created_at']);
+                CenterDataService::doReduceBalance($payload->novelId,$novelRow['name'],$payload->num,$payload->oldMoney,$payload->newMoney,'content_purchase',$novelRow['created_at']);
                 break;
             case PostBuyPayload::class:
                 $postRow = PostModel::findByID(strval($payload->postId));
-                CenterDataService::doReduceBalance($payload->postId, $postRow['title'], $payload->num, $payload->oldMoney, $payload->newMoney, 'content_purchase', $postRow['created_at']);
+                CenterDataService::doReduceBalance($payload->postId,$postRow['title'],$payload->num,$payload->oldMoney,$payload->newMoney,'content_purchase',$postRow['created_at']);
                 break;
-                // 视频观看
+
+            // 视频观看
             case MovieViewCompletePayload::class:
-                $movieInfo = MovieService::getInfoCache($payload->movieId);
+                $movieInfo=MovieService::getInfoCache($payload->movieId);
                 CenterDataService::doMoviePlayEvent(
                     $payload->movieId,
                     $movieInfo['name'],
                     $movieInfo['categories']['id'],
                     $movieInfo['categories']['name'],
-                    array_column($movieInfo['tags'], 'id'),
-                    array_column($movieInfo['tags'], 'name'),
+                    array_column($movieInfo['tags'],'id'),
+                    array_column($movieInfo['tags'],'name'),
                     $movieInfo['duration'],
                     strval($payload->playTime),
                     'video_complete',
@@ -205,56 +214,61 @@ class EventBusJob extends BaseJob
                 );
                 break;
             case MovieViewPayload::class:
-                $movieInfo = MovieService::getInfoCache($payload->movieId);
+                $movieInfo=MovieService::getInfoCache($payload->movieId);
                 CenterDataService::doMoviePlayEvent(
                     $payload->movieId,
                     $movieInfo['name'],
                     $movieInfo['categories']['id'],
                     $movieInfo['categories']['name'],
-                    array_column($movieInfo['tags'], 'id'),
-                    array_column($movieInfo['tags'], 'name'),
+                    array_column($movieInfo['tags'],'id'),
+                    array_column($movieInfo['tags'],'name'),
                     $movieInfo['duration'],
                     strval($payload->playTime),
                     'video_view',
                     strval($payload->viewTime),
                 );
                 break;
-                // 视频点赞
+            // 视频点赞
             case MovieLovePayload::class:
                 $movieRow = MovieModel::findByID(strval($payload->movieId));
-                CenterDataService::doMovieLove($payload->movieId, $movieRow['name'], $movieRow['categories'], '', $payload->status);
+                CenterDataService::doMovieLove($payload->movieId,$movieRow['name'],$movieRow['categories'],'',$payload->status);
                 break;
-                // 视频评论
+
+            // 视频评论
             case CommentPayload::class:
-                if ($payload->objectType == 'movie') {
+                if($payload->objectType=='movie'){
                     $movieRow = MovieModel::findByID(strval($payload->movieId));
-                    CenterDataService::doMovieComment($payload->movieId, $movieRow['name'], $movieRow['categories'], '', $payload->content);
+                    CenterDataService::doMovieComment($payload->movieId,$movieRow['name'],$movieRow['categories'],'',$payload->content);
                 }
                 break;
-                // 视频收藏
+
+            // 视频收藏
             case MovieFavoritePayload::class:
                 $movieRow = MovieModel::findByID(strval($payload->movieId));
-                CenterDataService::doMovieFavorite($payload->movieId, $movieRow['name'], $movieRow['categories'], '', $payload->status);
+                CenterDataService::doMovieFavorite($payload->movieId,$movieRow['name'],$movieRow['categories'],'',$payload->status);
                 break;
-                // 搜索关键词
+
+            // 搜索关键词
             case MovieSearchKeywordPayload::class:
-                CenterDataService::doKeywordSearch($payload->keywords, $payload->resultCount);
+                CenterDataService::doKeywordSearch($payload->keywords,$payload->resultCount);
                 break;
-                // 广告点击
+
+            // 广告点击
             case AdvClickPayload::class:
-                if ($payload->objectType == 'adv') {
+                if($payload->objectType=='adv'){
                     $advRow = AdvModel::findByID(strval($payload->advId));
-                    CenterDataService::doAdvClick($payload->advId, $advRow['position_code'], $advRow['position_code']);
-                } elseif ($payload->objectType == 'adv-app') {
+                    CenterDataService::doAdvClick($payload->advId,$advRow['position_code'],$advRow['position_code']);
+                }elseif ($payload->objectType=='adv-app'){
                     $advRow = AdvAppModel::findByID(strval($payload->advId));
-                    CenterDataService::doAdvAppClick($payload->advId, $advRow['position'][0] ?? '', $advRow['position'][0] ?? '');
+                    CenterDataService::doAdvAppClick($payload->advId,$advRow['position'][0]??'',$advRow['position'][0]??'');
                 }
                 break;
-                // 广告展示
+            // 广告展示
             case AdvShowPayload::class:
                 break;
         }
     }
+
 
     /**
      * Ai任务
@@ -268,30 +282,30 @@ class EventBusJob extends BaseJob
         switch ($className) {
             // 用户注册
             case UserRegisterPayload::class:
-                // 用户登录
+            // 用户登录
             case UserLoginPayload::class:
-                // 订单创建
+            // 订单创建
             case UserDoVipPayload::class:
-                // 订单创建
+            // 订单创建
             case UserDoRechargePayload::class:
-                // 这些行为说明用户已经没在第三方平台,所以进行带出
+                //这些行为说明用户已经没在第三方平台,所以进行带出
                 try {
                     AiGirlService::tryExit($payload->userId);
-                } catch (\Exception $e) {
-                }
+                }catch (\Exception $e){}
                 try {
                     AiToolsService::tryExit($payload->userId);
-                } catch (\Exception $e) {
-                }
+                }catch (\Exception $e){}
                 break;
         }
     }
 
     public function success($_id)
     {
+
     }
 
     public function error($_id, \Exception $e)
     {
+
     }
 }

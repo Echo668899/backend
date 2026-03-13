@@ -15,6 +15,7 @@ use App\Models\Comics\ComicsLoveModel;
 use App\Models\Common\AppLogModel;
 use App\Models\Common\ChatMessageModel;
 use App\Models\Common\ChatModel;
+use App\Models\Common\ChatReadModel;
 use App\Models\Common\CollectionsModel;
 use App\Models\Common\EmailLogModel;
 use App\Models\Common\SmsLogModel;
@@ -212,12 +213,15 @@ class CleanJob extends BaseJob
             LogUtil::info(__CLASS__." user 清理 page:{$page}");
 
             ///删除关联的所有数据
-            ChatModel::delete(['$or'=>[['from_id'=>['$in'=>$ids]], ['to_id'=>['$in'=>$ids]]]]);
-            ChatMessageModel::delete(['$or'=>[['from_id'=>['$in'=>$ids]], ['to_id'=>['$in'=>$ids]]]]);
+            $strIds = array_map(fn($id) => (string)$id, $ids);///聊天部分用的字符串id
+            ChatModel::delete(['$or'=>[['from_id'=>['$in'=>$strIds]], ['to_id'=>['$in'=>$strIds]]]]);
+            ChatMessageModel::delete(['$or'=>[['from_id'=>['$in'=>$strIds]], ['to_id'=>['$in'=>$strIds]]]]);
+            ChatReadModel::delete(['user_id'=>['$in'=>$strIds]]);
 
             UserFansModel::delete(['$or'=>[['user_id'=>['$in'=>$ids]], ['home_id'=>['$in'=>$ids]]]]);
             UserFavoriteModel::delete(['user_id'=>['$in'=>$ids]]);
             UserShareLogModel::delete(['user_id'=>['$in'=>$ids]]);
+
 
             ActivityLotteryChanceModel::delete(['user_id'=>['$in'=>$ids]]);
             ActivityLotteryLogModel::delete(['user_id'=>['$in'=>$ids]]);

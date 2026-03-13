@@ -78,6 +78,22 @@
                 "msg_type": 1
             },
             "type": "Normal"
+        },
+        {
+            "name": "chat_id_seqid_before",
+            "fields": {
+                "chat_id": 1,
+                "seqid": -1
+            },
+            "type": "Normal"
+        },
+        {
+            "name": "chat_id_seqid_after",
+            "fields": {
+                "chat_id": 1,
+                "seqid": 1
+            },
+            "type": "Normal"
         }
     ]
 }

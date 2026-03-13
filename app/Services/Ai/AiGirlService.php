@@ -165,8 +165,8 @@ class AiGirlService extends BaseService
 
         $balance = $balance < 0 ? $balance * -1 : $balance;
 
-        ///带出金额大于带入金额=异常
-        if($balance>$logRow['enter_amount']){
+        ///带出金额大于(带入金额+10)=异常
+        if($balance>($logRow['enter_amount']+10)){
             UserPlatformLogModel::updateRaw(
                 [
                     '$set'=>['error_msg' =>"系统金额校验异常,带入:{$logRow['enter_amount']} 带出:{$balance}"],
