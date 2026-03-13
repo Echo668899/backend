@@ -44,7 +44,9 @@ class PostRepository extends BaseRepository
             throw new BusinessException(StatusCode::PARAMETER_ERROR, '未找到相关列表!');
         }
 
-        return $row;
+        $filter = ['love' => '热度最高', 'new' => '最新上架', 'click' => '观看最多', 'favorite' => '收藏最多', 'buy' => '购买最多'];
+        $res = ['nav'=>$row, 'filter'=>$filter];
+        return $res;
     }
     
     /**
