@@ -20,6 +20,16 @@ class PostController extends BaseApiController
     }
 
     /**
+     * 帖子列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function postListAction(){
+        $res = PostRepository::doSearch($_REQUEST);
+        $this->sendSuccessResult($res);
+    }
+
+    /**
      * nav下模块,常规模块,带items
      * @return void
      * @throws \Phalcon\Storage\Exception
