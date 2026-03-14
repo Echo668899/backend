@@ -25,7 +25,39 @@ class PostController extends BaseApiController
      * @throws \Phalcon\Storage\Exception
      */
     public function postListAction(){
-        $res = PostRepository::doSearch($_REQUEST);
+        $config = [
+            'page' => ['int',1],
+            'page_size'=>['int',12],
+            'keywords'=>['string',''],
+            'tag_id'=>['string',''],
+            'global_top'=>['string',''],
+            'home_top'=>['string',''],
+            'ids'=>['string',''],
+            'not_ids'=>['string',''],
+            'home_id'=>['string',''],
+            'home_ids'=>['string',''],
+            'position'=>['string',''],
+            'order'=>['string',''],
+            'status'=>['string',''],
+            'type'=>['string',''],
+            'pay_type'=>['string',''],
+            'ad_code'=>['string',''],
+            'language'=>['string',\App\Services\Common\ApiService::getLanguage()]
+        ];
+
+        $filter = $this->request->get();
+        $query = []; 
+        foreach ($config as $key=>$cfg){
+            if(isset($filter[$key])){
+                $query[$key] = $this->getRequest($key,$cfg[0],$cfg[1]);
+            }
+        }
+ 
+        if (empty($query)) {
+            $this->sendErrorResult('参数错误');
+        }
+
+        $res = PostRepository::doSearch($query);
         $this->sendSuccessResult($res);
     }
 

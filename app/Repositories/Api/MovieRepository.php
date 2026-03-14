@@ -23,6 +23,7 @@ use App\Services\Movie\MovieDownloadService;
 use App\Services\Movie\MovieFavoriteService;
 use App\Services\Movie\MovieHistoryService;
 use App\Services\Movie\MovieLoveService;
+use App\Services\Movie\MovieNavService;
 use App\Services\Movie\MovieService;
 use App\Services\Movie\MovieTagService;
 use App\Services\User\UserBuyLogService;
@@ -32,6 +33,48 @@ use App\Utils\CommonUtil;
 
 class MovieRepository extends BaseRepository
 {
+
+    /**
+     * nav列表
+     * @param $position string
+     * @return array
+     * @throws BusinessException
+     * @throws \Phalcon\Storage\Exception
+     */
+    public static function navList($position = null){
+        $navNames = CommonValues::getMovieNavPosition();
+        if($position && !isset($navNames[$position])){
+            $position = null;
+        }
+        $res = MovieNavService::getAll($position);
+        $ret = [];
+        if(!$res){
+            return $ret;
+        }
+
+        
+        foreach($res as $item){
+            if($item['style'] == 'video_1'){
+                $blocks = MovieBlockService::get($item['id']);
+                if($blocks){
+                    foreach($blocks as $k => $block){
+                        $blocks[$k]['style_name'] = CommonValues::getMovieBlockStyle($block['style']);
+                    }
+                }
+
+                $item['blocks'] = $blocks;
+            }
+            $item['style_name'] = CommonValues::getMovieNavStyle($item['style']);
+            $ret[$item['position']][] = $item;
+        }
+
+        $navs = [];
+        foreach($ret as $position => $l){
+            $navs[] = ['title' => $navNames[$position], 'position' => $position, 'list' => $l];
+        }
+        return $navs;
+    }
+
     /**
      * nav下模块,常规模块,带items
      * @param                             $navId

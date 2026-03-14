@@ -9,6 +9,44 @@ use Phalcon\Storage\Exception;
 
 class MovieController extends BaseApiController
 {
+
+    /**
+     * nav列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function navListAction(){
+        $position = $this->getRequest('pos', 'string');
+        $res = MovieRepository::navList($position);
+        $this->sendSuccessResult($res);
+    }
+
+    /**
+     * 视频列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function movieListAction(){
+        $allowKeys = [
+            'page','page_size','keywords','x_filter','icon','position','pay_type',
+            'cat_id','tag_id','home_id','home_ids','canvas','ids','not_ids',
+            'order','status','ad_code','language','duration'
+        ];
+        $params = $this->request->get();
+        $keys = array_flip($allowKeys);
+        foreach($params as $k => $v){
+            if(!isset($keys[$k])){
+                unset($params[$k]);
+            }
+        }
+        
+        if (empty($params)) {
+            $this->sendErrorResult('参数错误');
+        }
+        $res = MovieRepository::doSearch($params);
+        $this->sendSuccessResult($res);
+    }
+
     /**
      * nav下模块,常规模块,带items
      * @return void
