@@ -54,7 +54,7 @@ class MovieRepository extends BaseRepository
 
         
         foreach($res as $item){
-            $item['blocks'] = $blocks;
+            $item['blocks'] = [];
             if($item['style'] == 'video_1'){
                 $blocks = MovieBlockService::get($item['id']);
                 if($blocks){
