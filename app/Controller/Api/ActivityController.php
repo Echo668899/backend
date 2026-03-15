@@ -15,7 +15,8 @@ class ActivityController extends BaseApiController
     public function listAction()
     {
         $scope = $this->getRequest('scope', 'string', 'all');
-        $result = ActivityRepository::list($scope);
+        $userId  = $this->getUserId(false);
+        $result = ActivityRepository::list($userId, $scope);
         $this->sendSuccessResult($result);
     }
 }
