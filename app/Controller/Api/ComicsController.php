@@ -9,6 +9,54 @@ use App\Repositories\Api\ComicsRepository;
 class ComicsController extends BaseApiController
 {
     /**
+     * nav列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function navListAction(){
+        $res = ComicsRepository::navList();
+        $this->sendSuccessResult($res);
+    }
+
+    /**
+     * 列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function ComicsListAction(){
+        $allowKeys = [
+            'page',
+            'page_size',
+            'keywords',
+            'icon',
+            'pay_type',
+            'cat_id',
+            'tag_id',
+            'is_end',
+            'ids',
+            'not_ids',
+            'order',
+            'update_date',
+            'update_status',
+            'ad_code',
+            'language'
+        ];
+        $params = $this->request->get();
+        $keys = array_flip($allowKeys);
+        foreach($params as $k => $v){
+            if(!isset($keys[$k])){
+                unset($params[$k]);
+            }
+        }
+        
+        if (empty($params)) {
+            $this->sendErrorResult('参数错误');
+        }
+        $res = ComicsRepository::doSearch($params);
+        $this->sendSuccessResult($res);
+    }
+
+    /**
      * nav下模块,常规模块,带items
      * @return void
      * @throws \Phalcon\Storage\Exception

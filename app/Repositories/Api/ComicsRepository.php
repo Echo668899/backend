@@ -16,6 +16,7 @@ use App\Services\Comics\ComicsChapterService;
 use App\Services\Comics\ComicsFavoriteService;
 use App\Services\Comics\ComicsHistoryService;
 use App\Services\Comics\ComicsLoveService;
+use App\Services\Comics\ComicsNavService;
 use App\Services\Comics\ComicsService;
 use App\Services\Comics\ComicsTagService;
 use App\Services\Common\AdvService;
@@ -27,6 +28,39 @@ use App\Utils\CommonUtil;
 
 class ComicsRepository extends BaseRepository
 {
+
+    /**
+     * nav列表
+     * @param $position string
+     * @return array
+     * @throws BusinessException
+     * @throws \Phalcon\Storage\Exception
+     */
+    public static function navList($position = null){
+        $res = ComicsNavService::getAll($position);
+        $ret = [];
+        if(!$res){
+            return $ret;
+        }
+
+        foreach($res as &$item){
+            $item['blocks'] = [];
+            if($item['style'] == 'comics_1'){
+                $blocks = ComicsBlockService::get($item['id']);
+                if($blocks){
+                    foreach($blocks as $k => $block){
+                        $blocks[$k]['style_name'] = CommonValues::getMovieBlockStyle($block['style']);
+                    }
+                }
+
+                $item['blocks'] = $blocks;
+            }
+            $item['style_name'] = CommonValues::getMovieNavStyle($item['style']);
+            //$ret[$item['position']][] = $item;
+        }
+
+        return $res;
+    }
     /**
      * nav下模块,常规模块,带items
      * @param                             $navId
