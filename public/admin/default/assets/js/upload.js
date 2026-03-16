@@ -32,7 +32,7 @@ class UploadChunk {
         if (file.size <= 0) {
             return;
         }
-        var chunk_total = Math.floor(file.size / this.options.chunk_size);
+        var chunk_total = Math.ceil(file.size / this.options.chunk_size);
         var file_md5 = hex_md5(file.name);//伪md5
         if (typeof this.options.before === 'function') {
             this.options.before(file);
@@ -55,11 +55,12 @@ class UploadChunk {
                 type: "post",
                 data: chunkData,
                 processData: false,
-                tentType: false,
+                contentType: false,//formData才开启
                 headers: {
                     "Content-Type": "application/octet-stream"
                 },
                 success: function (res) {
+                    console.log(`lsj 返回: ${JSON.stringify(res)}`);
                     if (res.status === 'y') {
                         if (typeof _this.options.process === 'function') {
                             _this.options.process(chunk_index, chunk_total, 1);
@@ -71,7 +72,7 @@ class UploadChunk {
                             }
                         }
                         chunk_index++;
-                        _this.upload(file_md5, chunk_index, chunk_total, file);
+                        _this.upload(file_md5, chunk_index, chunk_total, file, _this.options.retry_num);
                     } else {
                         if (typeof _this.options.error === 'function') {
                             _this.options.error(res.error);
@@ -80,6 +81,7 @@ class UploadChunk {
                 },
                 error: function (error) {
                     if (curr_retry_num > 0) {
+                        console.log(`第 ${chunk_index + 1} 片上传失败，准备重试，剩余 ${curr_retry_num - 1} 次`);
                         _this.upload(file_md5, chunk_index, chunk_total, file, --curr_retry_num);
                     } else {
                         if (typeof _this.options.error === 'function') {
@@ -102,6 +104,7 @@ class UploadChunk {
                 // contentType: "application/octet-stream",
                 contentType: false,//formData才开启
                 success: function (res) {
+                    console.log(`普通返回: ${JSON.stringify(res)}`);
                     if (res.status === 'y') {
                         if (typeof _this.options.process === 'function') {
                             _this.options.process(chunk_index, chunk_total, 1);
@@ -121,6 +124,7 @@ class UploadChunk {
                     }
                 }, error: function (error) {
                     if (curr_retry_num > 0) {
+                        console.log(`第 ${chunk_index + 1} 片上传失败，准备重试，剩余 ${curr_retry_num - 1} 次`);
                         _this.upload(file_md5, chunk_index, chunk_total, file, --curr_retry_num);
                     } else {
                         if (typeof _this.options.error === 'function') {

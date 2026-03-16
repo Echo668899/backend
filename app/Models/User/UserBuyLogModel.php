@@ -17,6 +17,7 @@ use App\Core\Mongodb\MongoModel;
  * @property int object_id 资源id
  * @property string object_img 资源图片
  * @property string object_type 资源类型 视频:movie 游戏:game
+ * @property string object_position 资源板块
  * @property int object_money 资源金额
  * @property int object_money_old 资源金额-原价
  * @property array ext_ids 扩展id列表,主要用于movie的links
@@ -28,6 +29,6 @@ use App\Core\Mongodb\MongoModel;
  */
 class UserBuyLogModel extends MongoModel
 {
-    public static $connection = 'default';
-    public static $collection = 'user_buy_log';
+    static $connection = "default";
+    static $collection = "user_buy_log";
 }

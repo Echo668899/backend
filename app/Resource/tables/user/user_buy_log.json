@@ -44,6 +44,11 @@
             "description": "资源类型 视频:movie 游戏:game"
         },
         {
+            "name": "object_position",
+            "type": "string",
+            "description": "资源板块"
+        },
+        {
             "name": "object_money",
             "type": "int",
             "description": "资源金额"

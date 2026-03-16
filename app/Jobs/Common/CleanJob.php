@@ -123,7 +123,7 @@ class CleanJob extends BaseJob
             'channel_name'=>['$ne'=>'system'],
         ];
         $keyName = __CLASS__.':user';
-
+        redis()->del($keyName);
 
         //有内容的不进行删除
         $movieIds = MovieModel::aggregates([
@@ -161,6 +161,9 @@ class CleanJob extends BaseJob
         $page=1;
         $pageSize=10000;
         while (true){
+            if($page>100){
+                break;
+            }
             LogUtil::info(__CLASS__." user 查询 page:{$page}");
             $rows = UserModel::find($where,['_id','group_id','group_dark_id','first_pay','balance'],[],($page-1)*$pageSize,$pageSize);
             if(empty($rows)){
@@ -213,6 +216,8 @@ class CleanJob extends BaseJob
             LogUtil::info(__CLASS__." user 清理 page:{$page}");
 
             ///删除关联的所有数据
+            UserModel::delete(['_id'=>['$in'=>$ids]]);
+
             $strIds = array_map(fn($id) => (string)$id, $ids);///聊天部分用的字符串id
             ChatModel::delete(['$or'=>[['from_id'=>['$in'=>$strIds]], ['to_id'=>['$in'=>$strIds]]]]);
             ChatMessageModel::delete(['$or'=>[['from_id'=>['$in'=>$strIds]], ['to_id'=>['$in'=>$strIds]]]]);

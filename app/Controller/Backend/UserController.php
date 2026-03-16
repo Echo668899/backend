@@ -19,6 +19,7 @@ use App\Services\User\UserService;
 
 class UserController extends BaseBackendController
 {
+
     /**
      * 初始化
      */
@@ -43,6 +44,7 @@ class UserController extends BaseBackendController
     public function initData()
     {
         $this->view->setVar('groupArr', UserGroupService::getAll('normal'));
+        $this->view->setVar('groupDarkArr', UserGroupService::getAll('dark'));
         $this->view->setVar('disabledArr', CommonValues::getIs());
         $this->view->setVar('deviceArr', CommonValues::getDeviceTypes());
         $this->view->setVar('sexArr', CommonValues::getUserSex());
@@ -55,7 +57,7 @@ class UserController extends BaseBackendController
      */
     public function detailAction()
     {
-        $id = $this->getRequest('_id');
+        $id = $this->getRequest("_id");
         if (!empty($id)) {
             $result = UserRepository::getDetail($id);
             $this->view->setVar('row', $result);
@@ -73,7 +75,7 @@ class UserController extends BaseBackendController
         if ($result) {
             $this->sendSuccessResult();
         }
-        $this->sendErrorResult('保存错误!');
+        $this->sendErrorResult("保存错误!");
     }
 
     /**
@@ -81,11 +83,11 @@ class UserController extends BaseBackendController
      */
     public function doAction()
     {
-        $ids      = $this->getRequest('id');
-        $act      = $this->getRequest('act');
-        $errorMsg = $this->getRequest('error_msg');
+        $ids = $this->getRequest("id");
+        $act = $this->getRequest("act");
+        $errorMsg = $this->getRequest("error_msg");
         if (empty($ids) || empty($act)) {
-            $this->sendErrorResult('参数错误!');
+            $this->sendErrorResult("参数错误!");
         }
 
         $token = AdminUserService::getToken();
@@ -97,10 +99,10 @@ class UserController extends BaseBackendController
             } else {
                 $update = ['is_disabled' => 1, 'error_msg' => "操作人:{$token['username']}"];
             }
-        } elseif ($act == 'es') {
-            $update = [];
+        } elseif ($act == "es") {
+            $update = array();
         } else {
-            $this->sendErrorResult('不能理解的操作!');
+            $this->sendErrorResult("不能理解的操作!");
         }
         $ids = explode(',', $ids);
         foreach ($ids as $id) {
@@ -118,7 +120,7 @@ class UserController extends BaseBackendController
      */
     public function addAction()
     {
-        $num = $this->getRequest('num');
+        $num = $this->getRequest("num");
         UserRepository::create($num);
         $this->sendSuccessResult();
     }
@@ -129,19 +131,19 @@ class UserController extends BaseBackendController
      */
     public function rechargeAction()
     {
-        $money      = $this->getRequest('money');
-        $userId     = $this->getRequest('user_id');
-        $googleCode = $this->getRequest('google');
-        $action     = $this->getRequest('action', 'string', 'point');
-        $remark     = $this->getRequest('remark', 'string', '');
+        $money = $this->getRequest("money");
+        $userId = $this->getRequest("user_id");
+        $googleCode = $this->getRequest("google");
+        $action = $this->getRequest('action', 'string', 'point');
+        $remark = $this->getRequest('remark', 'string', '');
 
-        if (empty($money)) {
-            $this->sendErrorResult('必填项缺失');
+        if (empty($money) ) {
+            $this->sendErrorResult("必填项缺失");
         }
 
-        if (kProdMode) {
+        if(kProdMode){
             if (empty($googleCode) || !AdminUserRepository::verifyGoogleCode($googleCode)) {
-                $this->sendErrorResult('谷歌验证码错误!');
+                $this->sendErrorResult("谷歌验证码错误!");
             }
         }
 
@@ -155,6 +157,7 @@ class UserController extends BaseBackendController
             $this->sendSuccessResult();
         }
     }
+
 
     /**
      * 找回账号页面
@@ -178,8 +181,8 @@ class UserController extends BaseBackendController
      */
     public function doFindAction()
     {
-        $oldUserId  = $this->getRequest('user_id1', 'int');
-        $newUserId  = $this->getRequest('user_id2', 'int');
+        $oldUserId = $this->getRequest('user_id1', 'int');
+        $newUserId = $this->getRequest('user_id2', 'int');
         $googleCode = $this->getRequest('google_code');
 
         if (empty($oldUserId) || empty($newUserId) || $newUserId == $oldUserId) {
@@ -188,7 +191,7 @@ class UserController extends BaseBackendController
 
         if (kProdMode) {
             if (empty($googleCode) || !AdminUserRepository::verifyGoogleCode($googleCode)) {
-                $this->sendErrorResult('谷歌验证码错误!');
+                $this->sendErrorResult("谷歌验证码错误!");
             }
         }
 
@@ -196,22 +199,23 @@ class UserController extends BaseBackendController
         if ($result) {
             $this->sendSuccessResult();
         }
-        $this->sendErrorResult('找回账号失败!');
+        $this->sendErrorResult("找回账号失败!");
     }
+
 
     public function chatListAction()
     {
         $userId = $this->getRequest('id', 'int');
         if ($this->isPost()) {
             $_REQUEST['from_id'] = $userId;
-            $result              = ChatRepository::getList($_REQUEST);
+            $result = ChatRepository::getList($_REQUEST);
             $this->sendSuccessResult($result);
         } else {
             $userInfo = UserModel::findByID($userId);
             if (empty($userInfo)) {
                 $this->sendErrorResult('用户不存在');
             }
-            $this->view->setVar('user', $userInfo);
+            $this->view->setVar("user", $userInfo);
         }
     }
 
@@ -221,7 +225,7 @@ class UserController extends BaseBackendController
      */
     public function chatInfoAction()
     {
-        $id = $this->getRequest('_id');
+        $id = $this->getRequest("_id");
         if (!empty($id)) {
             $result = ChatRepository::getDetail($id);
             $this->view->setVar('row', $result);

@@ -33,12 +33,14 @@ use App\Core\Mongodb\MongoModel;
  * @property int dau_5 5日活跃总数(留存)
  * @property int dau_7 7日活跃总数(留存)
  * @property int dau_15 15日活跃总数(留存)
+ * @property object order 会员订单
+ * @property object recharge 金币充值订单
  * @property object agent_v3 渠道系统v3统计
  * @property int created_at 创建时间
  * @property int updated_at 更新时间
  */
 class ReportChannelLogModel extends MongoModel
 {
-    public static $connection = 'default';
-    public static $collection = 'report_channel_log';
+    static $connection = "default";
+    static $collection = "report_channel_log";
 }

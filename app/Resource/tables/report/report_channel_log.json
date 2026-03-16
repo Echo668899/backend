@@ -124,6 +124,16 @@
             "description": "15日活跃总数(留存)"
         },
         {
+            "name": "order",
+            "type": "object",
+            "description": "会员订单"
+        },
+        {
+            "name": "recharge",
+            "type": "object",
+            "description": "金币充值订单"
+        },
+        {
             "name": "agent_v3",
             "type": "object",
             "description": "渠道系统v3统计"

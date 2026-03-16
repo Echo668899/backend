@@ -13,12 +13,12 @@ abstract class CenterBaseJob extends BaseJob
 {
     /**
      * 获取各个中心配置
-     * @param                 $type
+     * @param $type
      * @return array|string[]
      */
     public static function getCenterConfig($type)
     {
-        $configs = [];
+        $configs=[];
         switch ($type) {
             case 'adv':
                 $configs = self::adv();
@@ -28,6 +28,9 @@ abstract class CenterBaseJob extends BaseJob
                 break;
             case 'customer':
                 $configs = self::customer();
+                break;
+            case 'infra':
+                $configs = self::infra();
                 break;
         }
         return $configs;
@@ -39,19 +42,19 @@ abstract class CenterBaseJob extends BaseJob
     private static function adv()
     {
         $configs = ConfigService::getConfig('center_adv');
-        $split   = CommonUtil::getSplitChar($configs);
-        $configs = explode($split, $configs);
-        $result  = [
-            'pull_url' => '',
-            'push_url' => '',
-            'merid'    => '',
-            'deptid'   => '',
-            'appid'    => '',
-            'appkey'   => '',
+        $split = CommonUtil::getSplitChar($configs);
+        $configs = explode($split,$configs);
+        $result = [
+            'pull_url'  => '',
+            'push_url'  => '',
+            'merid'     => '',
+            'deptid'    => '',
+            'appid'     => '',
+            'appkey'    => '',
         ];
         foreach ($configs as $config) {
             $config = explode('=>', $config);
-            if (isset($result[$config[0]])) {
+            if(isset($result[$config[0]])) {
                 $result[$config[0]] = $config[1];
             }
         }
@@ -65,19 +68,19 @@ abstract class CenterBaseJob extends BaseJob
     private static function data()
     {
         $configs = ConfigService::getConfig('center_data');
-        $split   = CommonUtil::getSplitChar($configs);
-        $configs = explode($split, $configs);
-        $result  = [
-            'pull_url' => '',
-            'push_url' => '',
-            'merid'    => '',
-            'deptid'   => '',
-            'appid'    => '',
-            'appkey'   => '',
+        $split = CommonUtil::getSplitChar($configs);
+        $configs = explode($split,$configs);
+        $result = [
+            'pull_url'  => '',
+            'push_url'  => '',
+            'merid'     => '',
+            'deptid'    => '',
+            'appid'     => '',
+            'appkey'    => '',
         ];
         foreach ($configs as $config) {
             $config = explode('=>', $config);
-            if (isset($result[$config[0]])) {
+            if(isset($result[$config[0]])) {
                 $result[$config[0]] = $config[1];
             }
         }
@@ -92,20 +95,48 @@ abstract class CenterBaseJob extends BaseJob
     private static function customer()
     {
         $configs = ConfigService::getConfig('center_customer');
-        $split   = CommonUtil::getSplitChar($configs);
-        $configs = explode($split, $configs);
+        $split = CommonUtil::getSplitChar($configs);
+        $configs = explode($split,$configs);
 
         $result = [
-            'url'      => '',
-            'appname'  => '',
-            'appid'    => '',
-            'appkey'   => '',
-            'status'   => 'n',
-            'test_ids' => ''
+            'url'       => '',
+            'appname'   => '',
+            'appid'     => '',
+            'appkey'    => '',
+            'status'    => 'n',
+            'test_ids'  => ''
         ];
         foreach ($configs as $config) {
             $config = explode('=>', $config);
-            if (isset($result[$config[0]])) {
+            if(isset($result[$config[0]])) {
+                $result[$config[0]] = $config[1];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 基础设施
+     * @return string[]
+     */
+    private static function infra()
+    {
+        $configs = ConfigService::getConfig('center_infra');
+        $split = CommonUtil::getSplitChar($configs);
+        $configs = explode($split,$configs);
+
+        $result = [
+            'url'  => '',//接口域名
+            'key'  => '',//接口key
+
+            'appid'     => '',//技术中心项目编号
+            'appname'   => '',//项目名称
+            'apptype'   => '',//项目类型 web-web项目 money-付费 free-免费
+        ];
+        foreach ($configs as $config) {
+            $config = explode('=>', $config);
+            if(isset($result[$config[0]])) {
                 $result[$config[0]] = $config[1];
             }
         }
