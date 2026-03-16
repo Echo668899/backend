@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Controller\BaseApiController;
 use App\Exception\BusinessException;
 use App\Repositories\Api\MovieRepository;
+use App\Repositories\Api\MovieCusRepository;
 use Phalcon\Storage\Exception;
 
 class MovieController extends BaseApiController
@@ -17,7 +18,7 @@ class MovieController extends BaseApiController
      */
     public function navListAction(){
         $position = $this->getRequest('pos', 'string');
-        $res = MovieRepository::navList($position);
+        $res = MovieCusRepository::navList($position);
         $this->sendSuccessResult($res);
     }
 

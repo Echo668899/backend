@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Repositories\Api;
+
+use App\Constants\CommonValues;
+use App\Constants\StatusCode;
+use App\Core\Repositories\BaseRepository;
+use App\Exception\BusinessException;
+use App\Models\Movie\MovieBlockModel;
+use App\Models\Movie\MovieModel;
+use App\Models\Movie\MovieNavModel;
+use App\Models\Movie\MovieTagModel;
+use App\Services\Activity\ActivityService;
+use App\Services\Common\AdvService;
+use App\Services\Common\ApiService;
+use App\Services\Common\CommonService;
+use App\Services\Common\IpService;
+use App\Services\Common\M3u8Service;
+use App\Services\Movie\MovieBlockService;
+use App\Services\Movie\MovieNavService;
+use App\Services\Movie\MovieCategoryService;
+use App\Services\Movie\MovieDisLoveService;
+use App\Services\Movie\MovieDownloadService;
+use App\Services\Movie\MovieFavoriteService;
+use App\Services\Movie\MovieHistoryService;
+use App\Services\Movie\MovieLoveService;
+use App\Services\Movie\MovieService;
+use App\Services\Movie\MovieTagService;
+use App\Services\User\UserBuyLogService;
+use App\Services\User\UserGroupService;
+use App\Services\User\UserService;
+use App\Utils\CommonUtil;
+
+class MovieCusRepository extends BaseRepository
+{
+    /**
+     * nav列表
+     * @param $position string
+     * @return array
+     * @throws BusinessException
+     * @throws \Phalcon\Storage\Exception
+     */
+    public static function navList($position = null){
+        $navNames = CommonValues::getMovieNavPosition();
+        if($position && !isset($navNames[$position])){
+            $position = null;
+        }
+        $res = MovieNavService::getAll($position);
+        $ret = [];
+        if(!$res){
+            return $ret;
+        }
+
+        
+        foreach($res as $item){
+            $item['blocks'] = [];
+            if($item['style'] == 'video_1'){
+                $blocks = MovieBlockService::get($item['id']);
+                if($blocks){
+                    foreach($blocks as $k => $block){
+                        $blocks[$k]['style_name'] = CommonValues::getMovieBlockStyle($block['style']);
+                    }
+                }
+
+                $item['blocks'] = $blocks;
+            }
+            $item['style_name'] = CommonValues::getMovieNavStyle($item['style']);
+            $ret[$item['position']][] = $item;
+        }
+
+        $navs = [];
+        foreach($ret as $position => $l){
+            $navs[] = ['title' => $navNames[$position], 'position' => $position, 'list' => $l];
+        }
+        return $navs;
+    }
+
+    public static function getUpContent($homeId, $type, $page = 1, $pageSize = 12){
+        $typeList = ['long_video', 'short_video', 'cartoon', 'comics', 'novel', 'post'];
+        if(!in_array($type, $typeList)){
+            $type = 'long_video';
+        }
+        $position = 'normal';
+
+        $ret = [];
+        switch($type){
+            case 'short_video':
+                $position = 'douyin';
+                $filter = ['position' => $position, 'home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $ret = MovieRepository::doSearch($filter);
+                break;
+            case 'cartoon':
+                $position = 'cartoon';
+                $filter = ['position' => $position, 'home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $ret = MovieRepository::doSearch($filter);
+                break;
+            case 'long_video':
+                $filter = ['position' => $position, 'home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $ret = MovieRepository::doSearch($filter);
+                break;
+            case 'comics':
+                ComicsRepository::doSearch();
+                break;
+        }
+    }
+}

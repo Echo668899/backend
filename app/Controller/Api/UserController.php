@@ -5,9 +5,20 @@ namespace App\Controller\Api;
 use App\Controller\BaseApiController;
 use App\Exception\BusinessException;
 use App\Repositories\Api\UserRepository;
+use App\Repositories\Api\MovieCusRepository;
 
 class UserController extends BaseApiController
 {
+
+    public function upFilterAction(){
+        //long_video short_video cartoon comics novel posts
+        $type = $this->getRequest('type', 'string', 'long_video');
+        $userId = $this->getUserId();
+
+        $res = MovieCusRepository::getUpContent($userId, $type);
+        $this->sendSuccessResult($res);
+    }
+
     /**
      * 个人信息
      * @return void
