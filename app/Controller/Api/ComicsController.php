@@ -25,20 +25,9 @@ class ComicsController extends BaseApiController
      */
     public function ComicsListAction(){
         $allowKeys = [
-            'page',
-            'page_size',
-            'keywords',
-            'icon',
-            'pay_type',
-            'cat_id',
-            'tag_id',
-            'is_end',
-            'ids',
-            'not_ids',
-            'order',
-            'update_date',
-            'update_status',
-            'ad_code',
+            'page','page_size','keywords','icon',
+            'pay_type','cat_id','tag_id','is_end','ids',
+            'not_ids','order','update_date','update_status','ad_code',
             'language'
         ];
         $params = $this->request->get();

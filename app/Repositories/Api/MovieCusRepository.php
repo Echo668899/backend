@@ -99,8 +99,17 @@ class MovieCusRepository extends BaseRepository
                 $ret = MovieRepository::doSearch($filter);
                 break;
             case 'comics':
-                ComicsRepository::doSearch();
+                $ret = [];
+                break;
+            case 'novel':
+                $ret = [];
+                break;
+            case 'post':
+                $filter = ['home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $ret = PostRepository::doSearch($filter);
                 break;
         }
+
+        return $ret;
     }
 }
