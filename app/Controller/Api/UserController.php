@@ -10,12 +10,19 @@ use App\Repositories\Api\MovieCusRepository;
 class UserController extends BaseApiController
 {
 
+    /**
+     * up主内容列表
+     * @return void
+     */
     public function upFilterAction(){
         //long_video short_video cartoon comics novel posts
         $type = $this->getRequest('type', 'string', 'long_video');
         $userId = $this->getUserId();
+        $order = $this->getRequest('order', 'string', 'hot');
+        $page = $this->getRequest('page', 'int', 1);
+        $pageSize = $this->getRequest('pageSize', 'int', 12);
 
-        $res = MovieCusRepository::getUpContent($userId, $type);
+        $res = MovieCusRepository::getUpContent($userId, $type, $order, $page, $pageSize);
         $this->sendSuccessResult($res);
     }
 

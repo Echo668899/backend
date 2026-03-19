@@ -75,8 +75,22 @@ class MovieCusRepository extends BaseRepository
         return $navs;
     }
 
-    public static function getUpContent($homeId, $type, $page = 1, $pageSize = 12){
+    /**
+     * up主video列表
+     * @param $homeId
+     * @param $type
+     * @param $page
+     * @param $pageSize
+     * @return array
+     */
+    public static function getUpContent($homeId, $type, $order = 'hot', $page = 1, $pageSize = 12){
         $typeList = ['long_video', 'short_video', 'cartoon', 'comics', 'novel', 'post'];
+        $orderList = ['new', 'click', 'love', 'favorite', 'hot'];
+
+        if(!in_array($order, $orderList)){
+            $order = 'hot';
+        }
+
         if(!in_array($type, $typeList)){
             $type = 'long_video';
         }
@@ -86,16 +100,16 @@ class MovieCusRepository extends BaseRepository
         switch($type){
             case 'short_video':
                 $position = 'douyin';
-                $filter = ['position' => $position, 'home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $filter = ['position' => $position, 'home_id' => $homeId, 'order' => $order, 'page' => $page, 'page_size' => $pageSize];
                 $ret = MovieRepository::doSearch($filter);
                 break;
             case 'cartoon':
                 $position = 'cartoon';
-                $filter = ['position' => $position, 'home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $filter = ['position' => $position, 'home_id' => $homeId, 'order' => $order, 'page' => $page, 'page_size' => $pageSize];
                 $ret = MovieRepository::doSearch($filter);
                 break;
             case 'long_video':
-                $filter = ['position' => $position, 'home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $filter = ['position' => $position, 'home_id' => $homeId, 'order' => $order, 'page' => $page, 'page_size' => $pageSize];
                 $ret = MovieRepository::doSearch($filter);
                 break;
             case 'comics':
@@ -105,7 +119,7 @@ class MovieCusRepository extends BaseRepository
                 $ret = [];
                 break;
             case 'post':
-                $filter = ['home_id' => $homeId, 'page' => $page, 'page_size' => $pageSize];
+                $filter = ['home_id' => $homeId, 'order' => $order, 'page' => $page, 'page_size' => $pageSize];
                 $ret = PostRepository::doSearch($filter);
                 break;
         }

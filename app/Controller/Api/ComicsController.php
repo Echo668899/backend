@@ -146,6 +146,38 @@ class ComicsController extends BaseApiController
     }
 
     /**
+     * 去点踩
+     * @throws BusinessException
+     */
+    public function doDisLoveAction()
+    {
+        $userId  = $this->getUserId();
+        $comicsId = $this->getRequest('id', 'string');
+        if (empty($comicsId)) {
+            $this->sendErrorResult('参数错误');
+        }
+        
+        $result = ComicsRepository::doDisLove($userId, $comicsId);
+        $this->sendSuccessResult(['status' => $result ? 'y' : 'n']);
+    }
+
+    /**
+     * 是否踩
+     * @throws BusinessException
+     */
+    public function isDisLoveAction()
+    {
+        $userId  = $this->getUserId();
+        $comicsId = $this->getRequest('id', 'string');
+        if (empty($comicsId)) {
+            $this->sendErrorResult('参数错误');
+        }
+        
+        $result = ComicsRepository::isDisLove($userId, $comicsId);
+        $this->sendSuccessResult(['status' => $result ? 'y' : 'n']);
+    }
+
+    /**
      * 点赞列表
      * @return void
      */

@@ -16,6 +16,7 @@ use App\Services\Common\ApiService;
 use App\Services\Common\CommonService;
 use App\Services\Novel\NovelBlockService;
 use App\Services\Novel\NovelChapterService;
+use App\Services\Novel\NovelDisLoveService;
 use App\Services\Novel\NovelFavoriteService;
 use App\Services\Novel\NovelHistoryService;
 use App\Services\Novel\NovelLoveService;
@@ -710,6 +711,30 @@ class NovelRepository extends BaseRepository
     public static function doLove($userId, $novelId)
     {
         return NovelLoveService::do($userId, $novelId);
+    }
+
+    /**
+     * 去点踩
+     * @param $userId
+     * @param $novelId
+     * @return bool
+     * @throws BusinessException
+     */
+    public static function doDisLove($userId,$novelId)
+    {
+        return NovelDisLoveService::do($userId, $novelId);
+    }
+
+    /**
+     * 是否踩
+     * @param $userId
+     * @param $novelId
+     * @return bool
+     * @throws BusinessException
+     */
+    public static function isDisLove($userId,$novelId)
+    {
+        return NovelDisLoveService::has($userId, $novelId);
     }
 
     /**

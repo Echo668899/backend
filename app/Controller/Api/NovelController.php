@@ -111,6 +111,39 @@ class NovelController extends BaseApiController
         $this->sendSuccessResult(['status' => $result ? 'y' : 'n']);
     }
 
+
+    /**
+     * 去点踩
+     * @throws BusinessException
+     */
+    public function doDisLoveAction()
+    {
+        $userId  = $this->getUserId();
+        $novelId = $this->getRequest('id', 'string');
+        if (empty($novelId)) {
+            $this->sendErrorResult('参数错误');
+        }
+        
+        $result = NovelRepository::doDisLove($userId, $novelId);
+        $this->sendSuccessResult(['status' => $result ? 'y' : 'n']);
+    }
+
+    /**
+     * 是否踩
+     * @throws BusinessException
+     */
+    public function isDisLoveAction()
+    {
+        $userId  = $this->getUserId();
+        $novelId = $this->getRequest('id', 'string');
+        if (empty($novelId)) {
+            $this->sendErrorResult('参数错误');
+        }
+        
+        $result = NovelRepository::isDisLove($userId, $novelId);
+        $this->sendSuccessResult(['status' => $result ? 'y' : 'n']);
+    }
+
     /**
      * 点赞列表
      * @return void

@@ -13,6 +13,7 @@ use App\Models\Comics\ComicsNavModel;
 use App\Models\Comics\ComicsTagModel;
 use App\Services\Comics\ComicsBlockService;
 use App\Services\Comics\ComicsChapterService;
+use App\Services\Comics\ComicsDisLoveService;
 use App\Services\Comics\ComicsFavoriteService;
 use App\Services\Comics\ComicsHistoryService;
 use App\Services\Comics\ComicsLoveService;
@@ -773,6 +774,30 @@ class ComicsRepository extends BaseRepository
     public static function doLove($userId, $comicsId)
     {
         return ComicsLoveService::do($userId, $comicsId);
+    }
+
+    /**
+     * 去点踩
+     * @param $userId
+     * @param $comicsId
+     * @return bool
+     * @throws BusinessException
+     */
+    public static function doDisLove($userId,$comicsId)
+    {
+        return ComicsDisLoveService::do($userId, $comicsId);
+    }
+
+    /**
+     * 是否踩
+     * @param $userId
+     * @param $comicsId
+     * @return bool
+     * @throws BusinessException
+     */
+    public static function isDisLove($userId,$comicsId)
+    {
+        return ComicsDisLoveService::has($userId, $comicsId);
     }
 
     /**
