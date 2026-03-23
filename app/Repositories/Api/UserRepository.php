@@ -259,6 +259,62 @@ class UserRepository extends BaseRepository
     }
 
     /**
+     * 获取关注的up主列表
+     * @param $userId
+     * @param $homeId
+     * @param $page
+     * @param $pageSize
+     * @return array
+     */
+    public static function getUpFollowList($userId, $homeId, $order = 'new', $page = 1, $pageSize = 20){
+        if($order && $order != 'new'){
+            $order = 'old';
+        }
+
+        $ids = UserFansService::getFollowIds($userId, $homeId,'follow', 1, 5000);
+        if($order == 'old'){
+            $ids['ids'] = array_reverse($ids['ids']);
+        }elseif(!$order){
+            shuffle($ids['ids']);
+        }
+        
+        foreach ($ids['ids'] as $key => $id) {
+            if (empty($id)) {
+                unset($ids['ids'][$key]);
+            } else {
+                $ids['ids'][$key] = intval($id);
+            }
+        }
+
+        $total = $page * $pageSize;
+        $data = [];
+        if($ids['ids']){
+            foreach ($ids['ids'] as $id) {
+                $userInfo = UserService::getInfoFromCache($id);
+                if($userInfo['is_up'] == 'y'){
+                    $data[]=[
+                        'id'=>strval($userInfo['id']),
+                        'username'=>strval($userInfo['username']),
+                        'nickname'=>strval($userInfo['nickname']),
+                        'headico'=>CommonService::getCdnUrl($userInfo['headico']),
+                        'is_follow' => 'y'
+                    ];
+                    if(count($data) >= $total){
+                        break;
+                    }
+                }
+            }
+
+            if($data){
+                $offset = ($page - 1) * $pageSize;
+                $data = array_slice($data, $offset, $pageSize);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * 关注列表
      * @param $userId
      * @param $homeId

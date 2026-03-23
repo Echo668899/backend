@@ -126,4 +126,45 @@ class MovieCusRepository extends BaseRepository
 
         return $ret;
     }
+
+    /**
+     * 热搜列表
+     * @param $type
+     * @param $page
+     * @param $pageSize
+     * @return array
+     */
+    public static function hotSearch($type, $page = 1, $pageSize = 12){
+        //使用标签id，标签后台添加
+        $typeList = ['video' => 1293, 'short_video' => 1, 'cartoon' => 767, 'comics' => 39, 'novel' => 117, 'post' => 18];
+
+        if(!isset($typeList[$type])){
+            $type = 'video';
+        }
+        $filter = ['tag_id' => $typeList[$type], 'page' => $page, 'page_size' => $pageSize];
+
+        $ret = [];
+        switch($type){
+            case 'short_video':
+                $ret = MovieRepository::doSearch($filter);
+                break;
+            case 'cartoon':
+                $ret = MovieRepository::doSearch($filter);
+                break;
+            case 'video':
+                $ret = MovieRepository::doSearch($filter);
+                break;
+            case 'comics':
+                $ret = ComicsRepository::doSearch($filter);
+                break;
+            case 'novel':
+                $ret = NovelRepository::doSearch($filter);
+                break;
+            case 'post':
+                $ret = PostRepository::doSearch($filter);
+                break;
+        }
+
+        return $ret;
+    }
 }

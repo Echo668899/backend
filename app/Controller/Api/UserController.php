@@ -115,6 +115,23 @@ class UserController extends BaseApiController
         $this->sendSuccessResult(['status'=>$result]);
     }
 
+
+    /**
+     * up关注列表
+     */
+    public function upFollowAction(){
+        $userId = $this->getUserId();
+        $page = $this->getRequest('page', 'int', 1);
+        $pageSize = $this->getRequest('pageSize', 'int', 20);
+        $homeId = $this->getRequest('home_id', 'string');
+        $order = $this->getRequest('order', 'string', 'new');
+        if (empty($homeId)) {
+            $homeId = $userId;
+        }
+        $result = UserRepository::getUpFollowList($userId, $homeId,$order, $page,$pageSize);
+        $this->sendSuccessResult($result);
+    }
+
     /**
      * 关注列表
      */

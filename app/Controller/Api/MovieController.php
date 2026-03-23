@@ -11,6 +11,18 @@ use Phalcon\Storage\Exception;
 class MovieController extends BaseApiController
 {
 
+
+    /**
+     * block列表
+     * @return void
+     * @throws \Phalcon\Storage\Exception
+     */
+    public function blockListAction(){
+        $position = $this->getRequest('pos', 'string');
+        $res = MovieCusRepository::navList($position);
+        $this->sendSuccessResult($res);
+    }
+
     /**
      * nav列表
      * @return void
